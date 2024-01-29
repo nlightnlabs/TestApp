@@ -1,43 +1,62 @@
+import { useEffect, useState } from 'react';
 import './App.css';
-import "bootstrap/dist/css/bootstrap.min.css"
-import React, {useState, useEffect} from 'react'
+
+const PURCHASE_REQ_APP = 'custom_app_53';
 
 function App() {
+    const [purchaseReqs, setPurchaseReqs] = useState(null);
 
-  const [formData, setFormData] = useState({})
+    const initializeFreeAgentConnection = () => {
+    const FAAppletClient = window.FAAppletClient;
+    
+    //Initialize the connection to the FreeAgent this step takes away the loading spinner
+    const FAClient = new FAAppletClient({
+        appletId: 'fa-applet-demo',
+    });
 
-  const handleChange=(e)=>{
-    const {name, value} = e.target
-    setFormData({...formData,...{[name]:value}})
-    console.log({...formData,...{[name]:value}})
-  }
+    //Load list of purchase requests using FAClient
+    FAClient.listEntityValues({
+        entity: PURCHASE_REQ_APP,
+        limit: 100,
+    }, (purchaseReqs) => {
+    console.log('initializeFreeAgentConnection Success!', purchaseReqs);
+    if (purchaseReqs) {
+            setPurchaseReqs(purchaseReqs);
+        }
+        });
+    };
 
-  return (
-    <div className="flex-container w-100">
-      <div className="d-flex bg-light justify-content-center p-3 w-100">
-      <form>
-        <div className="form-floating">
-          <input name = "name" type="text" className="form-control" value={formData.name} onChange={(e)=>handleChange(e)}></input>
-          <label htmlFor="name" className="form-label" >Name</label>
-        </div>
+    const useExternalScript = (src) => {
+        useEffect(() => {
+        const script = document.createElement('script');
+        script.src = src;
+        script.async = true;
+        document.body.appendChild(script);
 
-        <div className="form-floating">
-          <input name = "company" type="text "className="form-control"  value={formData.company} onChange={(e)=>handleChange(e)}></input>
-          <label htmlFor="company" className="form-label">Company</label>
-        </div>
+        setTimeout(() => {
+            initializeFreeAgentConnection();
+        }, 500);
 
-        <div className="d-flex justify-content-center p-3">
-          <button className="btn btn-primary">Send</button>
-        </div>
+        return () => {
+                document.body.removeChild(script);
+            };
+            }, [src]);
+    };
 
-        <div>
-          {JSON.stringify(formData)}
-        </div>
+    useExternalScript('https://freeagentsoftware1.gitlab.io/apps/google-maps/js/lib.js');
 
-      </form>
-      </div>
+    return (
+    
+    <div className="App">
+    <h2>FreeAgent Purchase Requests Iframe</h2>
+        {!purchaseReqs && 'Loading Purchase Requests From FA!'}
+        {purchaseReqs && (
+            purchaseReqs.map(pReq => (
+            <div>{pReq.field_values.description.value}</div>
+            ))
+        )}
     </div>
-  );
+    );
 }
 
 export default App;
