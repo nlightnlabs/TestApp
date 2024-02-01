@@ -11,7 +11,7 @@ function App() {
     
     //Initialize the connection to the FreeAgent this step takes away the loading spinner
     const FAClient = new FAAppletClient({
-        appletId: 'fa-applet-demo',
+        appletId: 'test-app-iframe',
     });
 
     //Load list of purchase requests using FAClient
