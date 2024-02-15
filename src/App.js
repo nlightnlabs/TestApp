@@ -7,7 +7,7 @@ function App() {
 
      //Set up local states
      const [appData, setAppData] = useState([]);
-     const [appName, setAppName] = useState("");
+     const [appName, setAppName] = useState("custom_app_15");
      const [formData, setFormData] = useState({
         entity: "",
         id: ""
@@ -20,47 +20,51 @@ function App() {
             script.src = src;
             script.async = true;
             document.body.appendChild(script);
-            setTimeout(()=>{
-                FAConnect()
-            },(500))
+
+            setTimeout(() => {
+                initializeFreeAgentConnection();
+            }, 500);
+
             return () => {
                 document.body.removeChild(script);
             };
-        }, [src, appName]);
+        }, [src]);
     };
     useExternalScript('https://freeagentsoftware1.gitlab.io/apps/google-maps/js/lib.js');
 
     //Free agent function to get all records
-    const FAConnect = async () => {
+    const initializeFreeAgentConnection = async () => {
         const FAAppletClient = window.FAAppletClient;
         
         //Initialize the connection to the FreeAgent this step takes away the loading spinner
-        const faApplet = new FAAppletClient({
+        const FAClient = new FAAppletClient({
             appletId: 'test-app-iframe',
         });
 
         if(appName !="" && appName!=null){
             try {
-                let data=[];
-                const response = await faApplet.listEntityValues({
-                  entity: appName
-                });
-          
-                response.map(async (record, index) => {
-                  let rowData = {};
-                  Object.entries(record.field_values).map(([key,value])=>{
+
+            let data=[];
+            const response = await FAClient.listEntityValues({
+                entity: appName
+            });
+        
+            response.map(async (record, index) => {
+                let rowData = {};
+                Object.entries(record.field_values).map(([key,value])=>{
                     rowData = {...rowData,...{[key]:value.display_value}};
-                  })
-                  data.push(rowData);
                 })
-          
+                data.push(rowData);
+            })
+        
                 console.log(data);
                 setAppData(data)
-              }catch(error){
+
+            }catch(error){
                 console.log(error);
                 return [];
-              }
-            }  
+            }
+        }  
     };
 
 
@@ -78,7 +82,6 @@ function App() {
 
         let key = name.toLowerCase().replaceAll(" ","_")
         setFormData({...formData,...{[key]:value}})
-        console.log({...formData,...{[key]:value}})
     }
 
     return (
