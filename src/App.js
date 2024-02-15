@@ -26,7 +26,7 @@ function App() {
             return () => {
                 document.body.removeChild(script);
             };
-        }, [src]);
+        }, [src, appName]);
     };
     useExternalScript('https://freeagentsoftware1.gitlab.io/apps/google-maps/js/lib.js');
 
@@ -64,14 +64,10 @@ function App() {
     };
 
 
-    
-    
+
     //Function to tigger data fetch Free Agent Data
     const getData = async (e)=>{
-        const appName = formData.entity
-        alert(`Getting data for ${appName}`)
-        const response =await getFAAllRecords(appName);
-        setAppData(response)
+        setAppName(formData.entity)
     }
 
     //Function handle form change
