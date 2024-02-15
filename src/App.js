@@ -5,6 +5,14 @@ import "bootstrap/dist/css/bootstrap.min.css"
 
 function App() {
 
+     //Set up local states
+     const [appData, setAppData] = useState([]);
+     const [appName, setAppName] = useState("");
+     const [formData, setFormData] = useState({
+        entity: "",
+        id: ""
+    })
+
     //script to itnegrate FreeAgent library
     const useExternalScript = (src) => {
         useEffect(() => {
@@ -12,6 +20,9 @@ function App() {
             script.src = src;
             script.async = true;
             document.body.appendChild(script);
+            setTimeout(()=>{
+                FAConnect()
+            },(500))
             return () => {
                 document.body.removeChild(script);
             };
@@ -20,7 +31,7 @@ function App() {
     useExternalScript('https://freeagentsoftware1.gitlab.io/apps/google-maps/js/lib.js');
 
     //Free agent function to get all records
-    const getFAAllRecords = async (appName) => {
+    const FAConnect = async () => {
         const FAAppletClient = window.FAAppletClient;
         
         //Initialize the connection to the FreeAgent this step takes away the loading spinner
@@ -28,36 +39,32 @@ function App() {
             appletId: 'test-app-iframe',
         });
 
-        try {
-            let data=[];
-            const response = await faApplet.listEntityValues({
-              entity: appName
-            });
-      
-            response.map(async (record, index) => {
-              let rowData = {};
-              Object.entries(record.field_values).map(([key,value])=>{
-                rowData = {...rowData,...{[key]:value.display_value}};
-              })
-              data.push(rowData);
-            })
-      
-            console.log(data);
-            return data;
-          }catch(error){
-            console.log(error);
-            return [];
-          }
+        if(appName !="" && appName!=null){
+            try {
+                let data=[];
+                const response = await faApplet.listEntityValues({
+                  entity: appName
+                });
+          
+                response.map(async (record, index) => {
+                  let rowData = {};
+                  Object.entries(record.field_values).map(([key,value])=>{
+                    rowData = {...rowData,...{[key]:value.display_value}};
+                  })
+                  data.push(rowData);
+                })
+          
+                console.log(data);
+                setAppData(data)
+              }catch(error){
+                console.log(error);
+                return [];
+              }
+            }  
     };
 
 
-     //Set up local states
-     const [appData, setAppData] = useState([]);
-     const [appName, setAppName] = useState("");
-     const [formData, setFormData] = useState({
-        entity: "",
-        id: ""
-    })
+    
     
     //Function to tigger data fetch Free Agent Data
     const getData = async (e)=>{
