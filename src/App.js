@@ -1,60 +1,108 @@
 import { useEffect, useState } from 'react';
 import './App.css';
+import "bootstrap/dist/css/bootstrap.min.css"
 
-const PURCHASE_REQ_APP = 'custom_app_53';
 
 function App() {
-    const [purchaseReqs, setPurchaseReqs] = useState(null);
 
-    const initializeFreeAgentConnection = () => {
-    const FAAppletClient = window.FAAppletClient;
-    
-    //Initialize the connection to the FreeAgent this step takes away the loading spinner
-    const FAClient = new FAAppletClient({
-        appletId: 'test-app-iframe',
-    });
-
-    //Load list of purchase requests using FAClient
-    FAClient.listEntityValues({
-        entity: PURCHASE_REQ_APP,
-        limit: 100,
-    }, (purchaseReqs) => {
-    console.log('initializeFreeAgentConnection Success!', purchaseReqs);
-    if (purchaseReqs) {
-            setPurchaseReqs(purchaseReqs);
-        }
-        });
-    };
-
+    //script to itnegrate FreeAgent library
     const useExternalScript = (src) => {
         useEffect(() => {
-        const script = document.createElement('script');
-        script.src = src;
-        script.async = true;
-        document.body.appendChild(script);
-
-        setTimeout(() => {
-            initializeFreeAgentConnection();
-        }, 500);
-
-        return () => {
+            const script = document.createElement('script');
+            script.src = src;
+            script.async = true;
+            document.body.appendChild(script);
+            return () => {
                 document.body.removeChild(script);
             };
-            }, [src]);
+        }, [src]);
+    };
+    useExternalScript('https://freeagentsoftware1.gitlab.io/apps/google-maps/js/lib.js');
+
+    //Free agent function to get all records
+    const getFAAllRecords = async (appName) => {
+        const FAAppletClient = window.FAAppletClient;
+        
+        //Initialize the connection to the FreeAgent this step takes away the loading spinner
+        const faApplet = new FAAppletClient({
+            appletId: 'test-app-iframe',
+        });
+
+        try {
+            let data=[];
+            const response = await faApplet.listEntityValues({
+              entity: appName
+            });
+      
+            response.map(async (record, index) => {
+              let rowData = {};
+              Object.entries(record.field_values).map(([key,value])=>{
+                rowData = {...rowData,...{[key]:value.display_value}};
+              })
+              data.push(rowData);
+            })
+      
+            console.log(data);
+            return data;
+          }catch(error){
+            console.log(error);
+            return [];
+          }
     };
 
-    useExternalScript('https://freeagentsoftware1.gitlab.io/apps/google-maps/js/lib.js');
+
+     //Set up local states
+     const [appData, setAppData] = useState([]);
+     const [appName, setAppName] = useState("");
+     const [formData, setFormData] = useState({
+        entity: "",
+        id: ""
+    })
+    
+    //Function to tigger data fetch Free Agent Data
+    const getData = async (e)=>{
+        const appName = formData.entity
+        alert(`Getting data for ${appName}`)
+        const response =await getFAAllRecords(appName);
+        setAppData(response)
+    }
+
+    //Function handle form change
+    const handleChange = (e)=>{
+        e.preventDefault()
+        const {name,value} = e.target
+        setAppName(name)
+
+        let key = name.toLowerCase().replaceAll(" ","_")
+        setFormData({...formData,...{[key]:value}})
+        console.log({...formData,...{[key]:value}})
+    }
 
     return (
     
-    <div className="App">
-    <h2>FreeAgent Purchase Requests Iframe</h2>
-        {!purchaseReqs && 'Loading Purchase Requests From FA!'}
-        {purchaseReqs && (
-            purchaseReqs.map(pReq => (
-            <div>{pReq.field_values.description.value}</div>
-            ))
-        )}
+    <div className="App justify-content-center">
+
+        <h2>FreeAgent Iframe Integration Test App</h2>
+        
+        <div className="d-flex flex-column" style={{margin: "auto", width: "500px"}}>
+            <div className="form-floating mb-3">
+                <input id="entity" name="entity" className="form-control" placeholder="App Name" onChange={(e)=>handleChange(e)}></input>
+                <label htmlFor="entity" className="form-label" style={{color: "lightgray"}}>App Name</label>
+            </div>
+            <div className="form-floating">
+                <input id="id" name="id" className="form-control" placeholder="Record Id" onChange={(e)=>handleChange(e)}></input>
+                <label htmlFor="id" className="form-label" style={{color: "lightgray"}}>Record Id</label>
+            </div>
+            <div className="d-flex justify-content-center">
+                <button className="btn btn-primary" onClick={(e)=>getData()}>Submit</button>
+            </div>
+        </div>
+        {appData.length>0 &&
+        <div>
+            <div>{appName} Results:</div>
+            {appData.map(record => (<div key={record.seq_id}>{JSON.stringify(record)}</div>))}
+        </div>
+        }
     </div>
     );
 }
