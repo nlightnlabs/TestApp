@@ -15,6 +15,8 @@ export const useExternalScript = (document, setFaClient,iFrameId) => {
     const faApplet = new FAAppletClient({
         appletId: iFrameId
     });
+    console.log(faApplet)
+
     setFaClient(faApplet)  
   }, 500);
 
@@ -24,9 +26,9 @@ export const useExternalScript = (document, setFaClient,iFrameId) => {
 }
 
  
- 
  //Standard function to get all records from a FreeAgent App
  export const getFAAllRecords = async (faClient,appName)=>{
+    console.log(faClient)
 
     let data=[];
 

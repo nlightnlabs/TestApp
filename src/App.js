@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css"
-import * as FreeAgentAPI from './apis/FreeAgent.js'
+import * as freeAgentAPI from './apis/FreeAgent.js'
 
 
 function App() {
@@ -10,13 +10,11 @@ function App() {
     const [data, setData] = useState([]);
     const [faClient, setFaClient] = useState(null)
     const iFrameId = "test-app-iframe"
-    const doc = document
 
-    FreeAgentAPI.useExternalScript(doc,setFaClient,iFrameId)
+    freeAgentAPI.useExternalScript(document,setFaClient,iFrameId)
 
     const [formData, setFormData] = useState({
         entity: "",
-        id: ""
     })
 
     const handleChange = (e)=>{
@@ -26,10 +24,11 @@ function App() {
         setFormData({...formData,...{[key]:value}})
     }
 
-    const handleSubmit= async (e)=>{
+    const handleSubmit= async ()=>{
         const appName = formData.entity
+        console.log(faClient)
         console.log(appName)
-        const response = await FreeAgentAPI.getFAAllRecords(faClient,appName)
+        const response = await freeAgentAPI.getFAAllRecords(faClient,appName)
         console.log(response)
         setData(response)
     }
@@ -46,13 +45,9 @@ function App() {
                     <input id="entity" name="entity" className="form-control" placeholder="App Name" onChange={(e)=>handleChange(e)}></input>
                     <label htmlFor="entity" className="form-label" style={{color: "lightgray"}}>App Name</label>
                 </div>
-                <div className="form-floating">
-                    <input id="id" name="id" className="form-control" placeholder="Record Id" onChange={(e)=>handleChange(e)}></input>
-                    <label htmlFor="id" className="form-label" style={{color: "lightgray"}}>Record Id</label>
-                </div>
             </form>
             <div className="d-flex justify-content-center">
-                <button className="btn btn-primary" onClick={(e)=>handleSubmit(e)}>Submit</button>
+                <button className="btn btn-primary" onClick={()=>handleSubmit()}>Submit</button>
             </div>
         </div>
 
