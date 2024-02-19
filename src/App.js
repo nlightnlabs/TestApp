@@ -5,7 +5,7 @@ function App() {
 
     const [data, setData] = useState(null);
 
-    const initializeFreeAgentConnection = () => {
+    const initializeFreeAgentConnection = async () => {
     const FAAppletClient = window.FAAppletClient;
     
     //Initialize the connection to the FreeAgent this step takes away the loading spinner
@@ -14,7 +14,7 @@ function App() {
     });
 
     //Load list of purchase requests using FAClient
-   const response = FAClient.listEntityValues({
+   const response = await FAClient.listEntityValues({
         entity: "custom_app_53",
         limit: 100,
     })
@@ -37,7 +37,6 @@ const useExternalScript = (src) => {
         };
     }, [src]);
 };
-
 useExternalScript('https://freeagentsoftware1.gitlab.io/apps/google-maps/js/lib.js');
 
 return (
