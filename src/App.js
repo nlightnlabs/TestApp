@@ -42,10 +42,10 @@ useExternalScript('https://freeagentsoftware1.gitlab.io/apps/google-maps/js/lib.
 return (
     <div className="App">
         <h2>FreeAgent Purchase Requests Iframe</h2>
-        {!purchaseReqs && 'Loading Purchase Requests From FA!'}
-        {purchaseReqs && (
+        {!data && 'Loading Purchase Requests From FA!'}
+        {data && (
             purchaseReqs.map(pReq => (
-            <div>{pReq.field_values.description.value}</div>
+            <div>{data.field_values.description.value}</div>
             ))
         )}
     </div>
