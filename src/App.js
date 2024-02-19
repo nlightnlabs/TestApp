@@ -8,7 +8,7 @@ function App() {
 
     //Set up local states
     const [data, setData] = useState([]);
-    const [faClient, setFaClient] = useState(null)
+    const [faClient, setFaClient] = useState()
     const iFrameId = "test-app-iframe"
 
     const useExternalScript = (src) => {
@@ -37,7 +37,15 @@ function App() {
         const FAClient = new FAAppletClient({
             appletId: 'test-app-iframe',
         });
-        setFaClient(FAClient)
+        
+        FAClient.listEntityValues({
+            entity: "custom_app_22"
+        }, (result) => {
+                console.log('initializeFreeAgentConnection Success!', result);
+            if (result) {
+                setData(result);
+            }
+        });
     };
 
     const [formData, setFormData] = useState({
