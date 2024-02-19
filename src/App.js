@@ -1,81 +1,18 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css"
+import * as FreeAgentAPI from './apis/FreeAgent.js'
 
 
 function App() {
 
     //Set up local states
-    const [purchaseReqs, setPurchaseReqs] = useState(null);
+    const [data, setData] = useState([]);
+    const [faClient, setFaClient] = useState(null)
+    const iFrameId = "test-app-iframe"
+    const doc = document
 
-    const useExternalScript = (src) => {
-        useEffect(() => {
-            const script = document.createElement('script');
-            script.src = src;
-            script.async = true;
-            document.body.appendChild(script);
-
-            setTimeout(() => {
-                initializeFreeAgentConnection();
-            }, 500);
-
-            return () => {
-                document.body.removeChild(script);
-            };
-        }, [src]);
-    };
-     //script to itnegrate FreeAgent library
-     useExternalScript('https://freeagentsoftware1.gitlab.io/apps/google-maps/js/lib.js');
-    
-    //INPUT FROM FREEAGENT Specifiy App to bring in
-    const PURCHASE_REQ_APP = 'custom_app_53';
-
-    const initializeFreeAgentConnection = () => {
-        const FAAppletClient = window.FAAppletClient;
-        
-        //Initialize the connection to the FreeAgent this step takes away the loading spinner
-        const FAClient = new FAAppletClient({
-            appletId: 'test-app-iframe',
-        });
-    
-        //Bridge to access freeagent apps
-        FAClient.listEntityValues({
-            entity: PURCHASE_REQ_APP,
-            limit: 100,
-            fields: [
-                "seq_id",
-                "request_date",
-            ]
-        }, (purchaseReqs) => {
-                console.log('initializeFreeAgentConnection Success!', purchaseReqs);
-            if (purchaseReqs) {
-                setPurchaseReqs(purchaseReqs);
-            }
-        });
-
-         //OUTPUT 
-        //Function to create a new record/entity in FA app
-        // FAClient.createEntity({
-        //     entity:"requests",
-        //     field_values: {
-        //         request_type: "",
-        //         subject: "",
-        //         requester: "",
-        //     }
-        // })
-
-        //Function to update or delete a record/entity in FA app
-        // FAClient.updateEntity({
-        //     entity:"requests", // app name
-        //     id:"", //What record to update
-        //     field_values: {
-        //         request_type: "",
-        //         subject: "",
-        //         requester: "",
-        //         deleted: false //ONLY USE IF need to delete
-        //     }
-        // })
-    };
+    FreeAgentAPI.useExternalScript(doc,setFaClient,iFrameId)
 
     const [formData, setFormData] = useState({
         entity: "",
@@ -87,7 +24,13 @@ function App() {
         const {name,value} = e.target
         let key = name.toLowerCase().replaceAll(" ","_")
         setFormData({...formData,...{[key]:value}})
-        console.log({...formData,...{[key]:value}})
+    }
+
+    const handleSubmit= async (e)=>{
+        const appName = formData.entity
+        const response = await FreeAgentAPI.getFAAllRecords(appName)
+        console.log(response)
+        setData(response)
     }
 
     return (
@@ -108,13 +51,14 @@ function App() {
                 </div>
             </form>
             <div className="d-flex justify-content-center">
-                <button className="btn btn-primary">Submit</button>
+                <button className="btn btn-primary" onClick={(e)=>handleSubmit(e)}>Submit</button>
             </div>
         </div>
 
-        {purchaseReqs && (
-            purchaseReqs.map(pReq => (
-            <div>{pReq.field_values.description.value}</div>
+        {data.length>0 && <h1>{formData.entity}</h1>}
+        {data.length>0 && (
+            data.map(record => (
+                <div>{JSON.stringify(record)}</div>
             ))
         )}
 
