@@ -13,7 +13,7 @@ function App() {
         appletId: 'test-app-iframe',
     });
 
-    //Load list of purchase requests using FAClient
+    //Load data using FAClient
     FAClient.listEntityValues({
         entity: "custom_app_53",
         limit: 100,
