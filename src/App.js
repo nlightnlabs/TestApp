@@ -28,7 +28,8 @@ function App() {
 
     const handleSubmit= async (e)=>{
         const appName = formData.entity
-        const response = await FreeAgentAPI.getFAAllRecords(appName)
+        console.log(appName)
+        const response = await FreeAgentAPI.getFAAllRecords(faClient,appName)
         console.log(response)
         setData(response)
     }
