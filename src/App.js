@@ -3,7 +3,7 @@ import './App.css';
 
 function App() {
 
-    const [purchaseReqs, setPurchaseReqs] = useState(null);
+    const [data, setData] = useState(null);
 
     const initializeFreeAgentConnection = () => {
     const FAAppletClient = window.FAAppletClient;
@@ -14,15 +14,11 @@ function App() {
     });
 
     //Load list of purchase requests using FAClient
-    FAClient.listEntityValues({
+   const response = FAClient.listEntityValues({
         entity: "custom_app_53",
         limit: 100,
-    }, (purchaseReqs) => {
-        console.log('initializeFreeAgentConnection Success!', purchaseReqs);
-        if (purchaseReqs) {
-            setPurchaseReqs(purchaseReqs);
-        }
-    });
+    })
+    setData(response)
 };
 
 const useExternalScript = (src) => {
