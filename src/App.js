@@ -44,8 +44,8 @@ return (
         <h2>FreeAgent Purchase Requests Iframe</h2>
         {!data && 'Loading Purchase Requests From FA!'}
         {data && (
-            purchaseReqs.map(pReq => (
-            <div>{data.field_values.description.value}</div>
+            data.map((item,index) => (
+            <div key={index}>{data.field_values.description.value}</div>
             ))
         )}
     </div>
