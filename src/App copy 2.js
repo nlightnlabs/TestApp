@@ -11,34 +11,7 @@ function App() {
     const [faClient, setFaClient] = useState(null)
     const iFrameId = "test-app-iframe"
 
-    const useExternalScript = (src) => {
-        useEffect(() => {
-            const script = document.createElement('script');
-            script.src = src;
-            script.async = true;
-            document.body.appendChild(script);
-
-            setTimeout(() => {
-                initializeFreeAgentConnection();
-            }, 500);
-
-            return () => {
-                document.body.removeChild(script);
-            };
-        }, [src]);
-    };
-     //script to itnegrate FreeAgent library
-     useExternalScript('https://freeagentsoftware1.gitlab.io/apps/google-maps/js/lib.js');
-
-     const initializeFreeAgentConnection = () => {
-        const FAAppletClient = window.FAAppletClient;
-        
-        //Initialize the connection to the FreeAgent this step takes away the loading spinner
-        const FAClient = new FAAppletClient({
-            appletId: 'test-app-iframe',
-        });
-        setFaClient(FAClient)
-    };
+    freeAgentAPI.useExternalScript(document,setFaClient,iFrameId)
 
     const [formData, setFormData] = useState({
         entity: "",
