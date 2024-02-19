@@ -6,24 +6,24 @@ function App() {
     const [data, setData] = useState(null);
 
     const initializeFreeAgentConnection = async () => {
-    const FAAppletClient = window.FAAppletClient;
-    
-    //Initialize the connection to the FreeAgent this step takes away the loading spinner
-    const FAClient = new FAAppletClient({
-        appletId: 'test-app-iframe',
-    });
+        const FAAppletClient = window.FAAppletClient;
+        
+        //Initialize the connection to the FreeAgent this step takes away the loading spinner
+        const FAClient = new FAAppletClient({
+            appletId: 'test-app-iframe',
+        });
 
-    //Load data using FAClient
-    FAClient.listEntityValues({
-        entity: "custom_app_53",
-        limit: 100,
-    }, (response) => {
-        console.log('initializeFreeAgentConnection Success!', response);
-        if (response) {
-            setData(response);
-        }
-    });
-};
+        //Load data using FAClient
+        FAClient.listEntityValues({
+            entity: "custom_app_53",
+            limit: 100,
+        }, (response) => {
+            console.log('initializeFreeAgentConnection Success!', response);
+            if (response) {
+                setData(response);
+            }
+        });
+    };
 
 const useExternalScript = (src) => {
     useEffect(() => {
