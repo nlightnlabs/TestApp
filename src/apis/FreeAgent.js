@@ -28,11 +28,14 @@ export const useExternalScript = (document, setFaClient,iFrameId) => {
  //Standard function to get all records from a FreeAgent App
  export const getFAAllRecords = async (faClient,appName)=>{
 
-    const data=[];
+    let data=[];
+
       try {
         const response = await faClient.listEntityValues({
           entity: appName
         });
+
+        console.log(response)
   
         await Promise.all(response.map(async (record, index) => {
           let rowData = {};
@@ -41,7 +44,7 @@ export const useExternalScript = (document, setFaClient,iFrameId) => {
           })
           data.push(rowData);
         }));
-  
+        console.log(data)
         return data;
       }catch(error){
         console.log(error);
