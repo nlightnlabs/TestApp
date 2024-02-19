@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 
-const PURCHASE_REQ_APP = 'custom_app_53';
-
 function App() {
+
     const [purchaseReqs, setPurchaseReqs] = useState(null);
 
     const initializeFreeAgentConnection = () => {
@@ -16,7 +15,7 @@ function App() {
 
     //Load list of purchase requests using FAClient
     FAClient.listEntityValues({
-        entity: PURCHASE_REQ_APP,
+        entity: "custom_app_53",
         limit: 100,
     }, (purchaseReqs) => {
         console.log('initializeFreeAgentConnection Success!', purchaseReqs);
@@ -44,6 +43,7 @@ const useExternalScript = (src) => {
 };
 
 useExternalScript('https://freeagentsoftware1.gitlab.io/apps/google-maps/js/lib.js');
+
 return (
     <div className="App">
         <h2>FreeAgent Purchase Requests Iframe</h2>
