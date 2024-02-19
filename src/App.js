@@ -37,6 +37,7 @@ function App() {
         const FAClient = new FAAppletClient({
             appletId: 'test-app-iframe',
         });
+        setFaClient(FAClient)
         
         FAClient.listEntityValues({
             entity: "custom_app_22"
