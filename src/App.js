@@ -48,8 +48,8 @@ function App() {
     }
 
     useEffect(()=>{
-        connecToFreeAgent()
-    },[appName])
+        
+    },[data])
     
 
 
