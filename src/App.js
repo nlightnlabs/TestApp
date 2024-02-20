@@ -19,7 +19,7 @@ function App() {
             document.body.appendChild(script);
 
             setTimeout(() => {
-                initializeFreeAgentConnection();
+                connecToFreeAgent();
             }, 500);
 
             return () => {
@@ -31,7 +31,7 @@ function App() {
      useExternalScript('https://freeagentsoftware1.gitlab.io/apps/google-maps/js/lib.js');
 
 
-    const initializeFreeAgentConnection = () => {
+    const connecToFreeAgent = () => {
         const FAAppletClient = window.FAAppletClient;
         
         //Initialize the connection to the FreeAgent this step takes away the loading spinner
@@ -76,7 +76,7 @@ return (
             <input name= "app_name" className="form-control" value={appName} palceholder="app_name" onChange={(e)=>handleChange(e)}></input>
             <label htmlFor="app_name" className="form-label"></label>
         </div>
-        <button className="btn btn-primary" onClick={()=>initializeFreeAgentConnection.getData()}>Get Data</button>
+        <button className="btn btn-primary" onClick={()=>connecToFreeAgent()}>Get Data</button>
         {!data && 'Loading Data From FreeAgent'}
         {data && (
             data.map((row,index) => (
