@@ -4,6 +4,7 @@ import './App.css';
 function App() {
 
     const [data, setData] = useState(null);
+    const [FAClient, setFAClient] = useState(null)
     // const appName = "custom_app_22"
 
      //INPUT FROM FREEAGENT Specifiy App to bring in
@@ -36,9 +37,24 @@ function App() {
         const FAClient = new FAAppletClient({
             appletId: 'test-app-iframe',
         });
+        setFAClient(FAClient)
+
+        getData(FAClient)
     
         //Bridge to access freeagent apps
-        FAClient.listEntityValues({
+        // FAClient.listEntityValues({
+        //     entity: PURCHASE_REQ_APP,
+        //     limit: 100
+        // }, (purchaseReqs) => {
+        //         console.log('initializeFreeAgentConnection Success!', purchaseReqs);
+        //     if (purchaseReqs) {
+        //         setData(purchaseReqs);
+        //     }
+        // });
+    }
+
+    const getData = (FAClient)=>{
+         FAClient.listEntityValues({
             entity: PURCHASE_REQ_APP,
             limit: 100
         }, (purchaseReqs) => {
