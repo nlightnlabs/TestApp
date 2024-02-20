@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import './App.css';
+import "bootstrap/dist/css/bootstrap.min.css"
 
 function App() {
 
@@ -50,21 +51,6 @@ function App() {
         });
     }
 
-    const getData = async ()=>{
-        console.log(`getting date for app: ${appName}`)
-        console.log(appName)
-
-        FAClient.listEntityValues({
-            entity: appName,
-            limit: 100
-        }, (response) => {
-                console.log('initializeFreeAgentConnection Success!', response);
-            if (response) {
-                setData(response);
-            }
-        });
-    }
-
 
     const pageStyle = {
         fontSize: "12px",
@@ -80,7 +66,6 @@ function App() {
         const {name, value} = e.target 
         setAppName(value)
     }
-
 
 
 
