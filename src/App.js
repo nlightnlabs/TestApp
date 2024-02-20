@@ -46,10 +46,6 @@ function App() {
             }
         });
     }
-
-    useEffect(()=>{
-        
-    },[data])
     
 
 
@@ -69,7 +65,7 @@ function App() {
     }
 
 useEffect(()=>{
-   connecToFreeAgent()
+    useExternalScript()
 },[data])
 
 return (
