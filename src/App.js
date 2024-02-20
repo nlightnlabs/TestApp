@@ -67,26 +67,29 @@ return (
         <h2>FreeAgent Purchase Requests Iframe</h2>
         {!data && 'Loading Data From FreeAgent'}
         {data && (
-            <table className="table table-striped">
-                <thead>
-                    <tr>
-                        {Object.keys(data[0].field_values).map((fieldName, colIndex)=>(
-                            <th scope="col" key={colIndex} style={cellStyle}>{fieldName}</th>
-                        ))}
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        data.map((row,rowIndex) => (
-                            <tr scope="row" key={rowIndex}>
-                                {Object.keys(data[0].field_values).map((fieldName, colIndex)=>(
-                                    <td key={`${rowIndex}${colIndex}`} style={cellStyle}>{row.field_values[fieldName].value}</td>
-                                ))}
-                            </tr>
-                        ))
-                    }
-                </tbody>
-            </table>
+            data.map((row,index) => (
+                <div key={index}>{row.field_values.description.value}</div>
+            ))
+            // <table className="table table-striped">
+            //     <thead>
+            //         <tr>
+            //             {Object.keys(data[0].field_values).map((fieldName, colIndex)=>(
+            //                 <th scope="col" key={colIndex} style={cellStyle}>{fieldName}</th>
+            //             ))}
+            //         </tr>
+            //     </thead>
+            //     <tbody>
+            //         {
+            //             data.map((row,rowIndex) => (
+            //                 <tr scope="row" key={rowIndex}>
+            //                     {Object.keys(data[0].field_values).map((fieldName, colIndex)=>(
+            //                         <td key={`${rowIndex}${colIndex}`} style={cellStyle}>{row.field_values[fieldName].value}</td>
+            //                     ))}
+            //                 </tr>
+            //             ))
+            //         }
+            //     </tbody>
+            // </table>
         )}
     </div>
     );
