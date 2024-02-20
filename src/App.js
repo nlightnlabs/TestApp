@@ -52,6 +52,8 @@ function App() {
             }
         });
 
+    }
+
 return (
     <div className="App">
         <h2>FreeAgent Purchase Requests Iframe</h2>
