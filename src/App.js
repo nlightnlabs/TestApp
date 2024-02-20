@@ -7,6 +7,7 @@ function App() {
     const [data, setData] = useState([]);
     const [fieldNames, setFieldNames] = useState([])
     const [appName, setAppName] = useState("custom_app_22")
+    const [showData, setShowData] = useState(false)
 
     const useExternalScript = (src) => {
         useEffect(() => {
@@ -63,18 +64,21 @@ function App() {
         setAppName(value)
     }
 
+useEffect(()=>{
+   setShowData(!showData)
+},[data])
 
 return (
     <div className="App" style={pageStyle}>
         <h2>FreeAgent Iframe Test</h2>
         <div className="form-floating">
             <input name= "app_name" className="form-control" value={appName} placeholder="app_name" onChange={(e)=>handleChange(e)}></input>
-            <label htmlFor="app_name" className="form-label">App sysstem name: </label>
+            <label htmlFor="app_name" className="form-label">App system name: </label>
         </div>
         <button className="btn btn-primary" onClick={()=>connecToFreeAgent()}>Get Data</button>
        
         {!data && 'Loading Data From FreeAgent'}
-        {data && (
+        {showData && data && (
             data.map((row,index) => (
                 <div key={index}>{row.field_values.description.value}</div>
             ))
