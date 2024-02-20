@@ -47,17 +47,46 @@ function App() {
                 setData(purchaseReqs);
             }
         });
-
     }
 
+    const pageStyle = {
+        fontSize: "12px",
+    }
+
+    const cellStyle={
+        whiteSpace: "nowrap",
+        maxWidth: "150px",
+        height: "20px"
+    }
+
+
+
+
 return (
-    <div className="App">
+    <div className="App" style={pageStyle}>
         <h2>FreeAgent Purchase Requests Iframe</h2>
         {!data && 'Loading Data From FreeAgent'}
         {data && (
-            data.map((item,index) => (
-                <div key={index}>{item.field_values.description.value}</div>
-            ))
+            <table className="table table-striped">
+                <thead>
+                    <tr>
+                        (Object.keys(data[0].field_values).map((fieldName, colIndex)=>(
+                            <th scope="col" key={colIndex} style={cellStyle}>{fieldName}</th>
+                        )))
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        data.map((row,rowIndex) => (
+                            <tr scope="row" key={rowIndex}>
+                                (Object.keys(data[0].field_values).map((fieldName, colIndex)=>(
+                                    <td key={`${rowIndex}${colIndex}`} style={cellStyle}>{row.field_values[fieldName].value}</td>
+                                )))
+                            </tr>
+                        ))
+                    }
+                </tbody>
+            </table>
         )}
     </div>
     );
