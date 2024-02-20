@@ -46,8 +46,6 @@ function App() {
                 console.log('initializeFreeAgentConnection Success!', response);
             if (response) {
                 setData(response);
-                setFieldNames(Object.keys(response[0].field_values))
-                console.log(Object.keys(response[0].field_values))
             }
         });
     }
@@ -71,9 +69,6 @@ return (
         <h2>FreeAgent Iframe Test</h2>
         {!data && 'Loading Data From FreeAgent'}
         {data && (
-            // fieldNames.map(field=>(
-            //     <div>{field}</div>
-            // ))
             data.map((row,index) => (
                 <div key={index}>{row.field_values.description.value}</div>
             ))
