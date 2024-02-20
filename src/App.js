@@ -36,7 +36,6 @@ function App() {
         const FAClient = new FAAppletClient({
             appletId: 'test-app-iframe',
         });
-        setFAClient(FAClient)
     
         //Bridge to access freeagent apps
         FAClient.listEntityValues({
