@@ -4,7 +4,6 @@ import './App.css';
 function App() {
 
     const [data, setData] = useState(null);
-    const [FAClient, setFAClient] = useState()
     const appName = "custom_app_22"
 
     const initializeFreeAgentConnection = () => {
