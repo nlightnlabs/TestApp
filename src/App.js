@@ -4,26 +4,23 @@ import './App.css';
 function App() {
 
     const [data, setData] = useState(null);
+    const [FAClient, setFAClient] = useState()
 
-    const initializeFreeAgentConnection = async () => {
+    const initializeFreeAgentConnection = () => {
         const FAAppletClient = window.FAAppletClient;
         
         //Initialize the connection to the FreeAgent this step takes away the loading spinner
         const FAClient = new FAAppletClient({
             appletId: 'test-app-iframe',
         });
+        
 
-        //Load data using FAClient
-        FAClient.listEntityValues({
-            entity: "custom_app_53",
-            limit: 100,
-        }, (response) => {
-            console.log('initializeFreeAgentConnection Success!', response);
-            if (response) {
-                setData(response);
-            }
-        });
+        const response = FAClient.listEntityValues({
+            entity: "custom_app_22",
+        })
+        setData(response)
     };
+
 
 const useExternalScript = (src) => {
     useEffect(() => {
@@ -47,7 +44,7 @@ useExternalScript('https://freeagentsoftware1.gitlab.io/apps/google-maps/js/lib.
 return (
     <div className="App">
         <h2>FreeAgent Purchase Requests Iframe</h2>
-        {!data && 'Loading Purchase Requests From FA!'}
+        {!data && 'Loading Data From FreeAgent'}
         {data && (
             data.map((item,index) => (
                 <div key={index}>{item.field_values.description.value}</div>
