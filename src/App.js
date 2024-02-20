@@ -7,7 +7,7 @@ function App() {
     const [data, setData] = useState([]);
     const [fieldNames, setFieldNames] = useState([])
     const [appName, setAppName] = useState("custom_app_22")
-    const [showData, setShowData] = useState(false)
+    const [showData, setShowData] = useState(0)
 
     const useExternalScript = (src) => {
         useEffect(() => {
@@ -65,7 +65,7 @@ function App() {
     }
 
 useEffect(()=>{
-   setShowData(!showData)
+   setShowData(showData+1)
 },[data])
 
 return (
