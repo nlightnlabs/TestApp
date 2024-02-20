@@ -39,21 +39,31 @@ function App() {
         });
 
 
-        const getData = async ()=>{
-            console.log(`getting date for app: ${appName}`)
-            console.log(appName)
-
-            FAClient.listEntityValues({
-                entity: appName,
-                limit: 100
-            }, (response) => {
-                    console.log('initializeFreeAgentConnection Success!', response);
-                if (response) {
-                    setData(response);
-                }
-            });
+        FAClient.listEntityValues({
+            entity: appName,
+            limit: 100
+        }, (response) => {
+                console.log('initializeFreeAgentConnection Success!', response);
+            if (response) {
+                setData(response);
             }
-        }
+        });
+    }
+
+    const getData = async ()=>{
+        console.log(`getting date for app: ${appName}`)
+        console.log(appName)
+
+        FAClient.listEntityValues({
+            entity: appName,
+            limit: 100
+        }, (response) => {
+                console.log('initializeFreeAgentConnection Success!', response);
+            if (response) {
+                setData(response);
+            }
+        });
+    }
 
 
     const pageStyle = {
