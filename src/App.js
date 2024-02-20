@@ -47,6 +47,7 @@ function App() {
             if (response) {
                 setData(response);
                 setFieldNames(Object.keys(response[0].field_values))
+                console.log(Object.keys(response[0].field_values))
             }
         });
     }
@@ -69,13 +70,13 @@ return (
     <div className="App" style={pageStyle}>
         <h2>FreeAgent Iframe Test</h2>
         {!data && 'Loading Data From FreeAgent'}
-        {fieldNames && (
-            fieldNames.map(field=>(
-                <div>{field}</div>
-            ))
-            // data.map((row,index) => (
-            //     <div key={index}>{row.field_values.description.value}</div>
+        {data && (
+            // fieldNames.map(field=>(
+            //     <div>{field}</div>
             // ))
+            data.map((row,index) => (
+                <div key={index}>{row.field_values.description.value}</div>
+            ))
             // <table className="table table-striped">
             //     <thead>
             //         <tr>
