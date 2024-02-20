@@ -4,7 +4,30 @@ import './App.css';
 function App() {
 
     const [data, setData] = useState(null);
-    const appName = "custom_app_22"
+    // const appName = "custom_app_22"
+
+     //INPUT FROM FREEAGENT Specifiy App to bring in
+     const PURCHASE_REQ_APP = 'custom_app_53';
+
+    const useExternalScript = (src) => {
+        useEffect(() => {
+            const script = document.createElement('script');
+            script.src = src;
+            script.async = true;
+            document.body.appendChild(script);
+
+            setTimeout(() => {
+                initializeFreeAgentConnection();
+            }, 500);
+
+            return () => {
+                document.body.removeChild(script);
+            };
+        }, [src]);
+    };
+     //script to itnegrate FreeAgent library
+     useExternalScript('https://freeagentsoftware1.gitlab.io/apps/google-maps/js/lib.js');
+
 
     const initializeFreeAgentConnection = () => {
         const FAAppletClient = window.FAAppletClient;
@@ -13,36 +36,21 @@ function App() {
         const FAClient = new FAAppletClient({
             appletId: 'test-app-iframe',
         });
-        
+    
+        //Bridge to access freeagent apps
         FAClient.listEntityValues({
-            entity: appName,
-        }, (result) => {
-                console.log('Successfully connected to FreeAgent', result);
-            if (result) {
-                setData(result);
+            entity: PURCHASE_REQ_APP,
+            limit: 100,
+            fields: [
+                "seq_id",
+                "request_date",
+            ]
+        }, (purchaseReqs) => {
+                console.log('initializeFreeAgentConnection Success!', purchaseReqs);
+            if (purchaseReqs) {
+                setData(purchaseReqs);
             }
         });
-    }
-
-
-const useExternalScript = (src) => {
-    useEffect(() => {
-        const script = document.createElement('script');
-        script.src = src;
-        script.async = true;
-        document.body.appendChild(script);
-
-        setTimeout(() => {
-            initializeFreeAgentConnection();
-        }, 500);
-
-        return () => {
-            document.body.removeChild(script);
-        };
-    }, [src]);
-};
-
-useExternalScript('https://freeagentsoftware1.gitlab.io/apps/google-maps/js/lib.js');
 
 return (
     <div className="App">
