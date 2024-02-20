@@ -8,9 +8,6 @@ function App() {
     const [fieldNames, setFieldNames] = useState([])
     const [appName, setAppName] = useState("custom_app_22")
 
-     //INPUT FROM FREEAGENT Specifiy App to bring in
-     const PURCHASE_REQ_APP = 'custom_app_53';
-
     const useExternalScript = (src) => {
         useEffect(() => {
             const script = document.createElement('script');
@@ -39,17 +36,16 @@ function App() {
             appletId: 'test-app-iframe',
         });
 
-
         FAClient.listEntityValues({
             entity: appName,
-            limit: 100
         }, (response) => {
-                console.log('initializeFreeAgentConnection Success!', response);
+                console.log('Connection successful: ', response);
             if (response) {
                 setData(response);
             }
         });
     }
+    
 
 
     const pageStyle = {
@@ -68,15 +64,15 @@ function App() {
     }
 
 
-
 return (
     <div className="App" style={pageStyle}>
         <h2>FreeAgent Iframe Test</h2>
         <div className="form-floating">
-            <input name= "app_name" className="form-control" value={appName} palceholder="app_name" onChange={(e)=>handleChange(e)}></input>
-            <label htmlFor="app_name" className="form-label"></label>
+            <input name= "app_name" className="form-control" value={appName} placeholder="app_name" onChange={(e)=>handleChange(e)}></input>
+            <label htmlFor="app_name" className="form-label">App sysstem name: </label>
         </div>
         <button className="btn btn-primary" onClick={()=>connecToFreeAgent()}>Get Data</button>
+       
         {!data && 'Loading Data From FreeAgent'}
         {data && (
             data.map((row,index) => (
