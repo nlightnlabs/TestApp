@@ -5,7 +5,7 @@ function App() {
 
     const [data, setData] = useState([]);
     const [fieldNames, setFieldNames] = useState([])
-    const appName = "custom_app_22"
+    const [appName, setAppName] = useState("custom_app_22")
 
      //INPUT FROM FREEAGENT Specifiy App to bring in
      const PURCHASE_REQ_APP = 'custom_app_53';
@@ -37,18 +37,23 @@ function App() {
         const FAClient = new FAAppletClient({
             appletId: 'test-app-iframe',
         });
-    
-        //Bridge to access freeagent apps
-        FAClient.listEntityValues({
-            entity: appName,
-            limit: 100
-        }, (response) => {
-                console.log('initializeFreeAgentConnection Success!', response);
-            if (response) {
-                setData(response);
+
+
+        const getData = async ()=>{
+            console.log(`getting date for app: ${appName}`)
+            console.log(appName)
+
+            FAClient.listEntityValues({
+                entity: appName,
+                limit: 100
+            }, (response) => {
+                    console.log('initializeFreeAgentConnection Success!', response);
+                if (response) {
+                    setData(response);
+                }
+            });
             }
-        });
-    }
+        }
 
 
     const pageStyle = {
@@ -61,12 +66,22 @@ function App() {
         height: "20px"
     }
 
+    const handleChange=(e)=>{
+        const {name, value} = e.target 
+        setAppName(value)
+    }
+
 
 
 
 return (
     <div className="App" style={pageStyle}>
         <h2>FreeAgent Iframe Test</h2>
+        <div className="form-floating">
+            <input name= "app_name" className="form-control" value={appName} palceholder="app_name" onChange={(e)=>handleChange(e)}></input>
+            <label htmlFor="app_name" className="form-label"></label>
+        </div>
+        <button className="btn btn-primary" onClick={()=>initializeFreeAgentConnection.getData()}>Get Data</button>
         {!data && 'Loading Data From FreeAgent'}
         {data && (
             data.map((row,index) => (
