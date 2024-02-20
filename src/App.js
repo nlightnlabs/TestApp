@@ -3,7 +3,8 @@ import './App.css';
 
 function App() {
 
-    const [data, setData] = useState(null);
+    const [data, setData] = useState([]);
+    const [fieldNames, setFieldNames] = useState([])
     const appName = "custom_app_22"
 
      //INPUT FROM FREEAGENT Specifiy App to bring in
@@ -45,6 +46,7 @@ function App() {
                 console.log('initializeFreeAgentConnection Success!', response);
             if (response) {
                 setData(response);
+                setFieldNames(Object.keys(response[0].field_values))
             }
         });
     }
@@ -65,12 +67,15 @@ function App() {
 
 return (
     <div className="App" style={pageStyle}>
-        <h2>FreeAgent Purchase Requests Iframe</h2>
+        <h2>FreeAgent Iframe Test</h2>
         {!data && 'Loading Data From FreeAgent'}
-        {data && (
-            data.map((row,index) => (
-                <div key={index}>{row.field_values.description.value}</div>
+        {fieldNames && (
+            fieldNames.map(field=>(
+                <div>{field}</div>
             ))
+            // data.map((row,index) => (
+            //     <div key={index}>{row.field_values.description.value}</div>
+            // ))
             // <table className="table table-striped">
             //     <thead>
             //         <tr>
