@@ -5,6 +5,7 @@ function App() {
 
     const [data, setData] = useState(null);
     const [FAClient, setFAClient] = useState()
+    const appName = "custom_app_22"
 
     const initializeFreeAgentConnection = () => {
         const FAAppletClient = window.FAAppletClient;
@@ -14,12 +15,15 @@ function App() {
             appletId: 'test-app-iframe',
         });
         
-
-        const response = FAClient.listEntityValues({
-            entity: "custom_app_22",
-        })
-        setData(response)
-    };
+        FAClient.listEntityValues({
+            entity: appName,
+        }, (result) => {
+                console.log('Successfully connected to FreeAgent', result);
+            if (result) {
+                setData(result);
+            }
+        });
+    }
 
 
 const useExternalScript = (src) => {
