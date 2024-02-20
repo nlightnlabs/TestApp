@@ -40,11 +40,7 @@ function App() {
         //Bridge to access freeagent apps
         FAClient.listEntityValues({
             entity: PURCHASE_REQ_APP,
-            limit: 100,
-            fields: [
-                "seq_id",
-                "request_date",
-            ]
+            limit: 100
         }, (purchaseReqs) => {
                 console.log('initializeFreeAgentConnection Success!', purchaseReqs);
             if (purchaseReqs) {
