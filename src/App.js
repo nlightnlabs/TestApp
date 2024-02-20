@@ -7,7 +7,7 @@ function App() {
     const [data, setData] = useState([]);
     const [fieldNames, setFieldNames] = useState([])
     const [appName, setAppName] = useState("custom_app_22")
-    const [showData, setShowData] = useState(0)
+    const [reFresh, setRefresh] = useState(0)
 
     const useExternalScript = (src) => {
         useEffect(() => {
@@ -46,6 +46,10 @@ function App() {
             }
         });
     }
+
+    useEffect(()=>{
+        connecToFreeAgent()
+    },[appName])
     
 
 
@@ -65,7 +69,7 @@ function App() {
     }
 
 useEffect(()=>{
-   setShowData(showData+1)
+   connecToFreeAgent()
 },[data])
 
 return (
@@ -75,10 +79,10 @@ return (
             <input name= "app_name" className="form-control" value={appName} placeholder="app_name" onChange={(e)=>handleChange(e)}></input>
             <label htmlFor="app_name" className="form-label">App system name: </label>
         </div>
-        <button className="btn btn-primary" onClick={()=>connecToFreeAgent()}>Get Data</button>
+        <button className="btn btn-primary" onClick={()=>setRefresh(reFresh+1)}>Get Data</button>
        
         {!data && 'Loading Data From FreeAgent'}
-        {showData && data && (
+        {data && (
             data.map((row,index) => (
                 <div key={index}>{row.field_values.description.value}</div>
             ))
