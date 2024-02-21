@@ -9,9 +9,10 @@
             if (response) {
                 response.forEach(record => {
                     let rowData = {};
-                    let val = ""
+                    
                     Object.entries(record.field_values).forEach(([key, value]) => {
-                        if (typeof value.display_value == "object"){
+                        let val = value.display_value
+                        if (typeof val == "object"){
                           val = JSON.stringify(value.display_value)
                         }
                         rowData = { ...rowData, ...{ [key]: val } };
