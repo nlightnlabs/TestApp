@@ -36,12 +36,22 @@ function App() {
         const FAClient = new FAAppletClient({
             appletId: 'test-app-iframe',
         });
-
+        FAClient.listEntityValues({
+            entity: custom_app_22,
+        }, (response) => {
+                console.log('Connection successful: ', response);
+            if (response) {
+                setData(response);
+            }
+        });
         window.FAClient = FAClient;
     }
 
     const getAllFARecords = ()=>{
         const FAClient  = window.FAClient;
+
+        console.log(`app name: ${appName}`)
+
         FAClient.listEntityValues({
             entity: appName,
         }, (response) => {
