@@ -89,36 +89,30 @@ return (
 
         <button className="btn btn-primary" onClick={()=>getData()}>Get Data</button>
 
-        {data && (
-            // data.map((row,index) => (
-            //     <div key={index} className="d-flex border border-1 p-2 m-2 shadow-sm" >
-            //         <div>{row.field_values.seq_id.value}</div>
-            //         <div>{row.field_values.description.value}</div>
-            //     </div>
-            // ))
-            // data.map((row,index) => (
-            //     <div key={index} className="d-flex border border-1 p-2 m-2 shadow-sm" style={{height: "50px", overflow: "hidden"}} >{JSON.stringify(row)}</div>
-            // ))
-            <table className="table table-striped">
-                <thead>
-                    <tr>
-                        {Object.keys(data[0]).map((fieldName, colIndex)=>(
-                            <th scope="col" key={colIndex} style={cellStyle}>{fieldName}</th>
-                        ))}
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        data.map((row,rowIndex) => (
-                            <tr scope="row" key={rowIndex}>
-                                {Object.keys(row).map((fieldName, colIndex)=>(
-                                    <td key={`${rowIndex}${colIndex}`} style={cellStyle}>{row[fieldName].value}</td>
-                                ))}
-                            </tr>
-                        ))
-                    }
-                </tbody>
-            </table>
+        {data && (  
+            data.map((row,index) => (
+                <div key={index} className="d-flex border border-1 p-2 m-2 shadow-sm" style={{height: "50px", overflow: "hidden"}} >{JSON.stringify(row)}</div>
+            ))
+            // <table className="table table-striped">
+            //     <thead>
+            //         <tr>
+            //             {Object.keys(data[0]).map((fieldName, colIndex)=>(
+            //                 <th scope="col" key={colIndex} style={cellStyle}>{fieldName}</th>
+            //             ))}
+            //         </tr>
+            //     </thead>
+            //     <tbody>
+            //         {
+            //             data.map((row,rowIndex) => (
+            //                 <tr scope="row" key={rowIndex}>
+            //                     {Object.keys(row).map((fieldName, colIndex)=>(
+            //                         <td key={`${rowIndex}${colIndex}`} style={cellStyle}>{row[fieldName].value}</td>
+            //                     ))}
+            //                 </tr>
+            //             ))
+            //         }
+            //     </tbody>
+            // </table>
         )}
     </div>
     );
