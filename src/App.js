@@ -49,7 +49,8 @@ function App() {
     }
 
     const getData = async ()=>{
-        const response = await freeAgentApi.getFAAllRecords(appName)
+        const FAClient  = window.FAClient;
+        const response = await freeAgentApi.getFAAllRecords(FAClient,appName)
         console.log(response)
         setData(response)
     }
