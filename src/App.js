@@ -50,6 +50,7 @@ function App() {
     }
 
     const getAllFARecords = ()=>{
+        const FAClient  = window.FAClient;
         FAClient.listEntityValues({
             entity: appName,
         }, (response) => {
