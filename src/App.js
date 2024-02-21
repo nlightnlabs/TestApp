@@ -17,7 +17,7 @@ function App() {
             document.body.appendChild(script);
 
             setTimeout(() => {
-                connecToFreeAgent();
+                initializeFreeAgentConnection();
             }, 500);
 
             return () => {
