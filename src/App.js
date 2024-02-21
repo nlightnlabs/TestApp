@@ -9,6 +9,9 @@ import {toProperCase} from "./functions/formatValue.js";
 
 function App() {
 
+    const [apps, setApps] = useState([])
+    const [ appList, setAppList] = useState([])
+
     const [data, setData] = useState([]);
     const [fields, setFields] = useState([])
     const [appName, setAppName] = useState("custom_app_22")
@@ -44,7 +47,22 @@ function App() {
             appletId: 'test-app-iframe',
         });
         window.FAClient = FAClient;
-        getData()
+
+        //Get list of apps
+        FAClient.getEntities((response) => {
+            console.log('Connection successful: ', response);
+            if (response) {
+                console.log(response)
+                setApps(response)  
+
+                let appList = []
+                response.map(item=>{
+                    appList.push(item.name)
+                })
+                setAppList(appList)
+            } 
+        });
+
     }
 
 
