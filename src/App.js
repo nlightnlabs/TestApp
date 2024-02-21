@@ -51,56 +51,16 @@ function App() {
 
     const getData = () => {
         const FAClient = window.FAClient;
-        getFAAllRecords(FAClient, appName)
-            .then(response => {
-                console.log(response);
-                setData(response);
-            })
-            .catch(error => {
-                console.error("Error fetching data:", error);
-            });
-    }
-    
-
-    const getFAAllRecords = (FAClient, appName) => {
-        return new Promise((resolve, reject) => {
-            let data = [];
-            FAClient.listEntityValues({
-                entity: appName,
-            }, (response) => {
-                console.log('Connection successful: ', response);
-                if (response) {
-                    response.forEach(record => {
-                        let rowData = {};
-                        Object.entries(record.field_values).forEach(([key, value]) => {
-                            rowData = { ...rowData, ...{ [key]: value.display_value } };
-                        });
-                        data.push(rowData);
-                    });
-                    resolve(data);
-                } else {
-                    reject("No response from server");
-                }
-            });
+        freeAgentApi.getFAAllRecords(FAClient, appName)
+        .then(response => {
+            console.log(response);
+            setData(response);
+        })
+        .catch(error => {
+            console.error("Error fetching data:", error);
         });
     }
     
-
-
-    // const getAllFARecords = ()=>{
-    //     const FAClient  = window.FAClient;
-
-    //     console.log(`app name: ${appName}`)
-
-    //     FAClient.listEntityValues({
-    //         entity: appName,
-    //     }, (response) => {
-    //             console.log('Connection successful: ', response);
-    //         if (response) {
-    //             setData(response);
-    //         }
-    //     });
-    // }
     
 
     const pageStyle = {
@@ -136,29 +96,29 @@ return (
             //         <div>{row.field_values.description.value}</div>
             //     </div>
             // ))
-            data.map((row,index) => (
-                <div key={index} className="d-flex border border-1 p-2 m-2 shadow-sm" style={{height: "50px", overflow: "hidden"}} >{JSON.stringify(row)}</div>
-            ))
-            // <table className="table table-striped">
-            //     <thead>
-            //         <tr>
-            //             {Object.keys(data[0].field_values).map((fieldName, colIndex)=>(
-            //                 <th scope="col" key={colIndex} style={cellStyle}>{fieldName}</th>
-            //             ))}
-            //         </tr>
-            //     </thead>
-            //     <tbody>
-            //         {
-            //             data.map((row,rowIndex) => (
-            //                 <tr scope="row" key={rowIndex}>
-            //                     {Object.keys(data[0].field_values).map((fieldName, colIndex)=>(
-            //                         <td key={`${rowIndex}${colIndex}`} style={cellStyle}>{row.field_values[fieldName].value}</td>
-            //                     ))}
-            //                 </tr>
-            //             ))
-            //         }
-            //     </tbody>
-            // </table>
+            // data.map((row,index) => (
+            //     <div key={index} className="d-flex border border-1 p-2 m-2 shadow-sm" style={{height: "50px", overflow: "hidden"}} >{JSON.stringify(row)}</div>
+            // ))
+            <table className="table table-striped">
+                <thead>
+                    <tr>
+                        {Object.keys(data[0].field_values).map((fieldName, colIndex)=>(
+                            <th scope="col" key={colIndex} style={cellStyle}>{fieldName}</th>
+                        ))}
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        data.map((row,rowIndex) => (
+                            <tr scope="row" key={rowIndex}>
+                                {Object.keys(data[0].field_values).map((fieldName, colIndex)=>(
+                                    <td key={`${rowIndex}${colIndex}`} style={cellStyle}>{row.field_values[fieldName].value}</td>
+                                ))}
+                            </tr>
+                        ))
+                    }
+                </tbody>
+            </table>
         )}
     </div>
     );

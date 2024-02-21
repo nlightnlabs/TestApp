@@ -1,50 +1,26 @@
   //Standard function to get all records from a FreeAgent App
- export const getFAAllRecords = (FAClient,appName)=>{
-
-    console.log(FAClient)
-    console.log(appName)
-
-        let data=[]
+  export const getFAAllRecords = (FAClient, appName) => {
+    return new Promise((resolve, reject) => {
+        let data = [];
         FAClient.listEntityValues({
             entity: appName,
         }, (response) => {
-                console.log('Connection successful: ', response);
+            console.log('Connection successful: ', response);
             if (response) {
-                let rowData = {}
-                response.map(record=>{
-                    Object.entries(record.field_values).map(([key,value])=>{
-                        rowData = {...rowData,...{[key]:value.display_value}};
-                      })
+                response.forEach(record => {
+                    let rowData = {};
+                    Object.entries(record.field_values).forEach(([key, value]) => {
+                        rowData = { ...rowData, ...{ [key]: value.display_value } };
+                    });
                     data.push(rowData);
-                })
-                return data
+                });
+                resolve(data);
+            } else {
+                reject("No response from server");
             }
         });
-
-
-    // let data=[];
-    //   try {
-    //     const response = await faClient.listEntityValues({
-    //       entity: appName
-    //     });
-
-    //     console.log(response)
-  
-    //     await Promise.all(response.map(async (record, index) => {
-    //       let rowData = {};
-    //       Object.entries(record.field_values).map(([key,value])=>{
-    //         rowData = {...rowData,...{[key]:value.display_value}};
-    //       })
-    //       data.push(rowData);
-    //     }));
-    //     console.log(data)
-        // return data;
-
-      // }catch(error){
-      //   console.log(error);
-      //   return [];
-      // }
-  }
+    });
+}
     
 //Standard function to get specific records from a FreeAgent App
 export const getFARecords = async (faClient,appName, fields, filters, order, limit, offset, pattern)=>{
