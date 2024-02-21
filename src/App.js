@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css"
+import * as freeAgentApi from "./apis/FreeAgent.js"
 
 function App() {
 
@@ -47,20 +48,26 @@ function App() {
         window.FAClient = FAClient;
     }
 
-    const getAllFARecords = ()=>{
-        const FAClient  = window.FAClient;
-
-        console.log(`app name: ${appName}`)
-
-        FAClient.listEntityValues({
-            entity: appName,
-        }, (response) => {
-                console.log('Connection successful: ', response);
-            if (response) {
-                setData(response);
-            }
-        });
+    const getData = async ()=>{
+        const response = await freeAgentApi.getFAAllRecords(appName)
+        console.log(response)
+        setData(response)
     }
+
+    // const getAllFARecords = ()=>{
+    //     const FAClient  = window.FAClient;
+
+    //     console.log(`app name: ${appName}`)
+
+    //     FAClient.listEntityValues({
+    //         entity: appName,
+    //     }, (response) => {
+    //             console.log('Connection successful: ', response);
+    //         if (response) {
+    //             setData(response);
+    //         }
+    //     });
+    // }
     
 
     const pageStyle = {
@@ -87,7 +94,7 @@ return (
             <label htmlFor="app_name" className="form-label">App system name: </label>
         </div>
 
-        <button className="btn btn-primary" onClick={()=>getAllFARecords()}>Get Data</button>
+        <button className="btn btn-primary" onClick={()=>getData()}>Get Data</button>
 
         {data && (
             data.map((row,index) => (
