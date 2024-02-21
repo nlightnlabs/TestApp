@@ -89,11 +89,11 @@ return (
 
         <button className="btn btn-primary" onClick={()=>getData()}>Get Data</button>
 
-        {data && (  
+        {data.length>0 && (  
             // data.map((row,index) => (
             //     <div key={index} className="d-flex border border-1 p-2 m-2 shadow-sm" style={{height: "50px", overflow: "hidden"}} >{JSON.stringify(row)}</div>
             // ))
-            data.map((row,index) => (
+            <div className="d-flex p-3 border border-1 rounded-3">
                 <table className="table table-striped">
                 <thead>
                     <tr>
@@ -107,15 +107,14 @@ return (
                         data.map((row,rowIndex) => (
                             <tr scope="row" key={rowIndex}>
                                 {Object.keys(row).map((fieldName, colIndex)=>(
-                                    <td key={`${rowIndex}${colIndex}`} style={cellStyle}>{row[fieldName].value}</td>
+                                    <td key={`${rowIndex}${colIndex}`} style={cellStyle}>{row[fieldName]}</td>
                                 ))}
                             </tr>
                         ))
                     }
                 </tbody>
-                </table>
-            ))
-            
+            </table>
+        </div>
         )}
     </div>
     );
