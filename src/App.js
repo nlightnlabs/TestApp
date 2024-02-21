@@ -50,22 +50,25 @@ function App() {
 
     const getData = ()=>{
         const FAClient  = window.FAClient;
-        let data=[]
-        FAClient.listEntityValues({
-            entity: appName,
-        }, (response) => {
-                console.log('Connection successful: ', response);
-            if (response) {
-                let rowData = {}
-                response.map(record=>{
-                    Object.entries(record.field_values).map(([key,value])=>{
-                        rowData = {...rowData,...{[key]:value.display_value}};
-                      })
-                    data.push(rowData);
-                })
-            }
-            setData(data)
-        });
+        const response = freeAgentApi.getFAAllRecords(FAClient,appName)
+        setData(response)
+        // const FAClient  = window.FAClient;
+        // let data=[]
+        // FAClient.listEntityValues({
+        //     entity: appName,
+        // }, (response) => {
+        //         console.log('Connection successful: ', response);
+        //     if (response) {
+        //         let rowData = {}
+        //         response.map(record=>{
+        //             Object.entries(record.field_values).map(([key,value])=>{
+        //                 rowData = {...rowData,...{[key]:value.display_value}};
+        //               })
+        //             data.push(rowData);
+        //         })
+        //     }
+        //     setData(data)
+        // });
     }
 
     // const getAllFARecords = ()=>{
