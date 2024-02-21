@@ -42,21 +42,14 @@ function App() {
 
     const getAllFARecords = ()=>{
         const FAClient  = window.FAClient;
-        console.log(FAClient)
-        const response= FAClient.listEntityValues({
+        FAClient.listEntityValues({
             entity: appName,
-        })
-        console.log(response)
-        setData(response)
-
-        // FAClient.listEntityValues({
-        //     entity: appName,
-        // }, (response) => {
-        //         console.log('Connection successful: ', response);
-        //     if (response) {
-        //         setData(response);
-        //     }
-        // });
+        }, (response) => {
+                console.log('Connection successful: ', response);
+            if (response) {
+                setData(response);
+            }
+        });
     }
     
 
