@@ -1,37 +1,9 @@
-
-
-export const useExternalScript = (document, setFaClient,iFrameId) => {
-
-  const src = 'https://freeagentsoftware1.gitlab.io/apps/google-maps/js/lib.js'
-  const script = document.createElement('script');
-  script.src = src;
-  script.async = true;
-  document.body.appendChild(script);
-
-  setTimeout(() => {
-    const FAAppletClient = window.FAAppletClient;
-  
-    //Initialize the connection to the FreeAgent this step takes away the loading spinner
-    const faApplet = new FAAppletClient({
-        appletId: iFrameId
-    });
-
-    setFaClient(faApplet)  
-  }, 500);
-
-  return () => {
-      document.body.removeChild(script);
-    };
-}
-
- 
- //Standard function to get all records from a FreeAgent App
+  //Standard function to get all records from a FreeAgent App
  export const getFAAllRecords = async (faClient,appName)=>{
     console.log(faClient)
     console.log(appName)
 
     let data=[];
-
       try {
         const response = await faClient.listEntityValues({
           entity: appName
