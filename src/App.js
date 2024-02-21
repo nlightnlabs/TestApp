@@ -49,18 +49,21 @@ function App() {
         window.FAClient = FAClient;
 
         //Get list of apps
-        FAClient.getEntities((response) => {
-            console.log('Connection successful: ', response);
-            if (response) {
-                console.log(response)
-                setApps(response)  
-
-                let appList = []
-                response.map(item=>{
-                    appList.push(item.name)
+        freeAgentApi.getFAAllRecords(FAClient, "web_app")
+        .then(response => {
+            console.log(response);
+            let fieldList = []
+            if(response.length>0){
+                Object.keys(response[0]).map((field,index)=>{
+                    fieldList.push({headerName: toProperCase(field.replaceAll("_"," ")), field: field, filter: true})
                 })
-                setAppList(appList)
-            } 
+                console.log(fieldList);
+                setAppList(fieldList)
+            }
+            setApps(response);
+        })
+        .catch(error => {
+            console.error("Error fetching data:", error);
         });
 
     }
