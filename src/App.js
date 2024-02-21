@@ -107,7 +107,7 @@ return (
                         data.map((row,rowIndex) => (
                             <tr scope="row" key={rowIndex}>
                                 {Object.keys(row).map((fieldName, colIndex)=>(
-                                    <td key={`${rowIndex}${colIndex}`} style={cellStyle}>{row[fieldName]}</td>
+                                    <td key={`${rowIndex}${colIndex}`} style={cellStyle}>{JSON.stringify(row[fieldName])}</td>
                                 ))}
                             </tr>
                         ))
