@@ -56,10 +56,13 @@ function App() {
         }, (response) => {
                 console.log('Connection successful: ', response);
             if (response) {
-                Object.entries(record.field_values).map(([key,value])=>{
-                    rowData = {...rowData,...{[key]:value.display_value}};
-                  })
-                data.push(rowData);
+                let rowData = {}
+                response.map(record=>{
+                    Object.entries(record.field_values).map(([key,value])=>{
+                        rowData = {...rowData,...{[key]:value.display_value}};
+                      })
+                    data.push(rowData);
+                })
             }
             setData(data)
         });
