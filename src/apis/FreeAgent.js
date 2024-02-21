@@ -17,8 +17,8 @@
                       })
                     data.push(rowData);
                 })
+                return data
             }
-            return data
         });
 
 

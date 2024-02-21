@@ -51,6 +51,7 @@ function App() {
     const getData = ()=>{
         const FAClient  = window.FAClient;
         const response = freeAgentApi.getFAAllRecords(FAClient,appName)
+        console.log(response)
         setData(response)
         // const FAClient  = window.FAClient;
         // let data=[]
