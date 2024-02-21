@@ -10,8 +10,7 @@ import {toProperCase} from "./functions/formatValue.js";
 function App() {
 
     const [data, setData] = useState([]);
-    const [fieldHeaders, setFieldHeaders] = useState([])
-    const [fieldNames, setFieldNames] = useState([])
+    const [fields, setFields] = useState([])
     const [appName, setAppName] = useState("custom_app_22")
     const [reFresh, setRefresh] = useState(0)
     const [selectedRecordId ,setSelectedRecordId] = useState(null)
@@ -45,6 +44,7 @@ function App() {
             appletId: 'test-app-iframe',
         });
         window.FAClient = FAClient;
+        getData()
     }
 
 
@@ -130,10 +130,13 @@ return (
                 </tbody>
             </table> */}
              <AgGridReact 
-                rowData={tableData} 
+                rowData={data} 
                 columnDefs={fields} 
                 onCellClicked={onCellClicked}
             />
+            <div>
+
+            </div>
         </div>
         )}
     </div>
