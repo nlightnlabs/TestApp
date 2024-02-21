@@ -40,9 +40,10 @@ function App() {
         window.FAClient = FAClient;
     }
 
-    const getAllFARecords = async ()=>{
+    const getAllFARecords = ()=>{
         const FAClient  = window.FAClient;
-        const response= await FAClient.listEntityValues({
+        console.log(FAClient)
+        const response= FAClient.listEntityValues({
             entity: appName,
         })
         console.log(response)
