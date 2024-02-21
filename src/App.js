@@ -48,29 +48,44 @@ function App() {
         window.FAClient = FAClient;
     }
 
-    const getData = async ()=>{
-        const FAClient  = window.FAClient;
-        const response = freeAgentApi.getFAAllRecords(FAClient,appName)
-        console.log(response)
-        setData(response)
-        // const FAClient  = window.FAClient;
-        // let data=[]
-        // FAClient.listEntityValues({
-        //     entity: appName,
-        // }, (response) => {
-        //         console.log('Connection successful: ', response);
-        //     if (response) {
-        //         let rowData = {}
-        //         response.map(record=>{
-        //             Object.entries(record.field_values).map(([key,value])=>{
-        //                 rowData = {...rowData,...{[key]:value.display_value}};
-        //               })
-        //             data.push(rowData);
-        //         })
-        //     }
-        //     setData(data)
-        // });
+
+    const getData = () => {
+        const FAClient = window.FAClient;
+        getFAAllRecords(FAClient, appName)
+            .then(response => {
+                console.log(response);
+                setData(response);
+            })
+            .catch(error => {
+                console.error("Error fetching data:", error);
+            });
     }
+    
+
+    const getFAAllRecords = (FAClient, appName) => {
+        return new Promise((resolve, reject) => {
+            let data = [];
+            FAClient.listEntityValues({
+                entity: appName,
+            }, (response) => {
+                console.log('Connection successful: ', response);
+                if (response) {
+                    response.forEach(record => {
+                        let rowData = {};
+                        Object.entries(record.field_values).forEach(([key, value]) => {
+                            rowData = { ...rowData, ...{ [key]: value.display_value } };
+                        });
+                        data.push(rowData);
+                    });
+                    resolve(data);
+                } else {
+                    reject("No response from server");
+                }
+            });
+        });
+    }
+    
+
 
     // const getAllFARecords = ()=>{
     //     const FAClient  = window.FAClient;
