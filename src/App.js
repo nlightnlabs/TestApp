@@ -5,6 +5,7 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import * as freeAgentApi from "./apis/FreeAgent.js"
+import {toProperCase} from "./functions.js"
 
 function App() {
 
@@ -41,14 +42,6 @@ function App() {
         const FAClient = new FAAppletClient({
             appletId: 'test-app-iframe',
         });
-        // FAClient.listEntityValues({
-        //     entity: "custom_app_22",
-        // }, (response) => {
-        //         console.log('Connection successful: ', response);
-        //     if (response) {
-        //         setData(response);
-        //     }
-        // });
         window.FAClient = FAClient;
     }
 
@@ -59,7 +52,14 @@ function App() {
         .then(response => {
             console.log(response);
             setData(response);
-            setFieldHeaders(Object.keys(response[0]));
+            let fieldHeaders = []
+            Object.keys(response[0]).map(item=>{
+                fieldHeaders.push({
+                    headerName: toProperCase(item.replaceAll("_"," ")),
+                    field: item
+                })
+            })
+            setFieldHeaders(fieldHeaders);
         })
         .catch(error => {
             console.error("Error fetching data:", error);
