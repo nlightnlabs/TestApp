@@ -37,7 +37,7 @@ function App() {
             appletId: 'test-app-iframe',
         });
         FAClient.listEntityValues({
-            entity: custom_app_22,
+            entity: "custom_app_22",
         }, (response) => {
                 console.log('Connection successful: ', response);
             if (response) {
