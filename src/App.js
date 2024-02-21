@@ -37,6 +37,17 @@ function App() {
             appletId: 'test-app-iframe',
         });
 
+        window.FAClient = FAClient;
+    }
+
+    const getAllFARecords = async ()=>{
+        const FAClient  = window.FAClient;
+        const response= await FAClient.listEntityValues({
+            entity: appName,
+        })
+        console.log(response)
+        setData(response)
+
         // FAClient.listEntityValues({
         //     entity: appName,
         // }, (response) => {
@@ -45,20 +56,6 @@ function App() {
         //         setData(response);
         //     }
         // });
-
-        window.FAClient = FAClient;
-    }
-
-    const getAllFARecords = ()=>{
-        const FAClient  = window.FAClient;
-        FAClient.listEntityValues({
-            entity: appName,
-        }, (response) => {
-                console.log('Connection successful: ', response);
-            if (response) {
-                setData(response);
-            }
-        });
     }
     
 
@@ -88,11 +85,12 @@ return (
 
         <button className="btn btn-primary" onClick={()=>getAllFARecords()}>Get Data</button>
 
-       
-        {!data && 'Loading Data From FreeAgent'}
         {data && (
             data.map((row,index) => (
-                <div key={index}>{row.field_values.description.value}</div>
+                <div key={index} className="d-flex border border-1 p-2 m-2 shadow-sm" >
+                    <div>{row.field_values.seq_id.value}</div>
+                    <div>{row.field_values.description.value}</div>
+                </div>
             ))
             // <table className="table table-striped">
             //     <thead>
