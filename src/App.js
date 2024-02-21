@@ -48,11 +48,21 @@ function App() {
         window.FAClient = FAClient;
     }
 
-    const getData = async ()=>{
+    const getData = ()=>{
         const FAClient  = window.FAClient;
-        const response = await freeAgentApi.getFAAllRecords(FAClient,appName)
-        console.log(response)
-        setData(response)
+        let data=[]
+        FAClient.listEntityValues({
+            entity: appName,
+        }, (response) => {
+                console.log('Connection successful: ', response);
+            if (response) {
+                Object.entries(record.field_values).map(([key,value])=>{
+                    rowData = {...rowData,...{[key]:value.display_value}};
+                  })
+                data.push(rowData);
+            }
+            setData(data)
+        });
     }
 
     // const getAllFARecords = ()=>{
