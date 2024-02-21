@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css"
-import { AgGridReact } from 'ag-grid-react';
-import 'ag-grid-community/styles/ag-grid.css';
-import 'ag-grid-community/styles/ag-theme-alpine.css';
+import { AgGridReact } from 'ag-grid-react'; // React Grid Logic
+import "ag-grid-community/styles/ag-grid.css"; // Core CSS
+import "ag-grid-community/styles/ag-theme-quartz.css"; // Theme
 import * as freeAgentApi from "./apis/FreeAgent.js";
 import {toProperCase} from "./functions/formatValue.js";
 
@@ -14,6 +14,8 @@ function App() {
     const [fieldNames, setFieldNames] = useState([])
     const [appName, setAppName] = useState("custom_app_22")
     const [reFresh, setRefresh] = useState(0)
+    const [selectedRecordId ,setSelectedRecordId] = useState(null)
+    const [formData, setFormData] = useState(null)
 
     const useExternalScript = (src) => {
         useEffect(() => {
@@ -51,15 +53,15 @@ function App() {
         freeAgentApi.getFAAllRecords(FAClient, appName)
         .then(response => {
             console.log(response);
-            setData(response);
-            let fieldHeaders = []
-            Object.keys(response[0]).map(item=>{
-                fieldHeaders.push({
-                    headerName: toProperCase(item.replaceAll("_"," ")),
-                    field: item
+            let fieldList = []
+            if(response.length>0){
+                Object.keys(response[0]).map((field,index)=>{
+                    fieldList.push({headerName: toProperCase(field.replaceAll("_"," ")), field: field, filter: true})
                 })
-            })
-            setFieldHeaders(fieldHeaders);
+                console.log(fieldList);
+                setFields(fieldList)
+            }
+            setData(response);
         })
         .catch(error => {
             console.error("Error fetching data:", error);
@@ -69,6 +71,9 @@ function App() {
     
     const pageStyle = {
         fontSize: "12px",
+        height: "100%",
+        width: "100%",
+        overflow: "hidden"
     }
 
     const cellStyle={
@@ -81,6 +86,12 @@ function App() {
         const {name, value} = e.target 
         setAppName(value)
     }
+
+    const onCellClicked = (e) => {
+        setSelectedRecordId(e.data.id)
+        setFormData(e.data)
+        console.log(e.data)
+      }
 
 
 return (
@@ -97,7 +108,7 @@ return (
             // data.map((row,index) => (
             //     <div key={index} className="d-flex border border-1 p-2 m-2 shadow-sm" style={{height: "50px", overflow: "hidden"}} >{JSON.stringify(row)}</div>
             // ))
-            <div className="d-flex p-3 border border-1 rounded-3">
+            <div className="d-flex p-3 border border-1 rounded-3" style={{height: "50px", overflow: "auto"}}>
                 {/* <table className="table table-striped">
                 <thead>
                     <tr>
@@ -118,11 +129,11 @@ return (
                     }
                 </tbody>
             </table> */}
-            <AgGridReact
-                rowData={data}
-                columnDefs={fieldHeaders}
-            >
-            </AgGridReact>
+             <AgGridReact 
+                rowData={tableData} 
+                columnDefs={fields} 
+                onCellClicked={onCellClicked}
+            />
         </div>
         )}
     </div>
