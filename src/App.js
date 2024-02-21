@@ -5,7 +5,7 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import * as freeAgentApi from "./apis/FreeAgent.js";
-import {toProperCase} from "./functions/formatValue.js"
+import {toProperCase} from "./functions/formatValue.js";
 
 function App() {
 
