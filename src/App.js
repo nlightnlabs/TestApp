@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css"
+import { AgGridReact } from 'ag-grid-react';
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-alpine.css';
 import * as freeAgentApi from "./apis/FreeAgent.js"
 
 function App() {
 
     const [data, setData] = useState([]);
+    const [fieldHeaders, setFieldHeaders] = useState([])
     const [fieldNames, setFieldNames] = useState([])
     const [appName, setAppName] = useState("custom_app_22")
     const [reFresh, setRefresh] = useState(0)
@@ -37,14 +41,14 @@ function App() {
         const FAClient = new FAAppletClient({
             appletId: 'test-app-iframe',
         });
-        FAClient.listEntityValues({
-            entity: "custom_app_22",
-        }, (response) => {
-                console.log('Connection successful: ', response);
-            if (response) {
-                setData(response);
-            }
-        });
+        // FAClient.listEntityValues({
+        //     entity: "custom_app_22",
+        // }, (response) => {
+        //         console.log('Connection successful: ', response);
+        //     if (response) {
+        //         setData(response);
+        //     }
+        // });
         window.FAClient = FAClient;
     }
 
@@ -55,6 +59,7 @@ function App() {
         .then(response => {
             console.log(response);
             setData(response);
+            setFieldHeaders(Object.keys(response[0]));
         })
         .catch(error => {
             console.error("Error fetching data:", error);
@@ -62,7 +67,6 @@ function App() {
     }
     
     
-
     const pageStyle = {
         fontSize: "12px",
     }
@@ -94,7 +98,7 @@ return (
             //     <div key={index} className="d-flex border border-1 p-2 m-2 shadow-sm" style={{height: "50px", overflow: "hidden"}} >{JSON.stringify(row)}</div>
             // ))
             <div className="d-flex p-3 border border-1 rounded-3">
-                <table className="table table-striped">
+                {/* <table className="table table-striped">
                 <thead>
                     <tr>
                         {Object.keys(data[0]).map((fieldName, colIndex)=>(
@@ -107,13 +111,18 @@ return (
                         data.map((row,rowIndex) => (
                             <tr scope="row" key={rowIndex}>
                                 {Object.keys(row).map((fieldName, colIndex)=>(
-                                    <td key={`${rowIndex}${colIndex}`} style={cellStyle}>{JSON.stringify(row[fieldName])}</td>
+                                    <td key={`${rowIndex}${colIndex}`} style={cellStyle}>{row[fieldName]}</td>
                                 ))}
                             </tr>
                         ))
                     }
                 </tbody>
-            </table>
+            </table> */}
+            <AgGridReact
+                rowData={data}
+                columnDefs={fieldHeaders}
+            >
+            </AgGridReact>
         </div>
         )}
     </div>

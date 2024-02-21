@@ -9,8 +9,12 @@
             if (response) {
                 response.forEach(record => {
                     let rowData = {};
+                    let val = ""
                     Object.entries(record.field_values).forEach(([key, value]) => {
-                        rowData = { ...rowData, ...{ [key]: value.display_value } };
+                        if (typeof value.display_value == "object"){
+                          val = JSON.stringify(value.display_value)
+                        }
+                        rowData = { ...rowData, ...{ [key]: val } };
                     });
                     data.push(rowData);
                 });
