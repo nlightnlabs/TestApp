@@ -97,11 +97,14 @@ return (
         <button className="btn btn-primary" onClick={()=>getData()}>Get Data</button>
 
         {data && (
+            // data.map((row,index) => (
+            //     <div key={index} className="d-flex border border-1 p-2 m-2 shadow-sm" >
+            //         <div>{row.field_values.seq_id.value}</div>
+            //         <div>{row.field_values.description.value}</div>
+            //     </div>
+            // ))
             data.map((row,index) => (
-                <div key={index} className="d-flex border border-1 p-2 m-2 shadow-sm" >
-                    <div>{row.field_values.seq_id.value}</div>
-                    <div>{row.field_values.description.value}</div>
-                </div>
+                <div key={index} className="d-flex border border-1 p-2 m-2 shadow-sm" style={{height: "50px", overflow: "hidden"}} >{JSON.stringify(row)}</div>
             ))
             // <table className="table table-striped">
             //     <thead>
