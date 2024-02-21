@@ -29,7 +29,7 @@ function App() {
      useExternalScript('https://freeagentsoftware1.gitlab.io/apps/google-maps/js/lib.js');
 
 
-    const connecToFreeAgent = () => {
+    const initializeFreeAgentConnection = () => {
         const FAAppletClient = window.FAAppletClient;
         
         //Initialize the connection to the FreeAgent this step takes away the loading spinner
@@ -37,6 +37,19 @@ function App() {
             appletId: 'test-app-iframe',
         });
 
+        // FAClient.listEntityValues({
+        //     entity: appName,
+        // }, (response) => {
+        //         console.log('Connection successful: ', response);
+        //     if (response) {
+        //         setData(response);
+        //     }
+        // });
+
+        window.FAClient = FAClient;
+    }
+
+    const getAllFARecords = ()=>{
         FAClient.listEntityValues({
             entity: appName,
         }, (response) => {
@@ -47,7 +60,6 @@ function App() {
         });
     }
     
-
 
     const pageStyle = {
         fontSize: "12px",
@@ -64,9 +76,6 @@ function App() {
         setAppName(value)
     }
 
-useEffect(()=>{
-    useExternalScript()
-},[data])
 
 return (
     <div className="App" style={pageStyle}>
@@ -75,7 +84,9 @@ return (
             <input name= "app_name" className="form-control" value={appName} placeholder="app_name" onChange={(e)=>handleChange(e)}></input>
             <label htmlFor="app_name" className="form-label">App system name: </label>
         </div>
-        <button className="btn btn-primary" onClick={()=>setRefresh(reFresh+1)}>Get Data</button>
+
+        <button className="btn btn-primary" onClick={()=>getAllFARecords()}>Get Data</button>
+
        
         {!data && 'Loading Data From FreeAgent'}
         {data && (
