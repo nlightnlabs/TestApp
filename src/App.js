@@ -168,7 +168,6 @@ return (
                 rowData={data} 
                 columnDefs={fields} 
                 onCellClicked={onCellClicked}
-                onGridReady={onGridReady}
             />
 
             <div>
