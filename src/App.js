@@ -15,9 +15,18 @@ function App() {
     const [data, setData] = useState([]);
     const [fields, setFields] = useState([])
     const [appName, setAppName] = useState("custom_app_22")
-    const [reFresh, setRefresh] = useState(0)
+
     const [selectedRecordId ,setSelectedRecordId] = useState(null)
     const [formData, setFormData] = useState(null)
+    const [showForm, setShowForm] = useState(false)
+
+    const testData = [
+        {name: "John",age: 34},
+        {name: "Mary",age: 23},
+        {name: "Steve",age: 56},
+        {name: "Jane",age: 12},
+        {name: "Amy",age: 34}
+    ]
 
     const useExternalScript = (src) => {
         useEffect(() => {
@@ -75,6 +84,10 @@ function App() {
         .then(response => {
             console.log(response);
             let fieldList = []
+
+            console.log(testData)
+            response=testData
+
             if(response.length>0){
                 Object.keys(response[0]).map((field,index)=>{
                     fieldList.push({headerName: toProperCase(field.replaceAll("_"," ")), field: field, filter: true})
@@ -151,10 +164,13 @@ return (
                 </tbody>
             </table> */}
              <AgGridReact 
+                rowSelection="multiple"
                 rowData={data} 
                 columnDefs={fields} 
                 onCellClicked={onCellClicked}
+                onGridReady={onGridReady}
             />
+
             <div>
 
             </div>
