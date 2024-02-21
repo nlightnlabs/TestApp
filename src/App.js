@@ -102,7 +102,7 @@ return (
             <table className="table table-striped">
                 <thead>
                     <tr>
-                        {Object.keys(data[0].field_values).map((fieldName, colIndex)=>(
+                        {Object.keys(data[0]).map((fieldName, colIndex)=>(
                             <th scope="col" key={colIndex} style={cellStyle}>{fieldName}</th>
                         ))}
                     </tr>
@@ -111,8 +111,8 @@ return (
                     {
                         data.map((row,rowIndex) => (
                             <tr scope="row" key={rowIndex}>
-                                {Object.keys(data[0].field_values).map((fieldName, colIndex)=>(
-                                    <td key={`${rowIndex}${colIndex}`} style={cellStyle}>{row.field_values[fieldName].value}</td>
+                                {Object.keys(row).map((fieldName, colIndex)=>(
+                                    <td key={`${rowIndex}${colIndex}`} style={cellStyle}>{row[fieldName].value}</td>
                                 ))}
                             </tr>
                         ))
