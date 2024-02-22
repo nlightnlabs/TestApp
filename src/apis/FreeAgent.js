@@ -165,24 +165,19 @@ export const updateFARecord = async (FAClient, appName, recordId, formData) => {
 }
 
 export const update = async (FAClient, appName, recordId, formData) => {
+
+    console.log("app to update: ",appName)
+    console.log("record id to update: ",recordId)
+    console.log("data to udpate: ", formData)
+
     try {
-        const response = await new Promise((resolve, reject) => {
-            FAClient.updateEntity({
-                entity: appName,
-                id: recordId,
-                field_values: formData
-            }, (response) => {
-                console.log('Update successful: ', response);
-                if (response) {
-                    resolve(response);
-                } else {
-                    reject("No response from server");
-                }
-            });
-        });
-        return response;
+        FAClient.updateEntity({
+            entity: appName,
+            id: recordId,
+            field_values: formData
+        })
     } catch (error) {
-        throw new Error("Error fetching data: " + error);
+        throw new Error("Error updating data: " + error);
     }
 };
 
