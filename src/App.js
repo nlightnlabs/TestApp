@@ -157,10 +157,6 @@ function App() {
         height: "20px"
     }
 
-    const handleChange=(e)=>{
-        const {name, value} = e.target 
-        setAppName(value)
-    }
 
     const handleInputChange=(e)=>{
         const {name, value} = e.target 
@@ -183,12 +179,12 @@ function App() {
         <div className="d-flex flex-column w-25 m-3 bg-light p-3">
             
             <div className="form-floating mb-3">
-                <input name= "app_name" className="form-control" value={appName} placeholder="app_name" onChange={(e)=>handleChange(e)}></input>
+                <input name= "app_name" className="form-control" value={appName} placeholder="app_name" onChange={(e)=>setAppName(e.target.value)}></input>
                 <label htmlFor="app_name" className="form-label">App system name: </label>
             </div>
 
             <div className="form-floating mb-3">
-                <input name= "record_id" className="form-control" value={setSelectedRecordId} placeholder="Record Id" onChange={(e)=>handleChange(e)}></input>
+                <input name= "record_id" className="form-control" value={setSelectedRecordId} placeholder="Record Id" onChange={(e)=>setSelectedRecordId(e.target.value)}></input>
                 <label htmlFor="record_id" className="form-label">Record Id: </label>
             </div>
 
@@ -198,11 +194,14 @@ function App() {
 
             {appName !="" && appName !=null && data.length>0 &&
              <div className="d-flex flex-column m-3" style={{borderTop: "1px solid lightgray"}}>
-            
-                {Object.keys(formData).length> 0  && Object.keys(formData).map((key, index)=>(
+                
+                <div>{JSON.stringify(formData)}</div>
+
+                {Object.keys(formData).length> 0  && 
+                    Object.keys(formData).map((key, index)=>(
                     <div key={index} className="form-floating mb-3">
                         <input id={key} name= {key} value={formData[key]} className="form-control" placeholder={key} onChange={(e)=>handleInputChange(e)}></input>
-                        <label htmlFor={key} className="form-label">App system name: </label>
+                        <label htmlFor={key} className="form-label">{toProperCase(key.replaceAll("_"," "))}</label>
                     </div>
                 ))}
              
