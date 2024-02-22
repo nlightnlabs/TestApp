@@ -84,6 +84,7 @@ function App() {
                 if(response.length>0){
                     Object.keys(response[0]).map((field,index)=>{
                         fieldList.push({headerName: toProperCase(field.replaceAll("_"," ")), field: field, filter: true})
+                        setFormData({...formData,...{[field]:""}})
                     })
                     console.log("field list: ", fieldList)
                     setFields(fieldList)
