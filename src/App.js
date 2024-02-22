@@ -86,9 +86,6 @@ function App() {
             console.log(response);
             let fieldList = []
 
-            console.log(testData)
-            response=testData
-
             if(response.length>0){
                 Object.keys(response[0]).map((field,index)=>{
                     fieldList.push({headerName: toProperCase(field.replaceAll("_"," ")), field: field, filter: true})
@@ -128,18 +125,6 @@ function App() {
         console.log(e.data)
       }
 
-
-//   const columnDefs= [
-//       { headerName: 'Make', field: 'make' },
-//       { headerName: 'Model', field: 'model' },
-//       { headerName: 'Price', field: 'price' }
-//     ]
-
-//     const rowData = [
-//       { make: 'Toyota', model: 'Celica', price: 35000 },
-//       { make: 'Ford', model: 'Mondeo', price: 32000 },
-//       { make: 'Porsche', model: 'Boxster', price: 72000 }
-//     ]
 
   return (
     <div style={pageStyle}>
