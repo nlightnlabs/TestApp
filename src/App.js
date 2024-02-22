@@ -19,7 +19,7 @@ function App() {
     const [appName, setAppName] = useState("")
 
     const [showForm, setShowForm] = useState(false)
-    const [formData, setFormData] = useState({})
+    const [formData, setFormData] = useState({seq_id:"", owner:"", description:"", created: "", updated: ""})
     const [selectedRecordId, setSelectedRecordId] = useState(null)
 
     const useExternalScript = (src) => {
@@ -84,7 +84,7 @@ function App() {
                 if(response.length>0){
                     Object.keys(response[0]).map((field,index)=>{
                         fieldList.push({headerName: toProperCase(field.replaceAll("_"," ")), field: field, filter: true})
-                        setFormData({...formData,...{[field]:""}})
+                        setFormData(prev=>({...prev,...{[field]:""}}))
                     })
                     console.log("field list: ", fieldList)
                     setFields(fieldList)
@@ -104,7 +104,7 @@ function App() {
                 if(response.length>0){
                     Object.keys(response[0]).map((field,index)=>{
                         fieldList.push({headerName: toProperCase(field.replaceAll("_"," ")), field: field, filter: true})
-                        setFormData({...formData,...{[field]:""}})
+                        setFormData(prev=>({...prev,...{[field]:""}}))
                     })
                     console.log("field list: ", fieldList)
                     setFields(fieldList)
@@ -177,7 +177,7 @@ function App() {
 
         <h2 className="text-center">nlightnlabs FreeAgent Iframe Test</h2>
         <div className="d-flex w-100">
-        <div className="d-flex flex-column m-3 bg-light p-3" style={{width: "300px"}}>
+        <div className="d-flex flex-column m-3 bg-light p-3 rounded-3 shadow" style={{width: "300px"}}>
             
             <div className="form-floating mb-3">
                 <input name= "app_name" className="form-control" value={appName} placeholder="app_name" onChange={(e)=>setAppName(e.target.value)}></input>
@@ -217,8 +217,8 @@ function App() {
         }
         </div> 
 
-            <div className="d-flex m-3 p-3" style={{height: "100%"}}>
-                <div id="myGrid" style={{height: "auto", minHeight: 500, width: "100%"}} className="ag-theme-quartz">
+            <div className="d-flex m-3 p-3">
+                <div id="myGrid" style={{height: "600", width: "100%"}} className="ag-theme-quartz">
                 <AgGridReact
                     rowData={data}
                     columnDefs={fields}
