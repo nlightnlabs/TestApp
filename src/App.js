@@ -1,11 +1,13 @@
-import { useEffect, useState } from 'react';
+
 import './App.css';
+import React, {useState, useEffect} from 'react'
 import "bootstrap/dist/css/bootstrap.min.css"
-import { AgGridReact } from 'ag-grid-react'; // React Grid Logic
-import "ag-grid-community/styles/ag-grid.css"; // Core CSS
-import "ag-grid-community/styles/ag-theme-quartz.css"; // Theme
 import * as freeAgentApi from "./apis/FreeAgent.js";
 import {toProperCase} from "./functions/formatValue.js";
+
+import {AgGridReact} from 'ag-grid-react';
+import 'ag-grid-community/styles//ag-grid.css';
+import 'ag-grid-community/styles//ag-theme-quartz.css';
 
 function App() {
 
@@ -14,11 +16,10 @@ function App() {
 
     const [data, setData] = useState([]);
     const [fields, setFields] = useState([])
-    const [appName, setAppName] = useState("custom_app_22")
+    const [appName, setAppName] = useState("")
 
-    const [selectedRecordId ,setSelectedRecordId] = useState(null)
     const [formData, setFormData] = useState(null)
-    const [showForm, setShowForm] = useState(false)
+    const [setSelectedId, setSelectedRecordId] = useState(null)
 
     const testData = [
         {name: "John",age: 34},
@@ -77,8 +78,8 @@ function App() {
 
     }
 
-
     const getData = () => {
+               
         const FAClient = window.FAClient;
         freeAgentApi.getFAAllRecords(FAClient, appName)
         .then(response => {
@@ -128,55 +129,26 @@ function App() {
       }
 
 
-return (
-    <div className="App" style={pageStyle}>
-        <h2>FreeAgent Iframe Test</h2>
-        <div className="form-floating">
-            <input name= "app_name" className="form-control" value={appName} placeholder="app_name" onChange={(e)=>handleChange(e)}></input>
-            <label htmlFor="app_name" className="form-label">App system name: </label>
-        </div>
+//   const columnDefs= [
+//       { headerName: 'Make', field: 'make' },
+//       { headerName: 'Model', field: 'model' },
+//       { headerName: 'Price', field: 'price' }
+//     ]
 
-        <button className="btn btn-primary" onClick={()=>getData()}>Get Data</button>
+//     const rowData = [
+//       { make: 'Toyota', model: 'Celica', price: 35000 },
+//       { make: 'Ford', model: 'Mondeo', price: 32000 },
+//       { make: 'Porsche', model: 'Boxster', price: 72000 }
+//     ]
 
-        {data.length>0 && (  
-            // data.map((row,index) => (
-            //     <div key={index} className="d-flex border border-1 p-2 m-2 shadow-sm" style={{height: "50px", overflow: "hidden"}} >{JSON.stringify(row)}</div>
-            // ))
-            <div className="d-flex p-3 border border-1 rounded-3" style={{height: "50px", overflow: "auto"}}>
-                {/* <table className="table table-striped">
-                <thead>
-                    <tr>
-                        {Object.keys(data[0]).map((fieldName, colIndex)=>(
-                            <th scope="col" key={colIndex} style={cellStyle}>{fieldName}</th>
-                        ))}
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        data.map((row,rowIndex) => (
-                            <tr scope="row" key={rowIndex}>
-                                {Object.keys(row).map((fieldName, colIndex)=>(
-                                    <td key={`${rowIndex}${colIndex}`} style={cellStyle}>{row[fieldName]}</td>
-                                ))}
-                            </tr>
-                        ))
-                    }
-                </tbody>
-            </table> */}
-             <AgGridReact 
-                rowSelection="multiple"
-                rowData={data} 
-                columnDefs={fields} 
-                onCellClicked={onCellClicked}
-            />
-
-            <div>
-
-            </div>
-        </div>
-        )}
+  return (
+    <div id="myGrid" style={{height: "150px", width: "600px"}} className="ag-theme-quartz">
+      <AgGridReact
+        rowData={data}
+        columnDefs={fields}
+      />
     </div>
-    );
+  );
 }
 
 export default App;
