@@ -176,7 +176,7 @@ function App() {
 
 
         <h2 className="text-center">nlightnlabs FreeAgent Iframe Test</h2>
-        <div className="d-flex w-100">
+        <div className="d-flex w-100" style={{height:"700px"}}>
         <div className="d-flex flex-column m-3 bg-light p-3 rounded-3 shadow" style={{width: "300px", height:"700px", overflowY: "auto"}}>
             
             <div className="form-floating mb-3">
@@ -194,28 +194,25 @@ function App() {
             </div>
 
             {appName !="" && appName !=null && data.length>0 &&
-             <div className="d-flex flex-column m-3" style={{borderTop: "1px solid lightgray"}}>
-
+             <div className="d-flex flex-column mt-3" style={{borderTop: "1px solid lightgray"}}>
+                <div className="d-flex justify-content-center mb-3" style={{position: "fixed"}}>
+                    <div className="btn-group">
+                        <button className="btn btn-alert" onClick={(e)=>updateRecord(e)}>Update</button>
+                        <button className="btn btn-danger" onClick={(e)=>deleteRecord(e)}>Delete</button>
+                    </div>
+                </div>
                 {Object.keys(formData).length> 0  && 
                     Object.keys(formData).map((key, index)=>(
-                    <div key={index} className="form-floating mb-3">
-                        <input id={key} name= {key} value={formData[key]} className="form-control" placeholder={key} onChange={(e)=>handleInputChange(e)}></input>
+                    <div key={index} className="form-floating">
+                        <input id={key} name= {key} value={formData[key]} className="form-control" placeholder={key} onChange={(e)=>handleInputChange(e)} style={{color: "rgb(0,150,200)"}}></input>
                         <label htmlFor={key} className="form-label">{toProperCase(key.replaceAll("_"," "))}</label>
                     </div>
                 ))}
-             
-             <div className="d-flex justify-content-center">
-                <div className="btn-group">
-                    <button className="btn btn-alert" onClick={(e)=>updateRecord(e)}>Update</button>
-                    <button className="btn btn-danger" onClick={(e)=>deleteRecord(e)}>Delete</button>
-                </div>
-             </div>
-
             </div> 
         }
         </div> 
 
-            <div className="d-flex m-3 p-3">
+            <div className="d-flex m-3 p-3 w-75" style={{height: "100%"}}>
                 <div id="myGrid" style={{height: 700}} className="ag-theme-quartz">
                 <AgGridReact
                     rowData={data}
