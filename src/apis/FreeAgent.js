@@ -1,31 +1,66 @@
   //Standard function to get all records from a FreeAgent App
-  export const getFAAllRecords = (FAClient, appName) => {
-    return new Promise((resolve, reject) => {
-        let data = [];
-        FAClient.listEntityValues({
-            entity: appName,
-        }, (response) => {
-            console.log('Connection successful: ', response);
-            if (response) {
-                response.forEach(record => {
-                    let rowData = {};
+//   export const getFAAllRecords = (FAClient, appName) => {
+//     return new Promise((resolve, reject) => {
+//         let data = [];
+//         FAClient.listEntityValues({
+//             entity: appName,
+//         }, (response) => {
+//             console.log('Connection successful: ', response);
+//             if (response) {
+//                 response.forEach(record => {
+//                     let rowData = {};
                     
-                    Object.entries(record.field_values).forEach(([key, value]) => {
-                        let val = value.display_value
-                        if (typeof val == "object"){
-                          val = JSON.stringify(value.display_value)
-                        }
-                        rowData = { ...rowData, ...{ [key]: val } };
-                    });
-                    data.push(rowData);
-                });
-                resolve(data);
-            } else {
-                reject("No response from server");
-            }
+//                     Object.entries(record.field_values).forEach(([key, value]) => {
+//                         let val = value.display_value
+//                         if (typeof val == "object"){
+//                           val = JSON.stringify(value.display_value)
+//                         }
+//                         rowData = { ...rowData, ...{ [key]: val } };
+//                     });
+//                     data.push(rowData);
+//                 });
+//                 resolve(data);
+//             } else {
+//                 reject("No response from server");
+//             }
+//         });
+//     });
+// }
+
+export const getFAAllRecords = async (FAClient, appName) => {
+    try {
+        let data = [];
+        const response = await new Promise((resolve, reject) => {
+            FAClient.listEntityValues({
+                entity: appName,
+            }, (response) => {
+                console.log('Connection successful: ', response);
+                if (response) {
+                    resolve(response);
+                } else {
+                    reject("No response from server");
+                }
+            });
         });
-    });
-}
+
+        response.forEach(record => {
+            let rowData = {};
+
+            Object.entries(record.field_values).forEach(([key, value]) => {
+                let val = value.display_value;
+                if (typeof val == "object") {
+                    val = JSON.stringify(value.display_value);
+                }
+                rowData = { ...rowData, ...{ [key]: val } };
+            });
+            data.push(rowData);
+        });
+        return data;
+    } catch (error) {
+        throw new Error("Error fetching data: " + error);
+    }
+};
+
 
 
 //Standard function to get specific records from a FreeAgent App
