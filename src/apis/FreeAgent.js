@@ -148,7 +148,7 @@ export const updateFARecord = async (FAClient, appName, recordId, formData) => {
             FAClient.updateEntity({
                 entity: appName,
                 seq_id: recordId,
-                field_values: updatedFormData
+                field_values: JSON.stringify(updatedFormData)
             }, (response) => {
                 console.log('Connection successful: ', response);
                 if (response) {
