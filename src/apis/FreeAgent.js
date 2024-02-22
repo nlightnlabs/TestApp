@@ -136,23 +136,19 @@ export const updateFARecord = async (FAClient, appName, recordId, formData) => {
             }
         })
         console.log("Updated formData", updatedFormData);
-
-        const response = await new Promise((resolve, reject) => {
-            FAClient.updateEntity({
+        FAClient.updateEntity({
                 entity: appName,
                 id: recordId,
                 field_values: updatedFormData
             }, (response) => {
                 console.log('Record updated: ', response);
                 if (response) {
-                    resolve(response);
+                    return response
                 } else {
-                    reject("No response from server");
+                    return "No response from server";
                 }
             });
-        });
-        return response
-    }
+        }
     } catch (error) {
         console.error("Error fetching data:", error);
     }
@@ -162,25 +158,22 @@ export const updateFARecord = async (FAClient, appName, recordId, formData) => {
 //Update or delete a record in a Free Agent app
 export const deleteFARecord = async (FAClient, appName, recordId) => {
 
-    try {
-         const response = await new Promise((resolve, reject) => {
-             FAClient.updateEntity({
-                 entity: appName,
-                 id: recordId,
-                 delete: true
-             }, (response) => {
-                 console.log('Record deleted: ', response);
-                 if (response) {
-                     resolve(response);
-                 } else {
-                     reject("No response from server");
-                 }
-             });
-         });
-         return response
-     } catch (error) {
-         console.error("Error fetching data:", error);
-     }
+   try {
+        FAClient.updateEntity({
+            entity: appName,
+            id: recordId,
+            delete: true
+        }, (response) => {
+            console.log('Record updated: ', response);
+            if (response) {
+                return response
+            } else {
+                return "No response from server";
+            }
+        });
+    } catch (error) {
+        console.error("Error fetching data:", error);
+    }
 }
 
   //Standard function to get a user's data from FreeAgent
