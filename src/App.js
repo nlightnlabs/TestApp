@@ -22,6 +22,8 @@ function App() {
     const [formData, setFormData] = useState({seq_id:"", owner:"", description:"", created: "", updated: ""})
     const [selectedRecordId, setSelectedRecordId] = useState(null)
 
+    const [updatedFields, setUpdatedFields] = useState([])
+
     const useExternalScript = (src) => {
         useEffect(() => {
             const script = document.createElement('script');
@@ -134,12 +136,18 @@ function App() {
     const handleInputChange=(e)=>{
         const {name, value} = e.target 
         setFormData({...formData,...{[name]:value}})
+        setUpdatedFields[]
     }
 
     const onCellClicked = (e) => {
         setSelectedRecordId(e.data.seq_id)
         setFormData(e.data)
         console.log(e.data)
+      }
+
+      const props = {
+        disabled: false,
+        readOnly: false
       }
 
 
@@ -154,7 +162,10 @@ function App() {
         <div className="d-flex flex-column m-3 bg-light p-3 rounded-3 shadow" style={{position: "relative", width: "300px", height:"700px", overflowY: "hidden"}}>
             
             <div className="form-floating mb-3">
-                <input name= "app_name" className="form-control" value={appName} placeholder="app_name" onChange={(e)=>setAppName(e.target.value)} style={{ fontSize: "12px", color: "rgb(50,150,250)"}}></input>
+                <input name= "app_name" value={appName} placeholder="app_name" onChange={(e)=>setAppName(e.target.value)} 
+                    className="form-control" 
+                    style={{ fontSize: "12px", color: "rgb(50,150,250)"}}>
+                </input>
                 <label htmlFor="app_name" className="form-label">App system name: </label>
             </div>
 
