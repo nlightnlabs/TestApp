@@ -176,7 +176,7 @@ function App() {
 
 
         <h2 className="text-center">nlightnlabs FreeAgent Iframe Test</h2>
-        <div className="d-flex w-100" style={{height:"700px"}}>
+        <div className="d-flex w-100" style={{height:"700px", width: "100%"}}>
         <div className="d-flex flex-column m-3 bg-light p-3 rounded-3 shadow" style={{width: "300px", height:"700px", overflowY: "auto"}}>
             
             <div className="form-floating mb-3">
@@ -212,7 +212,7 @@ function App() {
         }
         </div> 
 
-            <div className="d-flex m-3 p-3 w-75" style={{height: "700px"}}>
+            <div className="d-flex m-3 p-3 w-75" style={{fontSize:"12px", height: "100%", width: "100%" }}>
                 <div id="myGrid" style={{height: 700, width:500}} className="ag-theme-quartz">
                 <AgGridReact
                     rowData={data}
