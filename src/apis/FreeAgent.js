@@ -140,7 +140,7 @@ export const updateFARecord = async (FAClient, appName, recordId, formData) => {
         const response = await new Promise((resolve, reject) => {
             FAClient.updateEntity({
                 entity: appName,
-                seq_id: recordId,
+                id: recordId,
                 field_values: updatedFormData
             }, (response) => {
                 console.log('Record updated: ', response);
@@ -166,7 +166,7 @@ export const deleteFARecord = async (FAClient, appName, recordId) => {
          const response = await new Promise((resolve, reject) => {
              FAClient.updateEntity({
                  entity: appName,
-                 seq_id: recordId,
+                 id: recordId,
                  delete: true
              }, (response) => {
                  console.log('Record deleted: ', response);

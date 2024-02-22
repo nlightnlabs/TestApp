@@ -177,8 +177,8 @@ function App() {
                 }
                 <div className="d-flex justify-content-center mt-3">
                     <div className="btn-group">
-                        <button className="btn btn-outline-primary" onClick={(e)=>updateRecord(e)}>Update</button>
-                        <button className="btn btn-outline-danger" onClick={(e)=>deleteRecord(e)}>Delete</button>
+                        <button className="btn btn-outline-primary" onClick={(e)=>updateRecord()}>Update</button>
+                        <button className="btn btn-outline-danger" onClick={(e)=>deleteRecord()}>Delete</button>
                     </div>
                 </div>
             </div> 
