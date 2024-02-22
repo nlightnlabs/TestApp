@@ -68,7 +68,7 @@ export const addFARecord = async (FAClient,appName, formData)=>{
 
      //Only send fields where the formData maps the fields in the app
      let updatedFormData = {};
-     const tableData = freeAgentApi.getFAAllRecords(FAClient, appName)
+     const tableData = getFAAllRecords(FAClient, appName)
      .then(response => {
          console.log("data received from FA function: ", response)
          if(response.length>0){
@@ -110,7 +110,7 @@ export const updateFARecord = (FAClient, appName, recordId, formData) => {
 
     //Only send fields where the formData maps the fields in the app
     let updatedFormData = {};
-    const tableData = freeAgentApi.getFAAllRecords(FAClient, appName)
+    const tableData = getFAAllRecords(FAClient, appName)
     .then(response => {
         console.log("data received from FA function: ", response)
         if(response.length>0){
