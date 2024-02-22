@@ -177,7 +177,7 @@ function App() {
 
         <h2 className="text-center">nlightnlabs FreeAgent Iframe Test</h2>
         <div className="d-flex w-100">
-        <div className="d-flex flex-column m-3 bg-light p-3 rounded-3 shadow" style={{width: "300px", height:"700px"}}>
+        <div className="d-flex flex-column m-3 bg-light p-3 rounded-3 shadow" style={{width: "300px", height:"700px", overflowY: "auto"}}>
             
             <div className="form-floating mb-3">
                 <input name= "app_name" className="form-control" value={appName} placeholder="app_name" onChange={(e)=>setAppName(e.target.value)}></input>
