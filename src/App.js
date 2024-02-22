@@ -222,6 +222,7 @@ function App() {
                 <AgGridReact
                     rowData={data}
                     columnDefs={fields}
+                    onCellClicked = {onCellClicked}
                 />
                 </div>
             </div>
