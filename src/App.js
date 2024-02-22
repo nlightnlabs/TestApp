@@ -71,58 +71,52 @@ function App() {
 
     }
 
-    const getData = () => {
-
-        const FAClient = window.FAClient;
-
-        freeAgentApi.getFAAllRecords(FAClient, appName)
-        .then(response => {
+    const getData = async () => {
+        try {
+            const FAClient = window.FAClient;
+            const response = await freeAgentApi.getFAAllRecords(FAClient, appName);
+    
             console.log("data received from FA function: ", response)
-            let fieldList = []
-
-            if(response.length>0){
-                Object.keys(response[0]).map((field,index)=>{
-                    fieldList.push({headerName: toProperCase(field.replaceAll("_"," ")), field: field, filter: true})
-                    setFormData(prev=>({...prev,...{[field]:""}}))
-                })
-                console.log("field list: ", fieldList)
-                setFields(fieldList)
+            let fieldList = [];
+    
+            if (response.length > 0) {
+                Object.keys(response[0]).map((field, index) => {
+                    fieldList.push({ headerName: toProperCase(field.replaceAll("_", " ")), field: field, filter: true });
+                    setFormData(prev => ({ ...prev, ...{ [field]: "" } }));
+                });
+                console.log("field list: ", fieldList);
+                setFields(fieldList);
             }
             setData(response);
-        })
-        .catch(error => {
+        } catch (error) {
             console.error("Error fetching data:", error);
-        });
-    }
-
-    const updateRecord = (e) => {
-        const FAClient = window.FAClient;
-        freeAgentApi.updateFARecord(FAClient, appName, selectedRecordId, formData)
-
-        .then(response => {
-            console.log(response);
-            getData();
-        })
-        .catch(error => {
-            console.error("Error fetching data:", error);
-        });
-    }
-
-    const deleteRecord = (e) => {
-        const FAClient = window.FAClient;
-        freeAgentApi.deleteFARecord(FAClient, appName, selectedRecordId)
-
-        .then(response => {
-            console.log(response);
-            getData();
-        })
-        .catch(error => {
-            console.error("Error fetching data:", error);
-        });
-    }
-
-
+        }
+    };
     
+
+    const updateRecord = async () => {
+        try {
+            const FAClient = window.FAClient;
+            const response = await freeAgentApi.updateFARecord(FAClient, appName, selectedRecordId, formData)
+            console.log("data received from FA function: ", response)
+            getData()
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    }
+
+    const deleteRecord = async () => {
+        try {
+            const FAClient = window.FAClient;
+            const response = await freeAgentApi.updateFARecord(FAClient, appName, selectedRecordId)
+            console.log("data received from FA function: ", response)
+            getData()
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    }
+
+
     const pageStyle = {
         fontSize: "12px",
         height: "100%",
