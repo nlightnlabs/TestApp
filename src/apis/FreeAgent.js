@@ -66,21 +66,26 @@ export const getFARecords = async (FAClient,appName, fields, filters, order, lim
 //Standard function to add a new record in a FreeAgent App
 export const addFARecord = async (FAClient,appName, formData)=>{
 
-        //Only send fields where the formData maps the fields in the app
-        let updatedFormData = {};
-
-        const tableData =  getFARecords(appName);
-        console.log(tableData);
-        const fields = Object.keys(tableData[0]);
-        console.log(fields);
-
-        Object.keys(formData).map(item=>{
-          if(fields.includes(item)){
-            updatedFormData = {...updatedFormData,...{[item]:formData[item]}};
-          }
-        })
-        console.log(updatedFormData);
-
+     //Only send fields where the formData maps the fields in the app
+     let updatedFormData = {};
+     const tableData = freeAgentApi.getFAAllRecords(FAClient, appName)
+     .then(response => {
+         console.log("data received from FA function: ", response)
+         if(response.length>0){
+             console.log(tableData);
+             const fields = Object.keys(tableData[0]);
+             console.log(fields);
+             Object.keys(formData).map(item=>{
+                 if(fields.includes(item)){
+                 updatedFormData = {...updatedFormData,...{[item]:formData[item]}};
+                 }
+             })
+             console.log("Updated formData", updatedFormData);
+         }
+     })
+     .catch(error => {
+         console.error("Error fetching data:", error);
+     });
 
     return new Promise((resolve, reject) => {
       
@@ -103,35 +108,41 @@ export const addFARecord = async (FAClient,appName, formData)=>{
 export const updateFARecord = (FAClient, appName, recordId, formData) => {
   return new Promise((resolve, reject) => {
 
-      //Only send fields where the formData maps the fields in the app
-      let updatedFormData = {};
-
-      const tableData =  getFARecords(appName);
-      console.log(tableData);
-      const fields = Object.keys(tableData[0]);
-      console.log(fields);
-
-      Object.keys(formData).map(item=>{
-        if(fields.includes(item)){
-          updatedFormData = {...updatedFormData,...{[item]:formData[item]}};
+    //Only send fields where the formData maps the fields in the app
+    let updatedFormData = {};
+    const tableData = freeAgentApi.getFAAllRecords(FAClient, appName)
+    .then(response => {
+        console.log("data received from FA function: ", response)
+        if(response.length>0){
+            console.log(tableData);
+            const fields = Object.keys(tableData[0]);
+            console.log(fields);
+            Object.keys(formData).map(item=>{
+                if(fields.includes(item)){
+                updatedFormData = {...updatedFormData,...{[item]:formData[item]}};
+                }
+            })
+            console.log("Updated formData", updatedFormData);
         }
-      })
-      console.log(updatedFormData);
+    })
+    .catch(error => {
+        console.error("Error fetching data:", error);
+    });
 
      
-      FAClient.updateEntity({
-          entity:appName, // app name
-          id: recordId, //What record to update
-          field_values: updatedFormData
-          }, (response) => {
-          console.log('Update successful: ', response);
-          if (response) {
-              resolve(response);
-          } else {
-              reject("No response from server");
-          }
-      });
-  });
+    FAClient.updateEntity({
+        entity:appName, // app name
+        id: recordId, //What record to update
+        field_values: updatedFormData
+        }, (response) => {
+        console.log('Update successful: ', response);
+        if (response) {
+            resolve(response);
+        } else {
+            reject("No response from server");
+        }
+    });
+});
 }
 
 
@@ -142,6 +153,7 @@ export const deleteFARecord = (FAClient, appName, recordId) => {
       FAClient.deleteEntity({
           entity:appName, // app name
           id: recordId, //What record to delete
+          delete: true
       }, (response) => {
           console.log('Delete successful: ', response);
           if (response) {
