@@ -185,7 +185,7 @@ function App() {
     <div className="d-flex flex-column" style={pageStyle}>
 
 
-        <h2>FreeAgent Iframe Test</h2>
+        <h2 className="text-center">nlightnlabs FreeAgent Iframe Test</h2>
         <div className="d-flex w-100">
         <div className="d-flex flex-column w-25 m-3 bg-light p-3">
             
@@ -203,7 +203,7 @@ function App() {
                 <button className="btn btn-primary" onClick={()=>getData()}>Get Data</button>
             </div>
 
-            {showForm && 
+            {appName !="" && appName !=null && data.length>0 &&
              <div className="d-flex flex-column m-3" style={{borderTop: "1px solid lightgray"}}>
             
                 {Object.keys(formData).map((key, index)=>(
@@ -214,7 +214,10 @@ function App() {
                 ))}
              
              <div className="d-flex justify-content-center">
-                <button className="btn btn-primary" onClick={(e)=>updateRecord(e)}>Update</button>
+                <div className="btn-group">
+                    <button className="btn btn-alert" onClick={(e)=>updateRecord(e)}>Update</button>
+                    <button className="btn btn-danger" onClick={(e)=>deleteRecord(e)}>Delete</button>
+                </div>
              </div>
 
             </div> 
