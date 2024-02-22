@@ -127,15 +127,19 @@ function App() {
 
 
   return (
-    <div style={pageStyle}>
+    <div className="d-flex flex-column" style={pageStyle}>
 
-    <h2>FreeAgent Iframe Test</h2>
-        <div className="form-floating">
-            <input name= "app_name" className="form-control" value={appName} placeholder="app_name" onChange={(e)=>handleChange(e)}></input>
-            <label htmlFor="app_name" className="form-label">App system name: </label>
+        <h2>FreeAgent Iframe Test</h2>
+        <div className="d-flex flex-column border border-1 rounded-3 shadow p-3 mb-3" style={{width: "500px"}}>
+            <div className="form-floating mb-3">
+                <input name= "app_name" className="form-control" value={appName} placeholder="app_name" onChange={(e)=>handleChange(e)}></input>
+                <label htmlFor="app_name" className="form-label">App system name: </label>
+            </div>
+
+            <button className="btn btn-primary" onClick={()=>getData()}>Get Data</button>
         </div>
 
-        <button className="btn btn-primary" onClick={()=>getData()}>Get Data</button>
+        
 
     <   div id="myGrid" style={{height: "150px", width: "600px"}} className="ag-theme-quartz">
         
