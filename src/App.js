@@ -169,10 +169,10 @@ function App() {
             </div>
 
             {appName !="" && appName !=null && data.length>0 &&
-             <div className="d-flex flex-column" style={{borderTop: "1px solid lightgray", height:"650px", overflowY: "hidden"}}>
+             <div className="d-flex flex-column" style={{borderTop: "1px solid lightgray", height:"700px", overflowY: "hidden"}}>
                 
                 {Object.keys(formData).length> 0  && 
-                    <div className="d-flex flex-column" style={{height:"400px", overflowY: "auto"}}>
+                    <div className="d-flex flex-column" style={{height:"80%", overflowY: "auto"}}>
                         {Object.keys(formData).map((key, index)=>(
                             <div key={index} className="form-floating mb-3">
                                 <input id={key} name= {key} value={formData[key]} className="form-control" placeholder={key} onChange={(e)=>handleInputChange(e)} style={{fontSize: "12px", color: "rgb(50,150,250)"}}></input>
@@ -181,17 +181,17 @@ function App() {
                         ))}
                     </div>
                 }
-                <div className="d-flex justify-content-center mb-3">
+                <div className="d-flex justify-content-center mt-3">
                     <div className="btn-group">
-                        <button className="btn btn-success" onClick={(e)=>updateRecord(e)}>Update</button>
-                        <button className="btn btn-danger" onClick={(e)=>deleteRecord(e)}>Delete</button>
+                        <button className="btn btn-outline-primary" onClick={(e)=>updateRecord(e)}>Update</button>
+                        <button className="btn btn-outline-danger" onClick={(e)=>deleteRecord(e)}>Delete</button>
                     </div>
                 </div>
             </div> 
         }
         </div> 
 
-            <div className="d-flex p-3 w-75" style={{fontSize:"12px", height: "90%" }}>
+            <div className="d-flex p-3 w-75" style={{height:"700px"}}>
                 <div id="myGrid" style={{height: 700, width:"100%"}} className="ag-theme-quartz">
                 <AgGridReact
                     rowData={data}
