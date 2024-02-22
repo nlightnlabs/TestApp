@@ -177,7 +177,7 @@ function App() {
 
         <h2 className="text-center">nlightnlabs FreeAgent Iframe Test</h2>
         <div className="d-flex w-100">
-        <div className="d-flex flex-column m-3 bg-light p-3 rounded-3 shadow" style={{width: "300px"}}>
+        <div className="d-flex flex-column m-3 bg-light p-3 rounded-3 shadow" style={{width: "300px", height:"700px"}}>
             
             <div className="form-floating mb-3">
                 <input name= "app_name" className="form-control" value={appName} placeholder="app_name" onChange={(e)=>setAppName(e.target.value)}></input>
@@ -195,8 +195,6 @@ function App() {
 
             {appName !="" && appName !=null && data.length>0 &&
              <div className="d-flex flex-column m-3" style={{borderTop: "1px solid lightgray"}}>
-                
-                <div>{JSON.stringify(formData)}</div>
 
                 {Object.keys(formData).length> 0  && 
                     Object.keys(formData).map((key, index)=>(
@@ -218,7 +216,7 @@ function App() {
         </div> 
 
             <div className="d-flex m-3 p-3">
-                <div id="myGrid" style={{height: "600", width: "100%"}} className="ag-theme-quartz">
+                <div id="myGrid" style={{height: 700}} className="ag-theme-quartz">
                 <AgGridReact
                     rowData={data}
                     columnDefs={fields}
