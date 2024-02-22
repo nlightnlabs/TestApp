@@ -142,11 +142,23 @@ function App() {
 //     ]
 
   return (
-    <div id="myGrid" style={{height: "150px", width: "600px"}} className="ag-theme-quartz">
-      <AgGridReact
-        rowData={data}
-        columnDefs={fields}
+    <div style={pageStyle}>
+
+    <h2>FreeAgent Iframe Test</h2>
+        <div className="form-floating">
+            <input name= "app_name" className="form-control" value={appName} placeholder="app_name" onChange={(e)=>handleChange(e)}></input>
+            <label htmlFor="app_name" className="form-label">App system name: </label>
+        </div>
+
+        <button className="btn btn-primary" onClick={()=>getData()}>Get Data</button>
+
+    <   div id="myGrid" style={{height: "150px", width: "600px"}} className="ag-theme-quartz">
+        
+        <AgGridReact
+            rowData={data}
+            columnDefs={fields}
       />
+    </div>
     </div>
   );
 }
