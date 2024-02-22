@@ -179,7 +179,7 @@ function App() {
 
         <div className="d-flex w-100" style={{height:"700px", width: "100%"}}>
 
-        <div className="d-flex flex-column m-3 bg-light p-3 rounded-3 shadow" style={{position: "relative", width: "300px", height:"700px", overflowY: "auto"}}>
+        <div className="d-flex flex-column m-3 bg-light p-3 rounded-3 shadow" style={{position: "relative", width: "300px", height:"700px", overflowY: "hidden"}}>
             
             <div className="form-floating mb-3">
                 <input name= "app_name" className="form-control" value={appName} placeholder="app_name" onChange={(e)=>setAppName(e.target.value)}></input>
@@ -196,7 +196,7 @@ function App() {
             </div>
 
             {appName !="" && appName !=null && data.length>0 &&
-             <div className="d-flex flex-column mt-3" style={{borderTop: "1px solid lightgray"}}>
+             <div className="d-flex flex-column mt-3" style={{borderTop: "1px solid lightgray", height:"500px", overflowY: "auto"}}>
                 <div className="d-flex bg-light justify-content-center mb-3" style={{position: "fixed", zIndex:999}}>
                     <div className="btn-group">
                         <button className="btn btn-alert" onClick={(e)=>updateRecord(e)}>Update</button>
