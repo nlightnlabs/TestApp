@@ -66,83 +66,80 @@ export const getFARecords = async (FAClient,appName, fields, filters, order, lim
 //Standard function to add a new record in a FreeAgent App
 export const addFARecord = async (FAClient,appName, formData)=>{
 
-     //Only send fields where the formData maps the fields in the app
-     let updatedFormData = {};
-     const tableData = getFAAllRecords(FAClient, appName)
-     .then(response => {
-         console.log("data received from FA function: ", response)
-         if(response.length>0){
-             console.log(tableData);
-             const fields = Object.keys(tableData[0]);
-             console.log(fields);
-             Object.keys(formData).map(item=>{
-                 if(fields.includes(item)){
-                 updatedFormData = {...updatedFormData,...{[item]:formData[item]}};
-                 }
-             })
-             console.log("Updated formData", updatedFormData);
-         }
-     })
-     .catch(error => {
-         console.error("Error fetching data:", error);
-     });
+   //Only send fields where the formData maps the fields in the app
+   let updatedFormData = {};
+   getFAAllRecords(FAClient, appName)
+   .then(response => {
+       console.log("data received from FA function: ", response)
+       if(response.length>0){
+           const fields = Object.keys(response[0]);
+           Object.keys(formData).map(item=>{
+               if(fields.includes(item)){
+               updatedFormData = {...updatedFormData,...{[item]:formData[item]}};
+               }
+           })
+           console.log("Updated formData", updatedFormData);
 
-    return new Promise((resolve, reject) => {
-      
-      FAClient.createEntity({
-        entity:appName,
-        field_values: updatedFormData
-      }, (response) => {
-          console.log('Record added successfully: ', response);
-          if (response) {
-              resolve(response);
-          } else {
-              reject("No response from server");
-          }
-      });
-  });
+           return new Promise((resolve, reject) => {  
+               FAClient.updateEntity({
+                   entity:appName, // app name
+                   id: recordId, //What record to update
+                   field_values: updatedFormData
+                   }, (response) => {
+                   console.log('Update successful: ', response);
+                   if (response) {
+                       resolve(response);
+                   } else {
+                       reject("No response from server");
+                   }
+               });
+           });
+       }
+   })
+   .catch(error => {
+       console.error("Error fetching data:", error);
+   });
 }
 
 
 //Update or delete a record in a Free Agent app
 export const updateFARecord = (FAClient, appName, recordId, formData) => {
-  return new Promise((resolve, reject) => {
+
+    console.log("Form Data to Update: ", formData);
 
     //Only send fields where the formData maps the fields in the app
     let updatedFormData = {};
-    const tableData = getFAAllRecords(FAClient, appName)
+    getFAAllRecords(FAClient, appName)
     .then(response => {
         console.log("data received from FA function: ", response)
         if(response.length>0){
-            console.log(tableData);
-            const fields = Object.keys(tableData[0]);
-            console.log(fields);
+            const fields = Object.keys(response[0]);
             Object.keys(formData).map(item=>{
                 if(fields.includes(item)){
                 updatedFormData = {...updatedFormData,...{[item]:formData[item]}};
                 }
             })
             console.log("Updated formData", updatedFormData);
+
+            return new Promise((resolve, reject) => {  
+                FAClient.updateEntity({
+                    entity:appName, // app name
+                    id: recordId, //What record to update
+                    field_values: updatedFormData
+                    }, (response) => {
+                    console.log('Update successful: ', response);
+                    if (response) {
+                        resolve(response);
+                    } else {
+                        reject("No response from server");
+                    }
+                });
+            });
         }
     })
     .catch(error => {
         console.error("Error fetching data:", error);
     });
-
-     
-    FAClient.updateEntity({
-        entity:appName, // app name
-        id: recordId, //What record to update
-        field_values: updatedFormData
-        }, (response) => {
-        console.log('Update successful: ', response);
-        if (response) {
-            resolve(response);
-        } else {
-            reject("No response from server");
-        }
-    });
-});
 }
 
 

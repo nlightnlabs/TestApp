@@ -75,46 +75,24 @@ function App() {
 
         const FAClient = window.FAClient;
 
-        if(selectedRecordId !="" && selectedRecordId !=null){
-            freeAgentApi.getFARecords(FAClient, appName, selectedRecordId)
-            .then(response => {
-                console.log("data received from FA function: ", response)
-                let fieldList = []
+        freeAgentApi.getFAAllRecords(FAClient, appName)
+        .then(response => {
+            console.log("data received from FA function: ", response)
+            let fieldList = []
 
-                if(response.length>0){
-                    Object.keys(response[0]).map((field,index)=>{
-                        fieldList.push({headerName: toProperCase(field.replaceAll("_"," ")), field: field, filter: true})
-                        setFormData(prev=>({...prev,...{[field]:""}}))
-                    })
-                    console.log("field list: ", fieldList)
-                    setFields(fieldList)
-                }
-                setData(response);
-            })
-            .catch(error => {
-                console.error("Error fetching data:", error);
-            });
-        }else{
-            
-            freeAgentApi.getFAAllRecords(FAClient, appName)
-            .then(response => {
-                console.log("data received from FA function: ", response)
-                let fieldList = []
-
-                if(response.length>0){
-                    Object.keys(response[0]).map((field,index)=>{
-                        fieldList.push({headerName: toProperCase(field.replaceAll("_"," ")), field: field, filter: true})
-                        setFormData(prev=>({...prev,...{[field]:""}}))
-                    })
-                    console.log("field list: ", fieldList)
-                    setFields(fieldList)
-                }
-                setData(response);
-            })
-            .catch(error => {
-                console.error("Error fetching data:", error);
-            });
-        }
+            if(response.length>0){
+                Object.keys(response[0]).map((field,index)=>{
+                    fieldList.push({headerName: toProperCase(field.replaceAll("_"," ")), field: field, filter: true})
+                    setFormData(prev=>({...prev,...{[field]:""}}))
+                })
+                console.log("field list: ", fieldList)
+                setFields(fieldList)
+            }
+            setData(response);
+        })
+        .catch(error => {
+            console.error("Error fetching data:", error);
+        });
     }
 
     const updateRecord = (e) => {
@@ -177,12 +155,12 @@ function App() {
 
         <h2 className="text-center">nlightnlabs FreeAgent Iframe Test</h2>
 
-        <div className="d-flex w-100" style={{height:"700px", width: "100%"}}>
+        <div className="d-flex w-100" style={{height:"800px", width: "100%"}}>
 
         <div className="d-flex flex-column m-3 bg-light p-3 rounded-3 shadow" style={{position: "relative", width: "300px", height:"700px", overflowY: "hidden"}}>
             
             <div className="form-floating mb-3">
-                <input name= "app_name" className="form-control" value={appName} placeholder="app_name" onChange={(e)=>setAppName(e.target.value)} style={{color: "rgb(0,180,255)"}}></input>
+                <input name= "app_name" className="form-control" value={appName} placeholder="app_name" onChange={(e)=>setAppName(e.target.value)} style={{ fontSize: "12px", color: "rgb(50,150,250)"}}></input>
                 <label htmlFor="app_name" className="form-label">App system name: </label>
             </div>
 
@@ -191,28 +169,29 @@ function App() {
             </div>
 
             {appName !="" && appName !=null && data.length>0 &&
-             <div className="d-flex flex-column mt-3" style={{borderTop: "1px solid lightgray", height:"600px", overflowY: "hidden"}}>
+             <div className="d-flex flex-column" style={{borderTop: "1px solid lightgray", height:"650px", overflowY: "hidden"}}>
+                
+                {Object.keys(formData).length> 0  && 
+                    <div className="d-flex flex-column" style={{height:"400px", overflowY: "auto"}}>
+                        {Object.keys(formData).map((key, index)=>(
+                            <div key={index} className="form-floating mb-3">
+                                <input id={key} name= {key} value={formData[key]} className="form-control" placeholder={key} onChange={(e)=>handleInputChange(e)} style={{fontSize: "12px", color: "rgb(50,150,250)"}}></input>
+                                <label htmlFor={key} className="form-label">{toProperCase(key.replaceAll("_"," "))}</label>
+                            </div>
+                        ))}
+                    </div>
+                }
                 <div className="d-flex justify-content-center mb-3">
                     <div className="btn-group">
                         <button className="btn btn-success" onClick={(e)=>updateRecord(e)}>Update</button>
                         <button className="btn btn-danger" onClick={(e)=>deleteRecord(e)}>Delete</button>
                     </div>
                 </div>
-                {Object.keys(formData).length> 0  && 
-                    <div className="d-flex flex-column" style={{maxHeight:"75%", overflowY: "auto"}}>
-                        {Object.keys(formData).map((key, index)=>(
-                            <div key={index} className="form-floating mb-3">
-                                <input id={key} name= {key} value={formData[key]} className="form-control" placeholder={key} onChange={(e)=>handleInputChange(e)} style={{color: "rgb(0,180,255)"}}></input>
-                                <label htmlFor={key} className="form-label">{toProperCase(key.replaceAll("_"," "))}</label>
-                            </div>
-                        ))}
-                    </div>
-                }
             </div> 
         }
         </div> 
 
-            <div className="d-flex m-3 p-3 w-75" style={{fontSize:"12px", height: "90%" }}>
+            <div className="d-flex p-3 w-75" style={{fontSize:"12px", height: "90%" }}>
                 <div id="myGrid" style={{height: 700, width:"100%"}} className="ag-theme-quartz">
                 <AgGridReact
                     rowData={data}
