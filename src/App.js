@@ -165,7 +165,7 @@ function App() {
     }
 
     const onCellClicked = (e) => {
-        setSelectedRecordId(e.data.id)
+        setSelectedRecordId(e.data.seq_id)
         setFormData(e.data)
         console.log(e.data)
       }
@@ -182,13 +182,8 @@ function App() {
         <div className="d-flex flex-column m-3 bg-light p-3 rounded-3 shadow" style={{position: "relative", width: "300px", height:"700px", overflowY: "hidden"}}>
             
             <div className="form-floating mb-3">
-                <input name= "app_name" className="form-control" value={appName} placeholder="app_name" onChange={(e)=>setAppName(e.target.value)}></input>
+                <input name= "app_name" className="form-control" value={appName} placeholder="app_name" onChange={(e)=>setAppName(e.target.value)} style={{color: "rgb(0,180,255)"}}></input>
                 <label htmlFor="app_name" className="form-label">App system name: </label>
-            </div>
-
-            <div className="form-floating mb-3">
-                <input name= "record_id" className="form-control" value={selectedRecordId} placeholder="Record Id" onChange={(e)=>setSelectedRecordId(e.target.value)}></input>
-                <label htmlFor="record_id" className="form-label">Record Id: </label>
             </div>
 
             <div className="d-flex justify-content-center">
@@ -196,18 +191,18 @@ function App() {
             </div>
 
             {appName !="" && appName !=null && data.length>0 &&
-             <div className="d-flex flex-column mt-3" style={{borderTop: "1px solid lightgray", height:"500px", overflowY: "hidden"}}>
+             <div className="d-flex flex-column mt-3" style={{borderTop: "1px solid lightgray", height:"600px", overflowY: "hidden"}}>
                 <div className="d-flex justify-content-center mb-3">
                     <div className="btn-group">
-                        <button className="btn btn-alert" onClick={(e)=>updateRecord(e)}>Update</button>
+                        <button className="btn btn-success" onClick={(e)=>updateRecord(e)}>Update</button>
                         <button className="btn btn-danger" onClick={(e)=>deleteRecord(e)}>Delete</button>
                     </div>
                 </div>
                 {Object.keys(formData).length> 0  && 
-                    <div className="d-flex flex-column" style={{height:"500px", overflowY: "auto"}}>
+                    <div className="d-flex flex-column" style={{maxHeight:"75%", overflowY: "auto"}}>
                         {Object.keys(formData).map((key, index)=>(
                             <div key={index} className="form-floating mb-3">
-                                <input id={key} name= {key} value={formData[key]} className="form-control" placeholder={key} onChange={(e)=>handleInputChange(e)} style={{color: "rgb(0,150,200)"}}></input>
+                                <input id={key} name= {key} value={formData[key]} className="form-control" placeholder={key} onChange={(e)=>handleInputChange(e)} style={{color: "rgb(0,180,255)"}}></input>
                                 <label htmlFor={key} className="form-label">{toProperCase(key.replaceAll("_"," "))}</label>
                             </div>
                         ))}
@@ -217,7 +212,7 @@ function App() {
         }
         </div> 
 
-            <div className="d-flex m-3 p-3 w-75" style={{fontSize:"12px", height: "100%" }}>
+            <div className="d-flex m-3 p-3 w-75" style={{fontSize:"12px", height: "90%" }}>
                 <div id="myGrid" style={{height: 700, width:"100%"}} className="ag-theme-quartz">
                 <AgGridReact
                     rowData={data}
