@@ -144,9 +144,10 @@ export const updateFARecord = async (FAClient, appName, recordId, formData) => {
    try {
         const updatedFormData = await getUpdatedFormData()
         const result = await new Promise((resolve, reject) => {
+            console.log("Updated form data inside of promise",updatedFormData)
             FAClient.updateEntity({
                 entity: appName,
-                id: recordId,
+                seq_id: recordId,
                 field_values: updatedFormData
             }, (response) => {
                 console.log('Connection successful: ', response);
@@ -166,7 +167,7 @@ export const updateFARecord = async (FAClient, appName, recordId, formData) => {
 
 //Update or delete a record in a Free Agent app
 export const deleteFARecord = async (FAClient, appName, recordId) => {
-    
+
    try {
         const result = await new Promise((resolve, reject) => {
             FAClient.updateEntity({
