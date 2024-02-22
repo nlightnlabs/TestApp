@@ -19,7 +19,7 @@ function App() {
     const [appName, setAppName] = useState("")
 
     const [showForm, setShowForm] = useState(false)
-    const [formData, setFormData] = useState(null)
+    const [formData, setFormData] = useState({})
     const [selectedRecordId, setSelectedRecordId] = useState(null)
 
     const useExternalScript = (src) => {
@@ -198,7 +198,7 @@ function App() {
             {appName !="" && appName !=null && data.length>0 &&
              <div className="d-flex flex-column m-3" style={{borderTop: "1px solid lightgray"}}>
             
-                {Object.keys(formData).map((key, index)=>(
+                {Object.keys(formData).length> 0  && Object.keys(formData).map((key, index)=>(
                     <div key={index} className="form-floating mb-3">
                         <input id={key} name= {key} value={formData[key]} className="form-control" placeholder={key} onChange={(e)=>handleInputChange(e)}></input>
                         <label htmlFor={key} className="form-label">App system name: </label>
