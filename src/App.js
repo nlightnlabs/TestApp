@@ -203,7 +203,7 @@ function App() {
                 </div>
                 {Object.keys(formData).length> 0  && 
                     Object.keys(formData).map((key, index)=>(
-                    <div key={index} className="form-floating">
+                    <div key={index} className="form-floating mb-3">
                         <input id={key} name= {key} value={formData[key]} className="form-control" placeholder={key} onChange={(e)=>handleInputChange(e)} style={{color: "rgb(0,150,200)"}}></input>
                         <label htmlFor={key} className="form-label">{toProperCase(key.replaceAll("_"," "))}</label>
                     </div>
@@ -212,8 +212,8 @@ function App() {
         }
         </div> 
 
-            <div className="d-flex m-3 p-3 w-75" style={{height: "100%"}}>
-                <div id="myGrid" style={{height: 700}} className="ag-theme-quartz">
+            <div className="d-flex m-3 p-3 w-75" style={{height: "700px"}}>
+                <div id="myGrid" style={{height: 700, width:500}} className="ag-theme-quartz">
                 <AgGridReact
                     rowData={data}
                     columnDefs={fields}
