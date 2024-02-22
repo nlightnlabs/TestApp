@@ -218,7 +218,7 @@ function App() {
         </div> 
 
             <div className="d-flex m-3 p-3" style={{height: "100%"}}>
-                <div id="myGrid" style={{height: "auto", width: "100%"}} className="ag-theme-quartz">
+                <div id="myGrid" style={{height: "auto", minHeight: 500, width: "100%"}} className="ag-theme-quartz">
                 <AgGridReact
                     rowData={data}
                     columnDefs={fields}
