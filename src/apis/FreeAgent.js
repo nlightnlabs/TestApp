@@ -83,7 +83,6 @@ export const addFARecord = async (FAClient,appName, formData)=>{
            return new Promise((resolve, reject) => {  
                FAClient.updateEntity({
                    entity:appName, // app name
-                   id: recordId, //What record to update
                    field_values: updatedFormData
                    }, (response) => {
                    console.log('Update successful: ', response);
