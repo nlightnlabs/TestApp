@@ -18,8 +18,9 @@ function App() {
     const [fields, setFields] = useState([])
     const [appName, setAppName] = useState("")
 
+    const [showForm, setShowForm] = useState(false)
     const [formData, setFormData] = useState(null)
-    const [setSelectedId, setSelectedRecordId] = useState(null)
+    const [selectedRecordId, setSelectedRecordId] = useState(null)
 
     const testData = [
         {name: "John",age: 34},
@@ -79,27 +80,76 @@ function App() {
     }
 
     const getData = () => {
-               
+
         const FAClient = window.FAClient;
-        freeAgentApi.getFAAllRecords(FAClient, appName)
+
+        if(selectedRecordId !="" && selectedRecordId !=null){
+            freeAgentApi.getFARecords(FAClient, appName, selectedRecordId)
+            .then(response => {
+                console.log(response);
+                let fieldList = []
+
+                if(response.length>0){
+                    Object.keys(response[0]).map((field,index)=>{
+                        fieldList.push({headerName: toProperCase(field.replaceAll("_"," ")), field: field, filter: true})
+                    })
+                    console.log(fieldList);
+                    setFields(fieldList)
+                }
+                setData(response);
+            })
+            .catch(error => {
+                console.error("Error fetching data:", error);
+            });
+        }else{
+            
+            freeAgentApi.getFAAllRecords(FAClient, appName)
+            .then(response => {
+                console.log(response);
+                let fieldList = []
+
+                if(response.length>0){
+                    Object.keys(response[0]).map((field,index)=>{
+                        fieldList.push({headerName: toProperCase(field.replaceAll("_"," ")), field: field, filter: true})
+                    })
+                    console.log(fieldList);
+                    setFields(fieldList)
+                }
+                setData(response);
+            })
+            .catch(error => {
+                console.error("Error fetching data:", error);
+            });
+        }
+    }
+
+    const updateRecord = (e) => {
+        const FAClient = window.FAClient;
+        freeAgentApi.updateFARecord(FAClient, appName, selectedRecordId, formData)
+
         .then(response => {
             console.log(response);
-            let fieldList = []
-
-            if(response.length>0){
-                Object.keys(response[0]).map((field,index)=>{
-                    fieldList.push({headerName: toProperCase(field.replaceAll("_"," ")), field: field, filter: true})
-                })
-                console.log(fieldList);
-                setFields(fieldList)
-            }
-            setData(response);
+            getData();
         })
         .catch(error => {
             console.error("Error fetching data:", error);
         });
     }
-    
+
+    const deleteRecord = (e) => {
+        const FAClient = window.FAClient;
+        freeAgentApi.deleteFARecord(FAClient, appName, selectedRecordId)
+
+        .then(response => {
+            console.log(response);
+            getData();
+        })
+        .catch(error => {
+            console.error("Error fetching data:", error);
+        });
+    }
+
+
     
     const pageStyle = {
         fontSize: "12px",
@@ -119,6 +169,11 @@ function App() {
         setAppName(value)
     }
 
+    const handleInputChange=(e)=>{
+        const {name, value} = e.target 
+        setFormData({...formData,...{[name]:value}})
+    }
+
     const onCellClicked = (e) => {
         setSelectedRecordId(e.data.id)
         setFormData(e.data)
@@ -129,25 +184,52 @@ function App() {
   return (
     <div className="d-flex flex-column" style={pageStyle}>
 
+
         <h2>FreeAgent Iframe Test</h2>
-        <div className="d-flex flex-column border border-1 rounded-3 shadow p-3 mb-3" style={{width: "500px"}}>
+        <div className="d-flex w-100">
+        <div className="d-flex flex-column w-25 m-3 bg-light p-3">
+            
             <div className="form-floating mb-3">
                 <input name= "app_name" className="form-control" value={appName} placeholder="app_name" onChange={(e)=>handleChange(e)}></input>
                 <label htmlFor="app_name" className="form-label">App system name: </label>
             </div>
 
-            <button className="btn btn-primary" onClick={()=>getData()}>Get Data</button>
+            <div className="form-floating mb-3">
+                <input name= "record_id" className="form-control" value={setSelectedRecordId} placeholder="Record Id" onChange={(e)=>handleChange(e)}></input>
+                <label htmlFor="record_id" className="form-label">Record Id: </label>
+            </div>
+
+            <div className="d-flex justify-content-center">
+                <button className="btn btn-primary" onClick={()=>getData()}>Get Data</button>
+            </div>
+
+            {showForm && 
+             <div className="d-flex flex-column m-3" style={{borderTop: "1px solid lightgray"}}>
+            
+                {Object.keys(formData).map((key, index)=>(
+                    <div key={index} className="form-floating mb-3">
+                        <input id={key} name= {key} value={formData[key]} className="form-control" placeholder={key} onChange={(e)=>handleInputChange(e)}></input>
+                        <label htmlFor={key} className="form-label">App system name: </label>
+                    </div>
+                ))}
+             
+             <div className="d-flex justify-content-center">
+                <button className="btn btn-primary" onClick={(e)=>updateRecord(e)}>Update</button>
+             </div>
+
+            </div> 
+        }
+        </div> 
+
+            <div className="d-flex w-75 m-3 p-3">
+                <div id="myGrid" style={{height: "auto", width: "100%"}} className="ag-theme-quartz">
+                <AgGridReact
+                    rowData={data}
+                    columnDefs={fields}
+                />
+                </div>
+            </div>
         </div>
-
-        
-
-    <   div id="myGrid" style={{height: "150px", width: "600px"}} className="ag-theme-quartz">
-        
-        <AgGridReact
-            rowData={data}
-            columnDefs={fields}
-      />
-    </div>
     </div>
   );
 }
