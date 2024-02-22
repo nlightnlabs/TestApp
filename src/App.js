@@ -97,7 +97,7 @@ function App() {
     const updateRecord = async () => {
         try {
             const FAClient = window.FAClient;
-            const response = await freeAgentApi.updateFARecord(FAClient, appName, selectedRecordId, formData)
+            const response = await freeAgentApi.update(FAClient, appName, selectedRecordId, formData)
             console.log("data received from FA function: ", response)
             getData()
         } catch (error) {

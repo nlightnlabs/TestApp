@@ -164,6 +164,28 @@ export const updateFARecord = async (FAClient, appName, recordId, formData) => {
     }
 }
 
+export const update = async (FAClient, appName, recordId, formData) => {
+    try {
+        const response = await new Promise((resolve, reject) => {
+            FAClient.updateEntity({
+                entity: appName,
+                id: recordId,
+                field_values: formData
+            }, (response) => {
+                console.log('Update successful: ', response);
+                if (response) {
+                    resolve(response);
+                } else {
+                    reject("No response from server");
+                }
+            });
+        });
+        return response;
+    } catch (error) {
+        throw new Error("Error fetching data: " + error);
+    }
+};
+
 
 //Update or delete a record in a Free Agent app
 export const deleteFARecord = async (FAClient, appName, recordId) => {
