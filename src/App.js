@@ -22,14 +22,6 @@ function App() {
     const [formData, setFormData] = useState(null)
     const [selectedRecordId, setSelectedRecordId] = useState(null)
 
-    const testData = [
-        {name: "John",age: 34},
-        {name: "Mary",age: 23},
-        {name: "Steve",age: 56},
-        {name: "Jane",age: 12},
-        {name: "Amy",age: 34}
-    ]
-
     const useExternalScript = (src) => {
         useEffect(() => {
             const script = document.createElement('script');
@@ -86,14 +78,14 @@ function App() {
         if(selectedRecordId !="" && selectedRecordId !=null){
             freeAgentApi.getFARecords(FAClient, appName, selectedRecordId)
             .then(response => {
-                console.log(response);
+                console.log("data received from FA function: ", response)
                 let fieldList = []
 
                 if(response.length>0){
                     Object.keys(response[0]).map((field,index)=>{
                         fieldList.push({headerName: toProperCase(field.replaceAll("_"," ")), field: field, filter: true})
                     })
-                    console.log(fieldList);
+                    console.log("field list: ", fieldList)
                     setFields(fieldList)
                 }
                 setData(response);
@@ -105,14 +97,14 @@ function App() {
             
             freeAgentApi.getFAAllRecords(FAClient, appName)
             .then(response => {
-                console.log(response);
+                console.log("data received from FA function: ", response)
                 let fieldList = []
 
                 if(response.length>0){
                     Object.keys(response[0]).map((field,index)=>{
                         fieldList.push({headerName: toProperCase(field.replaceAll("_"," ")), field: field, filter: true})
                     })
-                    console.log(fieldList);
+                    console.log("field list: ", fieldList)
                     setFields(fieldList)
                 }
                 setData(response);
