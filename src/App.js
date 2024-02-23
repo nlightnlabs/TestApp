@@ -9,6 +9,8 @@ import {AgGridReact} from 'ag-grid-react';
 import 'ag-grid-community/styles//ag-grid.css';
 import 'ag-grid-community/styles//ag-theme-quartz.css';
 
+import Spinner from './components/Spinner.js'
+
 function App() {
 
     
@@ -25,6 +27,8 @@ function App() {
     const [selectedRecordId, setSelectedRecordId] = useState(null)
 
     const [updatedForm, setUpdatedForm] = useState({})
+
+    const [showLoadingModal, setShowLoadingModal] = useState(false)
 
     const useExternalScript = (src) => {
         useEffect(() => {
@@ -123,10 +127,14 @@ function App() {
         try {
             const FAClient = window.FAClient;
             await freeAgentApi.updateFARecord(FAClient, appName, selectedRecordId, updatedForm)
+            setInterval(()=>{
+                setShowLoadingModal(true)
+            },600)
             setTimeout(async ()=>{
                 const response = await getData(appName)  
-                setData(response) 
-            },1000)
+                setData(response)
+                setShowLoadingModal(false)
+            },500)
         } catch (error) {
             console.error("Error fetching data:", error);
         }
@@ -141,9 +149,13 @@ function App() {
             delete updatedForm.seq_id
 
             await freeAgentApi.addFARecord(FAClient, appName, updatedForm)
+            setInterval(()=>{
+                setShowLoadingModal(true)
+            },600)
             setTimeout(async ()=>{
                 const response = await getData(appName)  
-                setData(response) 
+                setData(response)
+                setShowLoadingModal(false)
             },500)
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -155,17 +167,18 @@ function App() {
         try {
             const FAClient = window.FAClient;
             await freeAgentApi.updateFARecord(FAClient, appName, selectedRecordId)
+            setInterval(()=>{
+                setShowLoadingModal(true)
+            },600)
             setTimeout(async ()=>{
                 const response = await getData(appName)  
-                setData(response) 
+                setData(response)
+                setShowLoadingModal(false)
             },500)
         } catch (error) {
             console.error("Error fetching data:", error);
         }
     }
-
-
-
 
 
     const pageStyle = {
@@ -204,6 +217,14 @@ function App() {
       useEffect(()=>{
         
       },[data])
+
+      const modalStyle={
+        position: "fixed",
+        zIndex: 9999,
+        height: "200px",
+        width: "300px",
+        transform: "translate(-50%, -50%)"
+      }
 
 
   return (
@@ -259,12 +280,8 @@ function App() {
                 />
             </div>
         </div>
-
-        <div>
-            Loading, please wait...
         </div>
-
-        </div>
+        {showLoadingModal && <Spinner/>}
     </div>
   );
 }
