@@ -19,7 +19,7 @@ function App() {
     const [appName, setAppName] = useState("")
 
     const [showForm, setShowForm] = useState(false)
-    const [formData, setFormData] = useState({seq_id:"", owner:"", description:"", created: "", updated: ""})
+    const [formData, setFormData] = useState({})
     const [selectedRecordId, setSelectedRecordId] = useState(null)
 
     const [updatedFields, setUpdatedFields] = useState([])
@@ -136,7 +136,7 @@ function App() {
     const handleInputChange=(e)=>{
         const {name, value} = e.target 
         setFormData({...formData,...{[name]:value}})
-        setUpdatedFields[]
+        setUpdatedFields([...updatedFields,name])
     }
 
     const onCellClicked = (e) => {
@@ -174,37 +174,37 @@ function App() {
             </div>
 
             {appName !="" && appName !=null && data.length>0 &&
-             <div className="d-flex flex-column" style={{borderTop: "1px solid lightgray", height:"700px", overflowY: "hidden"}}>
-                
-                {Object.keys(formData).length> 0  && 
-                    <div className="d-flex flex-column" style={{height:"80%", overflowY: "auto"}}>
-                        {Object.keys(formData).map((key, index)=>(
-                            <div key={index} className="form-floating mb-3">
-                                <input id={key} name= {key} value={formData[key]} className="form-control" placeholder={key} onChange={(e)=>handleInputChange(e)} style={{fontSize: "12px", color: "rgb(50,150,250)"}}></input>
-                                <label htmlFor={key} className="form-label">{toProperCase(key.replaceAll("_"," "))}</label>
-                            </div>
-                        ))}
+                <div className="d-flex flex-column" style={{borderTop: "1px solid lightgray", height:"700px", overflowY: "hidden"}}>
+                    {Object.keys(formData).length> 0  && 
+                        <div className="d-flex flex-column" style={{height:"80%", overflowY: "auto"}}>
+                            {Object.keys(formData).map((key, index)=>(
+                                <div key={index} className="form-floating mb-3">
+                                    <input id={key} name= {key} value={formData[key]} className="form-control" placeholder={key} onChange={(e)=>handleInputChange(e)} style={{fontSize: "12px", color: "rgb(50,150,250)"}}></input>
+                                    <label htmlFor={key} className="form-label">{toProperCase(key.replaceAll("_"," "))}</label>
+                                </div>
+                            ))}
+                        </div>
+                    }
+                    <div className="d-flex justify-content-center mt-3">
+                        <div className="btn-group">
+                            <button className="btn btn-outline-primary" onClick={(e)=>updateRecord()}>Update</button>
+                            <button className="btn btn-outline-danger" onClick={(e)=>deleteRecord()}>Delete</button>
+                        </div>
                     </div>
-                }
-                <div className="d-flex justify-content-center mt-3">
-                    <div className="btn-group">
-                        <button className="btn btn-outline-primary" onClick={(e)=>updateRecord()}>Update</button>
-                        <button className="btn btn-outline-danger" onClick={(e)=>deleteRecord()}>Delete</button>
-                    </div>
-                </div>
+                </div> 
+            }
             </div> 
-        }
-        </div> 
 
-            <div className="d-flex p-3 w-75" style={{height:"700px"}}>
-                <div id="myGrid" style={{height: 700, width:"100%"}} className="ag-theme-quartz">
+        <div className="d-flex p-3 w-75" style={{height:"700px"}}>
+            <div id="myGrid" style={{height: 700, width:"100%"}} className="ag-theme-quartz">
                 <AgGridReact
                     rowData={data}
                     columnDefs={fields}
                     onCellClicked = {onCellClicked}
                 />
-                </div>
             </div>
+        </div>
+
         </div>
     </div>
   );
