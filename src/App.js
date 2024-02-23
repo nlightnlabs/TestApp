@@ -99,9 +99,11 @@ function App() {
     const updateRecord = async () => {
         try {
             const FAClient = window.FAClient;
-            const response = await freeAgentApi.update(FAClient, appName, selectedRecordId, updatedForm)
+            const response = await freeAgentApi.updateFARecord(FAClient, appName, selectedRecordId, updatedForm)
             console.log("data received from FA function: ", response)
-            getData()
+            if(response){
+                getData()
+            }   
         } catch (error) {
             console.error("Error fetching data:", error);
         }
@@ -112,7 +114,9 @@ function App() {
             const FAClient = window.FAClient;
             const response = await freeAgentApi.updateFARecord(FAClient, appName, selectedRecordId)
             console.log("data received from FA function: ", response)
-            getData()
+            if(response){
+                getData()
+            }  
         } catch (error) {
             console.error("Error fetching data:", error);
         }

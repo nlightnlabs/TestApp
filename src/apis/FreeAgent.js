@@ -116,66 +116,16 @@ export const addFARecord = async (FAClient,appName, formData)=>{
 }
 
 
-//Update or delete a record in a Free Agent app
+// Update record in FreeAgent
 export const updateFARecord = async (FAClient, appName, recordId, formData) => {
 
-    //Only send fields where the formData maps the fields in the app
-    const getUpdatedFormData = async ()=> {
-        let updatedFormData = {};
-        try{
-            const appData = await getFAAllRecords(FAClient, appName);
-            console.log("app data to check fields against: ", appData)
-            if (appData.length > 0) {
-                const fields = Object.keys(appData[0]);
-                Object.keys(formData).map(item=>{
-                    if(fields.includes(item)){
-                        updatedFormData = {...updatedFormData,...{[item]:formData[item]}};
-                    }
-                })
-                console.log("Updated formData", updatedFormData);
-                return updatedFormData
-            }
-        }catch(error){
-            console.log(error)
-        }
-    }   
-
-   try {
-        const updatedFormData = await getUpdatedFormData()
-        const result = await new Promise((resolve, reject) => {
-            console.log("Updated form data inside of promise",updatedFormData)
-            FAClient.updateEntity({
-                entity: appName,
-                id: recordId,
-                field_values: JSON.stringify(updatedFormData)
-            }, (response) => {
-                console.log('Connection successful: ', response);
-                if (response) {
-                    resolve(response);
-                } else {
-                    reject("No response from server");
-                }
-            });
-        });
-        return result;
-    }catch (error) {
-        console.error("Error fetching data:", error);
-    }
-}
-
-
-export const update = async (FAClient, appName, recordId, formData) => {
-
-    console.log("app to update: ",appName)
-    console.log("record id to update: ",recordId)
-    console.log("data to update: ", formData)
-
     try {
-        FAClient.updateEntity({
+        const response = await FAClient.updateEntity({
             entity: appName,
             id: recordId,
             field_values: formData
         })
+        return response
     } catch (error) {
         throw new Error("Error updating data: " + error);
     }
@@ -184,25 +134,15 @@ export const update = async (FAClient, appName, recordId, formData) => {
 
 //Update or delete a record in a Free Agent app
 export const deleteFARecord = async (FAClient, appName, recordId) => {
-
-   try {
-        const result = await new Promise((resolve, reject) => {
-            FAClient.updateEntity({
-                entity: appName,
-                id: recordId,
-                delete: true
-            }, (response) => {
-                console.log('Connection successful: ', response);
-                if (response) {
-                    resolve(response);
-                } else {
-                    reject("No response from server");
-                }
-            });
-        });
-        return result;
-    }catch (error) {
-        console.error("Error fetching data:", error);
+    try {
+        const response =  await FAClient.updateEntity({
+            entity: appName,
+            id: recordId,
+            delete: true
+        })
+        return response
+    } catch (error) {
+        throw new Error("Error deleting data: " + error);
     }
 }
 
