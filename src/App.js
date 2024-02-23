@@ -101,9 +101,11 @@ function App() {
 
     useEffect(async ()=>{
         const iconData = await getData("icon")
+        console.log("conData: ",iconData)
         setIcons(iconData)
 
         const appData = await getData("web_app")
+        console.log("appData: ",appData)
         setApps(appData)
     },[])
 
