@@ -15,15 +15,16 @@ export const getFAAllRecords = async (FAClient, appName) => {
             });
         });
 
-        response.forEach(record => {
+        response.map(record => {
             let rowData = {id: record.id};
+            console.log("record.id: ", record.id)
 
             Object.entries(record.field_values).forEach(([key, value]) => {
                 let val = value.display_value;
                 if (typeof val == "object") {
                     val = JSON.stringify(value.display_value);
                 }
-                rowData = { ...rowData, ...{ [key]: val } };
+                rowData = {...rowData, ...{ [key]: val } };
             });
             data.push(rowData);
         });

@@ -19,7 +19,7 @@ function App() {
     const [appName, setAppName] = useState("")
 
     const [showForm, setShowForm] = useState(false)
-    const [formData, setFormData] = useState({id: ""})
+    const [formData, setFormData] = useState({})
     const [selectedRecordId, setSelectedRecordId] = useState(null)
 
     const [updatedFields, setUpdatedFields] = useState([])
