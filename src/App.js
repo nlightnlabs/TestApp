@@ -123,7 +123,7 @@ function App() {
             setTimeout(async ()=>{
                 const response = await getData(appName)  
                 setData(response) 
-            },500)
+            },1000)
         } catch (error) {
             console.error("Error fetching data:", error);
         }
