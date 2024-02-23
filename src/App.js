@@ -11,9 +11,11 @@ import 'ag-grid-community/styles//ag-theme-quartz.css';
 
 function App() {
 
+    
+    const [icons, setIcons] = useState([])
     const [apps, setApps] = useState([])
-    const [ appList, setAppList] = useState([])
-
+    const [appList, setAppList] = useState([])
+    
     const [data, setData] = useState([]);
     const [fields, setFields] = useState([])
     const [appName, setAppName] = useState("")
@@ -54,26 +56,26 @@ function App() {
         window.FAClient = FAClient;
 
         //Get list of apps
-        freeAgentApi.getFAAllRecords(FAClient, "web_app")
-        .then(response => {
-            console.log(response);
-            let fieldList = []
-            if(response.length>0){
-                Object.keys(response[0]).map((field,index)=>{
-                    fieldList.push({headerName: toProperCase(field.replaceAll("_"," ")), field: field, filter: true})
-                })
-                console.log(fieldList);
-                setAppList(fieldList)
-            }
-            setApps(response);
-        })
-        .catch(error => {
-            console.error("Error fetching data:", error);
-        });
+        // freeAgentApi.getFAAllRecords(FAClient, "web_app")
+        // .then(response => {
+        //     console.log(response);
+        //     let fieldList = []
+        //     if(response.length>0){
+        //         Object.keys(response[0]).map((field,index)=>{
+        //             fieldList.push({headerName: toProperCase(field.replaceAll("_"," ")), field: field, filter: true})
+        //         })
+        //         console.log(fieldList);
+        //         setAppList(fieldList)
+        //     }
+        //     setApps(response);
+        // })
+        // .catch(error => {
+        //     console.error("Error fetching data:", error);
+        // });
 
     }
 
-    const getData = async () => {
+    const getData = async (appName) => {
         try {
             const FAClient = window.FAClient;
             const response = await freeAgentApi.getFAAllRecords(FAClient, appName);
@@ -89,19 +91,38 @@ function App() {
                 console.log("field list: ", fieldList);
                 setFields(fieldList);
             }
-            setData(response);
+            // setData(response);
+            return response
+
         } catch (error) {
             console.error("Error fetching data:", error);
         }
     };
+
+    useEffect(async ()=>{
+        const icondData = await getData("icon")
+        setIcons(icondData)
+
+        const appData = await getData("web_app")
+        setApps(appData)
+    },[])
+
+    const handleGetData = async ()=>{
+        try {
+            const response = getData(appName)  
+            setData(response)
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    }
 
     const updateRecord = async () => {
         try {
             const FAClient = window.FAClient;
             await freeAgentApi.updateFARecord(FAClient, appName, selectedRecordId, updatedForm)
             setTimeout(()=>{
-                getData()  
-            },1000)
+                getData(appName)  
+            },500)
         } catch (error) {
             console.error("Error fetching data:", error);
         }
@@ -117,8 +138,8 @@ function App() {
 
             await freeAgentApi.addFARecord(FAClient, appName, updatedForm)
             setTimeout(()=>{
-                getData()  
-            },1000)
+                getData(appName)  
+            },500)
         } catch (error) {
             console.error("Error fetching data:", error);
         }
@@ -130,7 +151,7 @@ function App() {
             const FAClient = window.FAClient;
             await freeAgentApi.updateFARecord(FAClient, appName, selectedRecordId)
             setTimeout(()=>{
-                getData()  
+                getData(appName)  
             },500)
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -184,7 +205,7 @@ function App() {
 
         <h2 className="text-center">nlightnlabs FreeAgent Iframe Test</h2>
 
-        <div className="d-flex w-100" style={{height:"800px", width: "100%"}}>
+        <div className="d-flex w-100" style={{height:"700px", width: "100%"}}>
 
         <div className="d-flex flex-column m-3 bg-light p-3 rounded-3 shadow" style={{position: "relative", width: "300px", height:"700px", overflowY: "hidden"}}>
             
@@ -197,7 +218,7 @@ function App() {
             </div>
 
             <div className="d-flex justify-content-center">
-                <button className="btn btn-primary" onClick={()=>getData()}>Get Data</button>
+                <button className="btn btn-primary" onClick={()=>handleGetData()}>Get Data</button>
             </div>
 
             {appName !="" && appName !=null && data.length>0 &&
@@ -231,6 +252,10 @@ function App() {
                     onCellClicked = {onCellClicked}
                 />
             </div>
+        </div>
+
+        <div>
+            Loading, please wait...
         </div>
 
         </div>
