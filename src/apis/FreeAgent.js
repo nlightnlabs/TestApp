@@ -174,7 +174,7 @@ export const update = async (FAClient, appName, recordId, formData) => {
         FAClient.updateEntity({
             entity: appName,
             id: recordId,
-            field_values: formData
+            field_values: JSON.stringify(formData)
         })
     } catch (error) {
         throw new Error("Error updating data: " + error);
