@@ -19,7 +19,7 @@ function App() {
     const [appName, setAppName] = useState("")
 
     const [showForm, setShowForm] = useState(false)
-    const [formData, setFormData] = useState({})
+    const [formData, setFormData] = useState({id: ""})
     const [selectedRecordId, setSelectedRecordId] = useState(null)
 
     const [updatedFields, setUpdatedFields] = useState([])
@@ -140,7 +140,9 @@ function App() {
     }
 
     const onCellClicked = (e) => {
-        setSelectedRecordId(e.data.seq_id)
+        setSelectedRecordId(e.data.id)
+        console.log(e.data.id)
+        
         setFormData(e.data)
         console.log(e.data)
       }
@@ -153,7 +155,6 @@ function App() {
 
   return (
     <div className="d-flex flex-column" style={pageStyle}>
-
 
         <h2 className="text-center">nlightnlabs FreeAgent Iframe Test</h2>
 

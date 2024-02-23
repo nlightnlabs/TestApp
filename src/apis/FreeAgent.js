@@ -1,5 +1,4 @@
   //Standard function to get all records from a FreeAgent App
-
 export const getFAAllRecords = async (FAClient, appName) => {
     try {
         let data = [];
@@ -17,7 +16,7 @@ export const getFAAllRecords = async (FAClient, appName) => {
         });
 
         response.forEach(record => {
-            let rowData = {};
+            let rowData = {id: record.id};
 
             Object.entries(record.field_values).forEach(([key, value]) => {
                 let val = value.display_value;
@@ -33,7 +32,6 @@ export const getFAAllRecords = async (FAClient, appName) => {
         throw new Error("Error fetching data: " + error);
     }
 };
-
 
 
 //Standard function to get specific records from a FreeAgent App
@@ -147,7 +145,7 @@ export const updateFARecord = async (FAClient, appName, recordId, formData) => {
             console.log("Updated form data inside of promise",updatedFormData)
             FAClient.updateEntity({
                 entity: appName,
-                seq_id: recordId,
+                id: recordId,
                 field_values: JSON.stringify(updatedFormData)
             }, (response) => {
                 console.log('Connection successful: ', response);
@@ -163,6 +161,7 @@ export const updateFARecord = async (FAClient, appName, recordId, formData) => {
         console.error("Error fetching data:", error);
     }
 }
+
 
 export const update = async (FAClient, appName, recordId, formData) => {
 
