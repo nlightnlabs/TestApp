@@ -62,7 +62,7 @@ function App() {
         
         //Initialize the connection to the FreeAgent this step takes away the loading spinner
         const FAClient = new FAAppletClient({
-            appletId: 'nlightn Iframe Template',
+            appletId: 'test-app-iframe',
         });
         window.FAClient = FAClient;
 
