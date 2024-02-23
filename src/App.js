@@ -31,9 +31,10 @@ function App() {
 
     const [showLoadingModal, setShowLoadingModal] = useState(false)
 
+
+
     useEffect(()=>{
-        const environment = process.env.NODE_ENV==="production" ? "freeagent" : "nlightn"
-        console.log(`Environment: ${environment}`)
+        process.env.NODE_ENV==="production" ? setEnvironment("freeagent") : setEnvironment("nlightn")
     },[])
 
     const useExternalScript = (src) => {
@@ -88,12 +89,15 @@ function App() {
     }
 
     const getData = async (appName) => {
+      
         let response = []
         
         if(environment==="freeagent"){
+            console.log(appName)
             const FAClient = window.FAClient;
             response = await freeAgentApi.getFAAllRecords(FAClient, appName);
         }else{
+            
             response = await nlightnApi.getTable(appName)
             return response.data
         }
@@ -102,9 +106,11 @@ function App() {
     };
 
     const handleGetData = async ()=>{
+        
         const response = await getData(appName)  
         setData(response)
         
+
         let fieldList = []
         if (response.length > 0) {
             Object.keys(response[0]).map((field, index) => {
