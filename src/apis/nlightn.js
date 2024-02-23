@@ -86,12 +86,11 @@ export const getRecords = async (req, res)=>{
 
 
 //Create New Record
-export const addRecord = async (req, res)=>{
+export const addRecord = async (tableName, formData)=>{
 
     const params = {
-        tableName: req.tableName,
-        columns: req.columns,
-        values: req.values
+        tableName: tableName,
+        formData: formData,
     }
 
     try{
@@ -105,16 +104,16 @@ export const addRecord = async (req, res)=>{
 }
 
 //Update Record
-export const updateRecord = async (req, res)=>{
+export const updateRecord = async (tableName,idField,recordId,formData)=>{
     
     const params = {
-        tableName: req.tableName,
-        idField: req.idField,
-        recordId: req.recordId,
-        formData: req.formData
+        tableName,
+        idField,
+        recordId,
+        formData
     }
 
-    //console.log(params)
+    console.log(params)
     try{
       const result = await dbUrl.post("/db/updateRecord",{params})
       //console.log(result)
@@ -126,13 +125,13 @@ export const updateRecord = async (req, res)=>{
 }
 
 //Delete Record
-export const deleteRecord = async (req, res)=>{
+export const deleteRecord = async (tableName,idField,recordId)=>{
 
   const params = {
-      tableName: req.tableName,
-      idField: req.idField,
-      recordId: req.recordId
-  }
+    tableName,
+    idField,
+    recordId
+}
   try{
     const result = await dbUrl.post("/db/deleteRecord",{params})
     //console.log(result)
@@ -233,6 +232,21 @@ export const scanInvoice = async ({args})=>{
     const result = await dbUrl.post("/gpt",{params})
     console.log(JSON.parse(result.data))
     return (JSON.parse(result.data))
+  }catch(error){
+    console.log(error)
+  }
+}
+
+export const runPython = async (pythonAppName,args)=>{
+  const params = {
+    pythonAppName,
+    args
+  }
+  try{
+    const result = await dbUrl.post("/runPython",{params})
+    console.log(JSON.parse(result.data))
+    return (JSON.parse(result.data))
+
   }catch(error){
     console.log(error)
   }
