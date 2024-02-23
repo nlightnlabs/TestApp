@@ -100,8 +100,8 @@ function App() {
     };
 
     useEffect(async ()=>{
-        const icondData = await getData("icon")
-        setIcons(icondData)
+        const iconData = await getData("icon")
+        setIcons(iconData)
 
         const appData = await getData("web_app")
         setApps(appData)
@@ -109,7 +109,7 @@ function App() {
 
     const handleGetData = async ()=>{
         try {
-            const response = getData(appName)  
+            const response = await getData(appName)  
             setData(response)
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -120,8 +120,9 @@ function App() {
         try {
             const FAClient = window.FAClient;
             await freeAgentApi.updateFARecord(FAClient, appName, selectedRecordId, updatedForm)
-            setTimeout(()=>{
-                getData(appName)  
+            setTimeout(async ()=>{
+                const response = await getData(appName)  
+                setData(response) 
             },500)
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -137,8 +138,9 @@ function App() {
             delete updatedForm.seq_id
 
             await freeAgentApi.addFARecord(FAClient, appName, updatedForm)
-            setTimeout(()=>{
-                getData(appName)  
+            setTimeout(async ()=>{
+                const response = await getData(appName)  
+                setData(response) 
             },500)
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -150,8 +152,9 @@ function App() {
         try {
             const FAClient = window.FAClient;
             await freeAgentApi.updateFARecord(FAClient, appName, selectedRecordId)
-            setTimeout(()=>{
-                getData(appName)  
+            setTimeout(async ()=>{
+                const response = await getData(appName)  
+                setData(response) 
             },500)
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -218,7 +221,7 @@ function App() {
             </div>
 
             <div className="d-flex justify-content-center">
-                <button className="btn btn-primary" onClick={()=>handleGetData()}>Get Data</button>
+                <button className="btn btn-primary" onClick={(e)=>handleGetData()}>Get Data</button>
             </div>
 
             {appName !="" && appName !=null && data.length>0 &&
