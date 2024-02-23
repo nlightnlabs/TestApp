@@ -28,7 +28,7 @@ export const getData = async (query, res)=>{
 export const getTable = async (tableName, res)=>{
     try{
       const result = await dbUrl.get(`/db/table/${tableName}`)
-      console.log(result.data)
+      // console.log(result.data)
       const {data,dataTypes} = await result.data
       return ({data,dataTypes})
     }catch(error){
@@ -88,19 +88,21 @@ export const getRecords = async (req, res)=>{
 //Create New Record
 export const addRecord = async (tableName, formData)=>{
 
-    const params = {
-        tableName: tableName,
-        formData: formData,
-    }
+  console.log(tableName)
+  console.log(formData)
 
+  if(tableName.length > 0 && Object.entries(formData).length>0){
     try{
-      const result = await dbUrl.post("/db/addRecord",{params})
+      const result = await dbUrl.post("/db/addRecord",{tableName, formData})
       //console.log(result)
       const data = await result.data
       return (data)
     }catch(error){
       //console.log(error)
     }
+  }else{
+    alert("Please provide information for the new record")
+  }
 }
 
 //Update Record
@@ -114,6 +116,7 @@ export const updateRecord = async (tableName,idField,recordId,formData)=>{
     }
 
     console.log(params)
+    
     try{
       const result = await dbUrl.post("/db/updateRecord",{params})
       //console.log(result)

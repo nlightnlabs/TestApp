@@ -115,7 +115,6 @@ function App() {
 
     const handleGetData = async ()=>{
         const response = await getData(appName)  
-        console.log(response)
         setData(response)
         
         let fieldList = []
@@ -175,7 +174,7 @@ function App() {
             }
         }else{
             const response = await nlightnApi.addRecord(appName, updatedForm)
-            const updatedData = getData(appName)
+            const updatedData = await getData(appName)
             console.log(updatedData)
             setData(updatedData)
         }
@@ -200,7 +199,7 @@ function App() {
             }
         }else{
             await nlightnApi.deleteRecord(appName,"id",selectedRecordId)
-            const updatedData = getData(appName)
+            const updatedData = await getData(appName)
             setData(updatedData)
         }
     }
@@ -228,10 +227,7 @@ function App() {
 
     const onCellClicked = (e) => {
         setSelectedRecordId(e.data.id)
-        console.log(e.data.id)
-        
         setFormData(e.data)
-        console.log(e.data)
       }
 
       const props = {
@@ -279,7 +275,7 @@ function App() {
                         <div className="d-flex flex-column" style={{height:"80%", overflowY: "auto"}}>
                             {Object.keys(formData).map((key, index)=>(
                                 <div key={index} className="form-floating mb-3">
-                                    <input id={key} name= {key} value={formData[key]} className="form-control" placeholder={key} onChange={(e)=>handleInputChange(e)} style={{fontSize: "12px", color: "rgb(50,150,250)"}}></input>
+                                    <input id={key} name= {key} value={formData[key] || ""} className="form-control" placeholder={key} onChange={(e)=>handleInputChange(e)} style={{fontSize: "12px", color: "rgb(50,150,250)"}}></input>
                                     <label htmlFor={key} className="form-label">{toProperCase(key.replaceAll("_"," "))}</label>
                                 </div>
                             ))}
