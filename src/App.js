@@ -14,7 +14,7 @@ import Spinner from './components/Spinner.js'
 
 function App() {
 
-    const [environment, setEnvironment] = useState("nlightn")
+    const [environment, setEnvironment] = useState("freeagent")
     const [icons, setIcons] = useState([])
     const [apps, setApps] = useState([])
     const [appList, setAppList] = useState([])
@@ -66,7 +66,6 @@ function App() {
         });
         window.FAClient = FAClient;
 
-       
         let list = [];
         FAClient.listEntityValues({
             entity: "web_app",
