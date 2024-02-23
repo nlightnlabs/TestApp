@@ -95,6 +95,18 @@ function App() {
         }
     };
 
+    const updateRecord = async () => {
+        try {
+            const FAClient = window.FAClient;
+            await freeAgentApi.updateFARecord(FAClient, appName, selectedRecordId, updatedForm)
+            setTimeout(()=>{
+                getData()  
+            },1000)
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    }
+
 
     const addRecord = async () => {
         try {
@@ -103,38 +115,23 @@ function App() {
             delete updatedForm.id
             delete updatedForm.seq_id
 
-            const response = await freeAgentApi.addFARecord(FAClient, appName, updatedForm)
-            console.log("data received from FA function: ", response)
-            if(response){
-                getData()
-            }   
+            await freeAgentApi.addFARecord(FAClient, appName, updatedForm)
+            setTimeout(()=>{
+                getData()  
+            },1000)
         } catch (error) {
             console.error("Error fetching data:", error);
         }
     }
     
 
-    const updateRecord = async () => {
-        try {
-            const FAClient = window.FAClient;
-            const response = await freeAgentApi.updateFARecord(FAClient, appName, selectedRecordId, updatedForm)
-            console.log("data received from FA function: ", response)
-            if(response){
-                getData()
-            }   
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
-    }
-
     const deleteRecord = async () => {
         try {
             const FAClient = window.FAClient;
-            const response = await freeAgentApi.updateFARecord(FAClient, appName, selectedRecordId)
-            console.log("data received from FA function: ", response)
-            if(response){
-                getData()
-            }  
+            await freeAgentApi.updateFARecord(FAClient, appName, selectedRecordId)
+            setTimeout(()=>{
+                getData()  
+            },500)
         } catch (error) {
             console.error("Error fetching data:", error);
         }
