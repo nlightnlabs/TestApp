@@ -57,47 +57,35 @@ function App() {
     useExternalScript('https://freeagentsoftware1.gitlab.io/apps/google-maps/js/lib.js');
     
 
-
     const initializeFreeAgentConnection = () => {
         const FAAppletClient = window.FAAppletClient;
         
         //Initialize the connection to the FreeAgent this step takes away the loading spinner
         const FAClient = new FAAppletClient({
-            appletId: 'test-app-iframe',
+            appletId: 'nlightn Iframe Template',
         });
         window.FAClient = FAClient;
 
-        //Get list of apps
-        freeAgentApi.getFAAllRecords(FAClient, "web_app")
-        .then(response => {
-            let fieldList = []
-            if(response.length>0){
-                Object.keys(response[0]).map((field,index)=>{
-                    fieldList.push({headerName: toProperCase(field.replaceAll("_"," ")), field: field, filter: true})
-                })
-                setAppList(fieldList)
-            }
-            setApps(response);
-        })
-        .catch(error => {
-            console.error("Error fetching data:", error);
+       
+        let list = [];
+        FAClient.listEntityValues({
+            entity: "web_app",
+        }, (response) => {
+            console.log('Successfully loaded web apps: ', response);
+            setApps(response)
+            (response.field_values).map(item =>{
+                list.push(item.display_value)   
+            })
+            setAppList(list)
         });
 
-        freeAgentApi.getFAAllRecords(FAClient, "icon")
-        .then(response => {
-            let fieldList = []
-            if(response.length>0){
-                Object.keys(response[0]).map((field,index)=>{
-                    fieldList.push({headerName: toProperCase(field.replaceAll("_"," ")), field: field, filter: true})
-                })
-                setAppList(fieldList)
-            }
-            setIcons(response);
-        })
-        .catch(error => {
-            console.error("Error fetching data:", error);
-        });
 
+        FAClient.listEntityValues({
+            entity: "icon",
+        }, (response) => {
+            console.log('Successfully loaded icons: ', response);
+            setIcons(response)
+        });
     }
 
     const getData = async (appName) => {
