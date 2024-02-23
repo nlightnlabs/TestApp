@@ -94,6 +94,24 @@ function App() {
             console.error("Error fetching data:", error);
         }
     };
+
+
+    const addRecord = async () => {
+        try {
+            const FAClient = window.FAClient;
+
+            delete updatedForm.id
+            delete updatedForm.seq_id
+
+            const response = await freeAgentApi.addFARecord(FAClient, appName, updatedForm)
+            console.log("data received from FA function: ", response)
+            if(response){
+                getData()
+            }   
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    }
     
 
     const updateRecord = async () => {
@@ -121,6 +139,9 @@ function App() {
             console.error("Error fetching data:", error);
         }
     }
+
+
+
 
 
     const pageStyle = {
@@ -196,6 +217,7 @@ function App() {
                     }
                     <div className="d-flex justify-content-center mt-3">
                         <div className="btn-group">
+                            <button className="btn btn-outline-success" onClick={(e)=>addRecord()}>Add</button>
                             <button className="btn btn-outline-primary" onClick={(e)=>updateRecord()}>Update</button>
                             <button className="btn btn-outline-danger" onClick={(e)=>deleteRecord()}>Delete</button>
                         </div>
