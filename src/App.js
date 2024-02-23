@@ -152,6 +152,10 @@ function App() {
         readOnly: false
       }
 
+      useEffect(()=>{
+        
+      },[data])
+
 
   return (
     <div className="d-flex flex-column" style={pageStyle}>
