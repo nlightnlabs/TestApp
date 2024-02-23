@@ -138,8 +138,10 @@ export const deleteFARecord = async (FAClient, appName, recordId) => {
         const response =  await FAClient.updateEntity({
             entity: appName,
             id: recordId,
-            delete: true
-        })
+            field_values: {
+                delete: true
+            }
+    })
         return response
     } catch (error) {
         throw new Error("Error deleting data: " + error);
