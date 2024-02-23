@@ -56,22 +56,39 @@ function App() {
         window.FAClient = FAClient;
 
         //Get list of apps
-        // freeAgentApi.getFAAllRecords(FAClient, "web_app")
-        // .then(response => {
-        //     console.log(response);
-        //     let fieldList = []
-        //     if(response.length>0){
-        //         Object.keys(response[0]).map((field,index)=>{
-        //             fieldList.push({headerName: toProperCase(field.replaceAll("_"," ")), field: field, filter: true})
-        //         })
-        //         console.log(fieldList);
-        //         setAppList(fieldList)
-        //     }
-        //     setApps(response);
-        // })
-        // .catch(error => {
-        //     console.error("Error fetching data:", error);
-        // });
+        freeAgentApi.getFAAllRecords(FAClient, "web_app")
+        .then(response => {
+            console.log(response);
+            let fieldList = []
+            if(response.length>0){
+                Object.keys(response[0]).map((field,index)=>{
+                    fieldList.push({headerName: toProperCase(field.replaceAll("_"," ")), field: field, filter: true})
+                })
+                console.log(fieldList);
+                setAppList(fieldList)
+            }
+            setApps(response);
+        })
+        .catch(error => {
+            console.error("Error fetching data:", error);
+        });
+
+        freeAgentApi.getFAAllRecords(FAClient, "icon")
+        .then(response => {
+            console.log(response);
+            let fieldList = []
+            if(response.length>0){
+                Object.keys(response[0]).map((field,index)=>{
+                    fieldList.push({headerName: toProperCase(field.replaceAll("_"," ")), field: field, filter: true})
+                })
+                console.log(fieldList);
+                setAppList(fieldList)
+            }
+            setIcons(response);
+        })
+        .catch(error => {
+            console.error("Error fetching data:", error);
+        });
 
     }
 
@@ -98,16 +115,6 @@ function App() {
             console.error("Error fetching data:", error);
         }
     };
-
-    useEffect(async ()=>{
-        const iconData = await getData("icon")
-        console.log("conData: ",iconData)
-        setIcons(iconData)
-
-        const appData = await getData("web_app")
-        console.log("appData: ",appData)
-        setApps(appData)
-    },[])
 
     const handleGetData = async ()=>{
         try {
