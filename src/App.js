@@ -72,8 +72,8 @@ function App() {
         }, (response) => {
             console.log('Successfully loaded web apps: ', response);
             setApps(response)
-            (response.field_values).map(item =>{
-                list.push(item.display_value)   
+            (response).map(item =>{
+                list.push(item.field_values.name.display_value)   
             })
             setAppList(list)
         });
