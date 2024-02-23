@@ -139,7 +139,7 @@ export const deleteFARecord = async (FAClient, appName, recordId) => {
             entity: appName,
             id: recordId,
             field_values: {
-                delete: true
+                delete: "true"
             }
     })
         return response
