@@ -22,7 +22,7 @@ function App() {
     const [formData, setFormData] = useState({})
     const [selectedRecordId, setSelectedRecordId] = useState(null)
 
-    const [updatedFields, setUpdatedFields] = useState([])
+    const [updatedForm, setUpdatedForm] = useState({})
 
     const useExternalScript = (src) => {
         useEffect(() => {
@@ -99,7 +99,7 @@ function App() {
     const updateRecord = async () => {
         try {
             const FAClient = window.FAClient;
-            const response = await freeAgentApi.update(FAClient, appName, selectedRecordId, formData)
+            const response = await freeAgentApi.update(FAClient, appName, selectedRecordId, updatedForm)
             console.log("data received from FA function: ", response)
             getData()
         } catch (error) {
@@ -136,7 +136,7 @@ function App() {
     const handleInputChange=(e)=>{
         const {name, value} = e.target 
         setFormData({...formData,...{[name]:value}})
-        setUpdatedFields([...updatedFields,name])
+        setUpdatedForm({...updatedForm,...{[name]:value}})
     }
 
     const onCellClicked = (e) => {
