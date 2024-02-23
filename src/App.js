@@ -58,13 +58,11 @@ function App() {
         //Get list of apps
         freeAgentApi.getFAAllRecords(FAClient, "web_app")
         .then(response => {
-            console.log(response);
             let fieldList = []
             if(response.length>0){
                 Object.keys(response[0]).map((field,index)=>{
                     fieldList.push({headerName: toProperCase(field.replaceAll("_"," ")), field: field, filter: true})
                 })
-                console.log(fieldList);
                 setAppList(fieldList)
             }
             setApps(response);
@@ -75,13 +73,11 @@ function App() {
 
         freeAgentApi.getFAAllRecords(FAClient, "icon")
         .then(response => {
-            console.log(response);
             let fieldList = []
             if(response.length>0){
                 Object.keys(response[0]).map((field,index)=>{
                     fieldList.push({headerName: toProperCase(field.replaceAll("_"," ")), field: field, filter: true})
                 })
-                console.log(fieldList);
                 setAppList(fieldList)
             }
             setIcons(response);
@@ -105,10 +101,8 @@ function App() {
                     fieldList.push({ headerName: toProperCase(field.replaceAll("_", " ")), field: field, filter: true });
                     setFormData(prev => ({ ...prev, ...{ [field]: "" } }));
                 });
-                console.log("field list: ", fieldList);
                 setFields(fieldList);
             }
-            // setData(response);
             return response
 
         } catch (error) {
