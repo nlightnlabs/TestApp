@@ -110,6 +110,7 @@ function App() {
             response = await nlightnApi.getTable(appName)
             return response.data
         }
+        console.log(response)
         return response
     };
 
