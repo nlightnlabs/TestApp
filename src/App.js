@@ -137,7 +137,7 @@ function App() {
         if(environment === "freeagent"){
             try {
                 const FAClient = window.FAClient;
-                await freeAgentApi.updateFARecord(FAClient, appName, selectedRecordId, updatedForm)
+                freeAgentApi.updateFARecord(FAClient, appName, selectedRecordId, updatedForm)
                 setTimeout(async ()=>{
                     const response = await getData(appName)  
                     setData(response)
