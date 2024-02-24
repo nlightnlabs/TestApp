@@ -97,6 +97,7 @@ function App() {
     }
 
     useEffect(()=>{
+       setTimeout(()=>{
         let env = null
         let appname = null    
         if(process.env.NODE_ENV==="production"){
@@ -110,6 +111,7 @@ function App() {
         console.log(appname)
         setEnvironment(env)
         getApps(appname)
+       },1000) 
     },[])
 
 
