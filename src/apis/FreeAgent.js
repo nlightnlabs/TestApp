@@ -132,12 +132,15 @@ export const updateFARecord = async (FAClient, appName, recordId, formData) => {
 
 //Update or delete a record in a Free Agent app
 export const deleteFARecord = async (FAClient, appName, recordId) => {
+    console.log(appName)
+    console.log(recordId)
+
     try {
         const response =  await FAClient.updateEntity({
             entity: appName,
             id: recordId,
             field_values: {
-                "deleted": "true"
+                deleted: true
             },
     })
         return response
