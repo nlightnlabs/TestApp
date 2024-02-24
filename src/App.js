@@ -130,6 +130,8 @@ function App() {
         setFields(fieldList);
     }
 
+    
+
     const updateRecord = async () => {
 
         if(environment === "freeagent"){
@@ -251,6 +253,8 @@ function App() {
       useEffect(()=>{
         
       },[data])
+
+
 
       const modalStyle={
         position: "fixed",
