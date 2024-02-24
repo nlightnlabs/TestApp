@@ -14,7 +14,7 @@ import Spinner from './components/Spinner.js'
 
 function App() {
 
-    const [environment, setEnvironment] = useState(null)
+    const [environment, setEnvironment] = useState("")
     const [icons, setIcons] = useState([])
     const [apps, setApps] = useState([])
     const [appList, setAppList] = useState([])
@@ -71,6 +71,7 @@ function App() {
     }
 
     const getData = async (appName) => {
+        console.log("instde of getData with ",appName)
         let response = []
         if(environment==="freeagent"){
             console.log("getData inside of freeagent environment....")
@@ -88,15 +89,7 @@ function App() {
         return response
     };
 
-    const getApps = async (appname)=>{
-        const response = await getData(appname)
-        setApps(response)
-        let list = []
-        response.map(item=>{
-            list.push(item.label)
-        })
-        setAppList(list)
-    }
+    
 
     useEffect(()=>{
     console.log("testing useEffect")
@@ -111,9 +104,23 @@ function App() {
                 appname = "apps"
             }
             setEnvironment(env)
-            getApps(appname)
        },1000) 
     },[])
+
+    useEffect(()=>{
+        console.log("environment: ",environment)
+        getApps()
+    },[environment])
+
+    const getApps = async (appname)=>{
+        const response = await getData(appname)
+        setApps(response)
+        let list = []
+        response.map(item=>{
+            list.push(item.label)
+        })
+        setAppList(list)
+    }
 
 
     const handleGetData = async ()=>{
