@@ -229,8 +229,6 @@ function App() {
 
         let system_name = apps.find(item =>item.label ===value).name
         setAppName(system_name)
-        setFormData({...formData,...{[system_name]:value}})
-        setUpdatedForm({...updatedForm,...{[system_name]:value}})
     }
 
 
@@ -285,11 +283,7 @@ function App() {
                 </select>
                 <label htmlFor="app_name" className="form-label">App system name: </label>
             </div>
-            
-            {appName && <div className="d-flex">
-                <label className="me-3" style={{color: "gray"}}>System Name: </label>
-                <div htmlFor="app_name" className="form-label" style={{color: "rgb(0,200,0)", fontWeight: "bold"}}>{appName}</div>
-            </div>}
+        
 
             <div className="d-flex justify-content-center mb-3">
                 <button className="btn btn-primary" onClick={(e)=>handleGetData()}>Get Data</button>
