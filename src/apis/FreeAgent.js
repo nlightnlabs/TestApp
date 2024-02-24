@@ -116,9 +116,6 @@ export const addFARecord = async (FAClient,appName, formData)=>{
 
 // Update record in FreeAgent
 export const updateFARecord = async (FAClient, appName, recordId, formData) => {
-    console.log(appName)
-    console.log(recordId)
-    console.log(formData)
     
     try {
         const response = await FAClient.updateEntity({
@@ -134,10 +131,7 @@ export const updateFARecord = async (FAClient, appName, recordId, formData) => {
 
 
 //Update or delete a record in a Free Agent app
-export const deleteFARecord = async (FAClient, appName, recordId) => {
-    
-    console.log(appName)
-    console.log(recordId)   
+export const deleteFARecord = async (FAClient, appName, recordId) => { 
 
     try {
         const response =  await FAClient.updateEntity({

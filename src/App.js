@@ -36,7 +36,6 @@ function App() {
 
     const [showLoadingModal, setShowLoadingModal] = useState(false)
 
-
     const useExternalScript = (src) => {
         useEffect(() => {
             const script = document.createElement('script');
@@ -105,7 +104,7 @@ function App() {
     useEffect(()=>{
        setTimeout(()=>{
             let appname = null    
-            if(process.env.NODE_ENV==="production"){
+            if(process.env.NODE_ENV==="production" && environment==="freeagent"){
                 appname = "web_app"
             }else{
                 appname = "apps"
@@ -181,7 +180,6 @@ function App() {
         }
     }
     
-
     const deleteRecord = async () => {
         if(environment == "freeagent"){
             try {
@@ -205,18 +203,11 @@ function App() {
         }
     }
 
-
     const pageStyle = {
         fontSize: "12px",
         height: environment==="freeagent" ? "700px" : "100vh",
         width: "100%",
         overflow: "hidden"
-    }
-
-    const cellStyle={
-        whiteSpace: "nowrap",
-        maxWidth: "150px",
-        height: "20px"
     }
 
     const handleSelectApp = (e)=>{
@@ -226,7 +217,6 @@ function App() {
         let system_name = apps.find(item =>item.label ===value).name
         setAppName(system_name)
     }
-
 
     const handleInputChange=(e)=>{
         const {name, value} = e.target 
@@ -239,24 +229,10 @@ function App() {
         setFormData(e.data)
       }
 
-      const props = {
-        disabled: false,
-        readOnly: false
-      }
-
       useEffect(()=>{
         
       },[data])
 
-
-
-      const modalStyle={
-        position: "fixed",
-        zIndex: 9999,
-        height: "200px",
-        width: "300px",
-        transform: "translate(-50%, -50%)"
-      }
 
 
   return (
@@ -308,7 +284,7 @@ function App() {
             }
         </div> 
 
-        <div className="d-flex p-3 w-75" style={{height:"100%"}}>
+        <div className="d-flex p-3 flex-column w-75" style={{height:"100%"}}>
             <div id="myGrid" style={{height: "100%", width:"100%"}} className="ag-theme-quartz">
                 <AgGridReact
                     rowData={data}
@@ -318,15 +294,6 @@ function App() {
             </div>
         </div>
         </div>
-        { 
-            showLoadingModal &&
-            <div 
-                className="d-flex justify-contents-center align-items-center" 
-                style={modalStyle}
-            >
-                <Spinner/>
-            </div>
-        }
     </div>
   );
 }
