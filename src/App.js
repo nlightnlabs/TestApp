@@ -97,7 +97,6 @@ function App() {
     }
 
     useEffect(()=>{
-
         let env = null
         let appname = null    
         if(process.env.NODE_ENV==="production"){
@@ -112,9 +111,6 @@ function App() {
         setEnvironment(env)
         getApps(appname)
     },[])
-
-
-
 
 
     const handleGetData = async ()=>{
@@ -212,7 +208,7 @@ function App() {
 
     const pageStyle = {
         fontSize: "12px",
-        height: environment==="freeagent" ? "100%" : "100vh",
+        height: environment==="freeagent" ? "700px" : "100vh",
         width: "100%",
         overflow: "hidden"
     }
