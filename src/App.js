@@ -138,14 +138,10 @@ function App() {
             try {
                 const FAClient = window.FAClient;
                 await freeAgentApi.updateFARecord(FAClient, appName, selectedRecordId, updatedForm)
-                setInterval(()=>{
-                    setShowLoadingModal(true)
-                },600)
                 setTimeout(async ()=>{
                     const response = await getData(appName)  
                     setData(response)
-                    setShowLoadingModal(false)
-                },500)
+                },1000)
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
