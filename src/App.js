@@ -86,6 +86,7 @@ function App() {
     };
 
     const getApps = async (appname)=>{
+        console.log("testing useEffect in get Apps")
         console.log(appname)
         const response = await getData(appname)
         setApps(response)
@@ -97,20 +98,23 @@ function App() {
     }
 
     useEffect(()=>{
+
+    console.log("testing useEffect")
+
        setTimeout(()=>{
-        let env = null
-        let appname = null    
-        if(process.env.NODE_ENV==="production"){
-            env = "freeagent" 
-            appname = "web_app"
-        }else{
-            env = "nlightn"
-            appname = "apps"
-        }
-        console.log(env)
-        console.log(appname)
-        setEnvironment(env)
-        getApps(appname)
+            let env = null
+            let appname = null    
+            if(process.env.NODE_ENV==="production"){
+                env = "freeagent" 
+                appname = "web_app"
+            }else{
+                env = "nlightn"
+                appname = "apps"
+            }
+            console.log(env)
+            console.log(appname)
+            setEnvironment(env)
+            getApps(appname)
        },1000) 
     },[])
 
