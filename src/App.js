@@ -33,11 +33,6 @@ function App() {
     const [showLoadingModal, setShowLoadingModal] = useState(false)
 
 
-
-  
-
-   
-
     const useExternalScript = (src) => {
         useEffect(() => {
             const script = document.createElement('script');
@@ -76,9 +71,7 @@ function App() {
     }
 
     const getData = async (appName) => {
-      
         let response = []
-        
         if(environment==="freeagent"){
             console.log(appName)
             const FAClient = window.FAClient;
@@ -93,6 +86,7 @@ function App() {
     };
 
     const getApps = async (appname)=>{
+        console.log(appname)
         const response = await getData(appname)
         setApps(response)
         let list = []
@@ -113,6 +107,8 @@ function App() {
             env = "nlightn"
             appname = "apps"
         }
+        console.log(env)
+        console.log(appname)
         setEnvironment(env)
         getApps(appname)
     },[])
