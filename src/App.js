@@ -14,7 +14,11 @@ import Spinner from './components/Spinner.js'
 
 function App() {
 
-    const [environment, setEnvironment] = useState("")
+    let environment = "freeagent"
+    if(process.env.NODE_ENV ==="development"){
+        environment = "nlightn"
+    }
+    
     const [icons, setIcons] = useState([])
     const [apps, setApps] = useState([])
     const [appList, setAppList] = useState([])
@@ -71,12 +75,9 @@ function App() {
     }
 
     const getData = async (appName) => {
-        console.log("instde of getData with ",appName)
+
         let response = []
         if(environment==="freeagent"){
-            console.log("getData inside of freeagent environment....")
-            console.log("appName: ",appName)
-            
             const FAClient = window.FAClient;
             response = await freeAgentApi.getFAAllRecords(FAClient, appName);
             console.log("data retrieved: ", response)
@@ -90,28 +91,7 @@ function App() {
     };
 
     
-
-    useEffect(()=>{
-    console.log("testing useEffect")
-       setTimeout(()=>{
-            let env = null
-            let appname = null    
-            if(process.env.NODE_ENV==="production"){
-                env = "freeagent" 
-                appname = "web_app"
-            }else{
-                env = "nlightn"
-                appname = "apps"
-            }
-            setEnvironment(env)
-       },1000) 
-    },[])
-
-    useEffect(()=>{
-        console.log("environment: ",environment)
-        getApps()
-    },[environment])
-
+    //Get data for all apps
     const getApps = async (appname)=>{
         const response = await getData(appname)
         setApps(response)
@@ -121,6 +101,18 @@ function App() {
         })
         setAppList(list)
     }
+
+    useEffect(()=>{
+       setTimeout(()=>{
+            let appname = null    
+            if(process.env.NODE_ENV==="production"){
+                appname = "web_app"
+            }else{
+                appname = "apps"
+            }
+            getApps(appname)
+       },500) 
+    },[])
 
 
     const handleGetData = async ()=>{
