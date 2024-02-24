@@ -73,9 +73,12 @@ function App() {
     const getData = async (appName) => {
         let response = []
         if(environment==="freeagent"){
-            console.log(appName)
+            console.log("getData inside of freeagent environment....")
+            console.log("appName: ",appName)
+            
             const FAClient = window.FAClient;
             response = await freeAgentApi.getFAAllRecords(FAClient, appName);
+            console.log("data retrieved: ", response)
         }else{
             
             response = await nlightnApi.getTable(appName)
@@ -86,8 +89,6 @@ function App() {
     };
 
     const getApps = async (appname)=>{
-        console.log("testing useEffect in get Apps")
-        console.log(appname)
         const response = await getData(appname)
         setApps(response)
         let list = []
@@ -98,9 +99,7 @@ function App() {
     }
 
     useEffect(()=>{
-
     console.log("testing useEffect")
-
        setTimeout(()=>{
             let env = null
             let appname = null    
@@ -111,8 +110,6 @@ function App() {
                 env = "nlightn"
                 appname = "apps"
             }
-            console.log(env)
-            console.log(appname)
             setEnvironment(env)
             getApps(appname)
        },1000) 
