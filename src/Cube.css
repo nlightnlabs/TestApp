@@ -1,0 +1,36 @@
+.container {
+    perspective: 1000px; /* Perspective for 3D effect */
+  }
+  
+  .square {
+    width: 100px;
+    height: 100px;
+    background-color: #3498db;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform-origin: center center; /* Set transform origin to center */
+    animation: rotate 5s infinite linear; /* Animation for rotation */
+  }
+  
+  @keyframes rotate {
+    0% {
+      transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+    }
+    100% {
+      transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+    }
+  }
+  
+  .x-axis {
+    transform: translateX(-150px) rotateX(60deg);
+  }
+  
+  .y-axis {
+    transform: translateY(-150px) rotateY(60deg);
+  }
+  
+  .z-axis {
+    transform: translateZ(-150px) rotateZ(60deg);
+  }
+  

@@ -1,301 +1,82 @@
-
 import './App.css';
-import React, {useState, useEffect} from 'react'
-import "bootstrap/dist/css/bootstrap.min.css"
-import * as freeAgentApi from "./apis/FreeAgent.js";
-import * as nlightnApi from './apis/nlightn.js';
-import {toProperCase} from "./functions/formatValue.js";
+import './index.css';
+import React, { useState, useEffect } from 'react';
+import "bootstrap/dist/css/bootstrap.min.css";
+import * as nlightnApi from './components/apis/nlightn';
+import AIInput from './components/AIInput.js';
+import Svg from './Svg.js';
+import Image from './components/icons/budget_icon.svg'
 
-import {AgGridReact} from 'ag-grid-react';
-import 'ag-grid-community/styles//ag-grid.css';
-import 'ag-grid-community/styles//ag-theme-quartz.css';
-
-import Spinner from './components/Spinner.js'
 
 function App() {
+    const [prompt, setPrompt] = useState("");
+    const [commonNeeds, setCommonNeeds] = useState([]);
 
-    let environment = "freeagent"
-    if(process.env.NODE_ENV ==="development"){
-        environment = "nlightn"
-    }
-    
-    const [icons, setIcons] = useState([])
-    const [apps, setApps] = useState([])
-    const [appList, setAppList] = useState([])
-    
-    const [data, setData] = useState([]);
-    const [fields, setFields] = useState([])
-    const [appLabel, setAppLabel] = useState("")
-    const [appName, setAppName] = useState("")
-
-    const [showForm, setShowForm] = useState(false)
-    const [formData, setFormData] = useState({})
-    const [selectedRecordId, setSelectedRecordId] = useState(null)
-
-    const [updatedForm, setUpdatedForm] = useState({})
-
-    const [showLoadingModal, setShowLoadingModal] = useState(false)
-
-    const useExternalScript = (src) => {
-        useEffect(() => {
-            const script = document.createElement('script');
-            script.src = src;
-            script.async = true;
-            document.body.appendChild(script);
-
-            setTimeout(() => {
-                initializeFreeAgentConnection();
-            }, 500);
-
-            return () => {
-                document.body.removeChild(script);
-            };
-        }, [src]);
-    };
-    //script to itnegrate FreeAgent library
-    useExternalScript('https://freeagentsoftware1.gitlab.io/apps/google-maps/js/lib.js');
-    
-
-    const initializeFreeAgentConnection = () => {
-        const FAAppletClient = window.FAAppletClient;
-        
-        //Initialize the connection to the FreeAgent this step takes away the loading spinner
-        const FAClient = new FAAppletClient({
-            appletId: 'test-app-iframe',
-        });
-        window.FAClient = FAClient;
-
-        FAClient.listEntityValues({
-            entity: "icon",
-        }, (response) => {
-            console.log('Successfully loaded icons: ', response);
-            setIcons(response)
-        });
-    }
-
-    const getData = async (appName) => {
-
-        let response = []
-        if(environment==="freeagent"){
-            const FAClient = window.FAClient;
-            response = await freeAgentApi.getFAAllRecords(FAClient, appName);
-            console.log("data retrieved: ", response)
-        }else{
-            
-            response = await nlightnApi.getTable(appName)
-            return response.data
-        }
-        console.log(response)
-        return response
+    const getCommonNeeds = async () => {
+        // Mock response for testing
+        const response = [
+            { id: 1, name: "total_spend", label: "Total Spending", icon: require('./components/icons/spending_icon.svg').default },
+            { id: 2, name: "remaining_budget", label: "Remaining Budget", icon: require('./components/icons/cash_flow_icon.svg').default },
+            { id: 3, name: "sales_forecast", label: "Sales Trends", icon: require('./components/icons/sales_trends_icon.svg').default },
+            { id: 4, name: "cash_flow", label: "Cash Flow", icon: require('./components/icons/financial_statement_icon.svg').default },
+        ];
+        setCommonNeeds(response);
     };
 
-    
-    //Get data for all apps
-    const getApps = async (appname)=>{
-        const response = await getData(appname)
-        setApps(response)
-        let list = []
-        response.map(item=>{
-            list.push(item.label)
-        })
-        setAppList(list)
-    }
 
-    useEffect(()=>{
-       setTimeout(()=>{
-            let appname = null    
-            if(process.env.NODE_ENV==="production" && environment==="freeagent"){
-                appname = "web_app"
-            }else{
-                appname = "apps"
-            }
-            getApps(appname)
-       },500) 
-    },[])
+    const handleSelectCommonNeed = (e) => {
+        // Handle selection logic here
+    };
 
+    useEffect(() => {
+        getCommonNeeds();
+    }, []);
 
-    const handleGetData = async ()=>{
-        
-        const response = await getData(appName)  
-        setData(response)
-        
-        let fieldList = []
-        if (response.length > 0) {
-            Object.keys(response[0]).map((field, index) => {
-                fieldList.push({ headerName: toProperCase(field.replaceAll("_", " ")), field: field, filter: true });
-                setFormData(prev => ({ ...prev, ...{ [field]: "" } }));
-            });
-        }
-        setFields(fieldList);
-    }
+    return (
+        <div className="d-flex justify-content-center p-3">
+            <div className="d-flex flex-column" style={{ width: "100%" }}>
+                
+                <div className="d-flex flex-column">
+                    <AIInput
+                        transcription={prompt}
+                        setTranscription={setPrompt}
+                    />
+                </div>
 
-    
+                <div>
+                    {
+                        <div className="d-flex bg-light rounded-3 shadow mt-3" style={{height:"200px", width: "100%"}}>
 
-    const updateRecord = async () => {
-
-        if(environment === "freeagent"){
-            try {
-                const FAClient = window.FAClient;
-                freeAgentApi.updateFARecord(FAClient, appName, selectedRecordId, updatedForm)
-                setTimeout(async ()=>{
-                    const response = await getData(appName)  
-                    setData(response)
-                },1000)
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        }else{
-            await nlightnApi.updateRecord(appName,"id", selectedRecordId,updatedForm)
-            const updatedData = await getData(appName)
-            setData(updatedData)
-        }
-    }
-
-
-    const addRecord = async () => {
-        if(environment == "freeagent"){
-            try {
-                const FAClient = window.FAClient;
-    
-                delete updatedForm.id
-                delete updatedForm.seq_id
-    
-                await freeAgentApi.addFARecord(FAClient, appName, updatedForm)
-                setInterval(()=>{
-                    setShowLoadingModal(true)
-                },600)
-                setTimeout(async ()=>{
-                    const response = await getData(appName)  
-                    setData(response)
-                    setShowLoadingModal(false)
-                },500)
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        }else{
-            const response = await nlightnApi.addRecord(appName, updatedForm)
-            const updatedData = await getData(appName)
-            console.log(updatedData)
-            setData(updatedData)
-        }
-    }
-    
-    const deleteRecord = async () => {
-        if(environment == "freeagent"){
-            try {
-                const FAClient = window.FAClient;
-                await freeAgentApi.updateFARecord(FAClient, appName, selectedRecordId)
-                setInterval(()=>{
-                    setShowLoadingModal(true)
-                },600)
-                setTimeout(async ()=>{
-                    const response = await getData(appName)  
-                    setData(response)
-                    setShowLoadingModal(false)
-                },500)
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        }else{
-            await nlightnApi.deleteRecord(appName,"id",selectedRecordId)
-            const updatedData = await getData(appName)
-            setData(updatedData)
-        }
-    }
-
-    const pageStyle = {
-        fontSize: "12px",
-        height: environment==="freeagent" ? "700px" : "100vh",
-        width: "100%",
-        overflow: "hidden"
-    }
-
-    const handleSelectApp = (e)=>{
-        const {name, value} = e.target 
-        setAppLabel(value)
-
-        let system_name = apps.find(item =>item.label ===value).name
-        setAppName(system_name)
-    }
-
-    const handleInputChange=(e)=>{
-        const {name, value} = e.target 
-        setFormData({...formData,...{[name]:value}})
-        setUpdatedForm({...updatedForm,...{[name]:value}})
-    }
-
-    const onCellClicked = (e) => {
-        setSelectedRecordId(e.data.id)
-        setFormData(e.data)
-      }
-
-      useEffect(()=>{
-        
-      },[data])
-
-
-
-  return (
-    <div className="d-flex flex-column" style={pageStyle}>
-
-        <h2 className="text-center">nlightnlabs FreeAgent Iframe Test</h2>
-
-        <div className="d-flex w-100" style={{height:"90%", width: "100%"}}>
-
-        <div className="d-flex flex-column m-3 bg-light p-3 rounded-3 shadow" style={{position: "relative", width: "300px", height:"100%", overflowY: "hidden"}}>
-
-            <div className="form-floating mb-3">
-                <select name= "app_name" value={appLabel} placeholder="app_name" onChange={(e)=>handleSelectApp(e)} 
-                    className="form-control" 
-                    style={{ fontSize: "12px", color: "rgb(50,150,250)"}}
-                    >
-                    {appList.map((item,index)=>(
-                        <option key={index} value={item}>{item}</option>
-                    ))}
-                </select>
-                <label htmlFor="app_name" className="form-label">App system name: </label>
-            </div>
-        
-
-            <div className="d-flex justify-content-center mb-3">
-                <button className="btn btn-primary" onClick={(e)=>handleGetData()}>Get Data</button>
-            </div>
-
-            {appName !="" && appName !=null && data.length>0 &&
-                <div className="d-flex flex-column" style={{borderTop: "1px solid lightgray", height:"100%", overflowY: "hidden"}}>
-                    {Object.keys(formData).length> 0  && 
-                        <div className="d-flex flex-column p-1" style={{height:"80%", overflowY: "auto"}}>
-                            {Object.keys(formData).map((key, index)=>(
-                                <div key={index} className="form-floating mb-3">
-                                    <input id={key} name= {key} value={formData[key] || ""} className="form-control" placeholder={key} onChange={(e)=>handleInputChange(e)} style={{fontSize: "12px", color: "rgb(50,150,250)"}}></input>
-                                    <label htmlFor={key} className="form-label">{toProperCase(key.replaceAll("_"," "))}</label>
-                                </div>
-                            ))}
                         </div>
                     }
-                    <div className="d-flex justify-content-center mt-3">
-                        <div className="btn-group">
-                            <button className="btn btn-success" onClick={(e)=>addRecord()}>Add</button>
-                            <button className="btn btn-warning" onClick={(e)=>updateRecord()}>Update</button>
-                            <button className="btn btn-danger" onClick={(e)=>deleteRecord()}>Delete</button>
+                </div>
+               
+                <div className="d-flex flex-column p-2" style={{ maxHeight: "500px", overflowY: "auto" }}>
+                    <div className="d-flex m-1" style={{ color: "gray" }}>Common needs:</div>
+                    {commonNeeds.map((item, index) => (
+                        <div
+                            key={item.id}
+                            id={item.name}
+                            className="d-flex border border-1 p-3 rounded-3 shadow-sm mb-2 align-items-center"
+                            style={{ height: "75px", cursor: "pointer", border: "3px solid rgba(0,100,255,0.5)" }}
+                            onClick={(e) => handleSelectCommonNeed(e)}
+                        >   
+                            <Svg 
+                                 src={'./components/icons/budget_icon.svg'} // Pass the SVG URL instead of svgImage
+                                 width="97"
+                                 height="98"
+                                 fill="red" // Specify the fill color through props
+                                 opacity="1"
+                            />
+                            <img src={Image} style={{height: 50, width: 50, overflow:"hiddens"}}/>
+                            
+                            <div className="d-flex ms-3">{item.label}</div>
                         </div>
-                    </div>
-                </div> 
-            }
-        </div> 
-
-        <div className="d-flex p-3 flex-column w-75" style={{height:"100%"}}>
-            <div id="myGrid" style={{height: "100%", width:"100%"}} className="ag-theme-quartz">
-                <AgGridReact
-                    rowData={data}
-                    columnDefs={fields}
-                    onCellClicked = {onCellClicked}
-                />
+                    ))}
+                </div>
             </div>
         </div>
-        </div>
-    </div>
-  );
+    );
 }
 
 export default App;
